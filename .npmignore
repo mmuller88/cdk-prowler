@@ -15,6 +15,7 @@
 /tsconfig.eslint.json
 /tsconfig.jest.json
 /tsconfig.json
+cdk.out
 dist
 junit.xml
 tsconfig.tsbuildinfo

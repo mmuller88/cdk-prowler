@@ -150,7 +150,7 @@
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @aws-cdk/assert @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk-lib constructs eslint eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import jest jest-junit jsii jsii-diff jsii-docgen jsii-pacmak json-schema npm-check-updates standard-version ts-jest ts-node typescript aws-cdk-lib constructs ts-node"
+          "exec": "yarn upgrade @aws-cdk/assert @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import jest jest-junit jsii jsii-diff jsii-docgen jsii-pacmak json-schema npm-check-updates standard-version ts-jest typescript @aws-cdk/assert @types/aws-lambda aws-lambda aws-sdk cdk-iam-floyd cdk esbuild @aws-cdk/aws-codebuild @aws-cdk/aws-iam @aws-cdk/aws-lambda @aws-cdk/aws-logs @aws-cdk/aws-s3 @aws-cdk/core @aws-cdk/custom-resources constructs @aws-cdk/assert @aws-cdk/aws-codebuild @aws-cdk/aws-iam @aws-cdk/aws-lambda @aws-cdk/aws-logs @aws-cdk/aws-s3 @aws-cdk/core @aws-cdk/custom-resources @types/aws-lambda aws-lambda aws-sdk cdk-iam-floyd cdk esbuild"
         },
         {
           "exec": "npx projen"
@@ -235,31 +235,6 @@
       "steps": [
         {
           "exec": "npx -p jsii-release@latest jsii-release-npm"
-        }
-      ]
-    },
-    "publish:pypi": {
-      "name": "publish:pypi",
-      "description": "Publish this package to The Python Package Index (PyPI)",
-      "requiredEnv": [
-        "TWINE_USERNAME",
-        "TWINE_PASSWORD"
-      ],
-      "steps": [
-        {
-          "exec": "npx -p jsii-release@latest jsii-release-pypi"
-        }
-      ]
-    },
-    "publish:nuget": {
-      "name": "publish:nuget",
-      "description": "Publish this package to NuGet Gallery",
-      "requiredEnv": [
-        "NUGET_API_KEY"
-      ],
-      "steps": [
-        {
-          "exec": "npx -p jsii-release@latest jsii-release-nuget"
         }
       ]
     },

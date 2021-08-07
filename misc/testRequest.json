@@ -1,0 +1,7 @@
+{
+  "RequestType": "Create",
+  "ResourceProperties": {
+      "Build": "bla"
+  },
+  "ResponseURL": "aha"
+}

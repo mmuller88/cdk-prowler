@@ -1,7 +1,15 @@
-import { Stack, Duration, RemovalPolicy, CustomResource } from 'aws-cdk-lib';
-// eslint-disable-next-line no-duplicate-imports
-import { aws_logs as logs, aws_s3 as s3, aws_codebuild as codebuild, aws_lambda as lambda, custom_resources as cr } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
+// import { Stack, Duration, RemovalPolicy, CustomResource } from 'aws-cdk-lib';
+// import { aws_logs as logs, aws_s3 as s3, aws_codebuild as codebuild, aws_lambda as lambda, custom_resources as cr } from 'aws-cdk-lib';
+import * as codebuild from '@aws-cdk/aws-codebuild';
+import * as iam from '@aws-cdk/aws-iam';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as logs from '@aws-cdk/aws-logs';
+import * as s3 from '@aws-cdk/aws-s3';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Stack, Duration, RemovalPolicy, Construct, CustomResource } from '@aws-cdk/core';
+import * as cr from '@aws-cdk/custom-resources';
+import * as statement from 'cdk-iam-floyd';
+// import { Construct } from 'constructs';
 export interface ProwlerAuditProps {
   /**
    * Specifies the service name used within component naming
@@ -40,17 +48,20 @@ export class ProwlerAudit extends Construct {
       autoDeleteObjects: true,
       removalPolicy: RemovalPolicy.DESTROY,
     });
+    reportBucket;
 
-    new codebuild.Project(this, 'Codebuild', {
+    const reportGroup = new codebuild.ReportGroup(this, 'reportGroup', { /**reportGroupName: 'testReportGroup', */removalPolicy: RemovalPolicy.DESTROY });
+    reportGroup;
+
+    const prowlerBuild = new codebuild.Project(this, 'prowlerBuild', {
       description: 'Run Prowler assessment',
       timeout: Duration.hours(5),
       environment: {
         environmentVariables: {
           BUCKET_REPORT: { value: reportBucket.bucketArn || '' },
-          PROWLER_OPTIONS: { value: props.prowlerOptions },
+          PROWLER_OPTIONS: { value: props.prowlerOptions || '' },
         },
         buildImage: codebuild.LinuxBuildImage.fromCodeBuildImageId('aws/codebuild/amazonlinux2-x86_64-standard:3.0'),
-        // computeType: codebuild.ComputeType.SMALL,
       },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
@@ -85,7 +96,7 @@ export class ProwlerAudit extends Construct {
           },
         },
         reports: {
-          prowler: {
+          [reportGroup.reportGroupName]: {
             'files': ['**/*'],
             'base-directory': 'prowler/junit-reports',
             'file-format': 'JunitXml',
@@ -93,8 +104,19 @@ export class ProwlerAudit extends Construct {
         },
       }),
     });
+    prowlerBuild.role?.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('SecurityAudit'));
+    prowlerBuild.role?.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('job-function/ViewOnlyAccess'));
+    // prowlerBuild.addToRolePolicy(new statement.Dax().allow().to());
+    prowlerBuild.addToRolePolicy(new statement.Ds().allow().toListAuthorizedApplications());
+    prowlerBuild.addToRolePolicy(new statement.Ec2().allow().toGetEbsEncryptionByDefault());
+    prowlerBuild.addToRolePolicy(new statement.Ecr().allow().toDescribeImageScanFindings().toDescribeImages().toDescribeRegistry());
+    prowlerBuild.addToRolePolicy(new statement.Tag().allow().toGetTagKeys());
+    prowlerBuild.addToRolePolicy(new statement.Lambda().allow().toGetFunction());
+    prowlerBuild.addToRolePolicy(new iam.PolicyStatement({ actions: ['support:Describe*'], resources: ['*'] }));
 
-    const prowlerBuild = new lambda.Function(this, 'Lambda', {
+    const myRole = new iam.Role(this, 'MyRole', { assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com') });
+
+    const prowlerStartBuildLambda = new lambda.Function(this, 'Lambda', {
       runtime: lambda.Runtime.PYTHON_3_6,
       timeout: Duration.seconds(120),
       handler: 'index.lambda_handler',
@@ -103,10 +125,10 @@ import cfnresponse
 from botocore.exceptions import ClientError
 def lambda_handler(event,context):
   props = event['ResourceProperties']
-  codebuil_client = boto3.client('codebuild')
+  codebuild_client = boto3.client('codebuild')
   if (event['RequestType'] == 'Create' or event['RequestType'] == 'Update'):
     try:
-        response = codebuil_client.start_build(projectName=props['Build'])
+        response = codebuild_client.start_build(projectName=props['Build'])
         print(response)
         print("Respond: SUCCESS")
         cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
@@ -116,11 +138,18 @@ def lambda_handler(event,context):
       `),
     });
 
-    const myProvider = new cr.Provider(this, 'MyProvider', {
-      onEventHandler: prowlerBuild,
-      logRetention: props.logsRetentionInDays,
-    });
+    prowlerStartBuildLambda.addToRolePolicy(new statement.Codebuild().allow().toStartBuild()); // onResource project ...
 
-    new CustomResource(this, 'Resource1', { serviceToken: myProvider.serviceToken });
+    const myProvider = new cr.Provider(this, 'MyProvider', {
+      onEventHandler: prowlerStartBuildLambda,
+      logRetention: props.logsRetentionInDays,
+      role: myRole,
+    });
+    myProvider;
+    new CustomResource(this, 'Resource1', {
+      serviceToken: myProvider.serviceToken,
+      properties: { Build: prowlerBuild.projectName },
+    });
+    // Build: !Ref ProwlerCodeBuild
   }
 }
