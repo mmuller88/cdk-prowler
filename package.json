@@ -22,9 +22,14 @@
     "eslint": "npx projen eslint",
     "compat": "npx projen compat",
     "publish:npm": "npx projen publish:npm",
+    "publish:pypi": "npx projen publish:pypi",
+    "publish:nuget": "npx projen publish:nuget",
     "docgen": "npx projen docgen",
     "release": "npx projen release",
-    "projen": "npx projen"
+    "projen": "npx projen",
+    "deploy": "cdk deploy",
+    "destroy": "cdk destroy",
+    "synth": "cdk synth"
   },
   "author": {
     "name": "Martin Mueller",
@@ -32,11 +37,13 @@
     "organization": false
   },
   "devDependencies": {
-    "@aws-cdk/assert": "^1.95.2",
+    "@aws-cdk/assert": "2.0.0-rc.16",
     "@types/jest": "^26.0.24",
     "@types/node": "^10.17.0",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
+    "aws-cdk-lib": "2.0.0-rc.16",
+    "constructs": "^3.3.116",
     "eslint": "^7.32.0",
     "eslint-import-resolver-node": "^0.3.4",
     "eslint-import-resolver-typescript": "^2.4.0",
@@ -52,14 +59,22 @@
     "projen": "^0.27.18",
     "standard-version": "^9",
     "ts-jest": "^27.0.4",
+    "ts-node": "^10.1.0",
     "typescript": "^4.3.5"
   },
   "peerDependencies": {
-    "constructs": "^3.2.27"
+    "aws-cdk-lib": "2.0.0-rc.16",
+    "constructs": "^10.0.5",
+    "ts-node": "^10.1.0"
   },
   "bundledDependencies": [],
   "keywords": [
-    "cdk"
+    "audit",
+    "aws",
+    "cdk",
+    "hardening",
+    "prowler",
+    "security"
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
@@ -107,7 +122,16 @@
   "stability": "stable",
   "jsii": {
     "outdir": "dist",
-    "targets": {},
+    "targets": {
+      "python": {
+        "distName": "cdk-prowler",
+        "module": "cdk_prowler"
+      },
+      "dotnet": {
+        "namespace": "com.github.mmuller88",
+        "packageId": "com.github.mmuller88.awsCdkBuildBadge"
+      }
+    },
     "tsc": {
       "outDir": "lib",
       "rootDir": "src"
