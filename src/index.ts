@@ -1,4 +1,3 @@
-import { report } from 'process';
 import { Stack, Duration, RemovalPolicy, CustomResource } from 'aws-cdk-lib';
 // eslint-disable-next-line no-duplicate-imports
 import { aws_logs as logs, aws_s3 as s3, aws_codebuild as codebuild, aws_lambda as lambda, custom_resources as cr } from 'aws-cdk-lib';
@@ -20,7 +19,7 @@ export interface ProwlerAuditProps {
    * Options to pass to Prowler command, make sure at least -M junit-xml is used for CodeBuild reports. Use -r for the region to send API queries, -f to filter only one region, -M output formats, -c for comma separated checks, for all checks do not use -c or -g, for more options see -h. For a complete assessment use  "-M text,junit-xml,html,csv,json", for SecurityHub integration use "-r region -f region -M text,junit-xml,html,csv,json,json-asff -S -q"
    * @default 'no options'
    */
-  readonly prowlerOptions: string;
+  readonly prowlerOptions?: string;
 
   /**
    * The time when Prowler will run in cron format. Default is daily at 22:00h or 10PM 'cron(0 22 * * ? *)', for every 5 hours also works 'rate(5 hours)'. More info here https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html.
@@ -33,7 +32,7 @@ export interface ProwlerAuditProps {
  * Creates a CodeBuild project to audit an AWS account with Prowler and stores the html report in a S3 bucket. This will run onece at the beginning and on a schedule afterwards. Partial contribution from https://github.com/stevecjones
  */
 export class ProwlerAudit extends Construct {
-  constructor(parent: Stack, id: string, props: ProwlerAuditProps) {
+  constructor(parent: Stack, id: string, props: ProwlerAuditProps = { serviceName: 'prowler', logsRetentionInDays: logs.RetentionDays.THREE_DAYS, prowlerScheduler: 'cron(0 22 * * ? *)' }) {
     super(parent, id);
 
     const reportBucket = new s3.Bucket(this, 'ReportBucket', {
