@@ -15,13 +15,14 @@
     "bump": "npx projen bump",
     "unbump": "npx projen unbump",
     "upgrade-dependencies": "npx projen upgrade-dependencies",
-    "upgrade-projen": "npx projen upgrade-projen",
     "default": "npx projen default",
     "watch": "npx projen watch",
     "package": "npx projen package",
     "eslint": "npx projen eslint",
     "compat": "npx projen compat",
     "publish:npm": "npx projen publish:npm",
+    "publish:pypi": "npx projen publish:pypi",
+    "publish:nuget": "npx projen publish:nuget",
     "docgen": "npx projen docgen",
     "release": "npx projen release",
     "projen": "npx projen",
@@ -146,7 +147,16 @@
   "stability": "stable",
   "jsii": {
     "outdir": "dist",
-    "targets": {},
+    "targets": {
+      "python": {
+        "distName": "cdk-prowler",
+        "module": "cdk_prowler"
+      },
+      "dotnet": {
+        "namespace": "com.github.mmuller88",
+        "packageId": "com.github.mmuller88.cdkProwler"
+      }
+    },
     "tsc": {
       "outDir": "lib",
       "rootDir": "src"
