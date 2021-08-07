@@ -33,7 +33,7 @@ const project = new AwsCdkConstructLibrary({
   repositoryUrl: 'https://github.com/mmuller88/cdk-prowler',
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
   autoApproveOptions: {
-    allowedUsernames: ['aws-cdk-automation','github-bot'],
+    allowedUsernames: ['aws-cdk-automation', 'github-bot'],
     secret: 'GITHUB_TOKEN',
   },
   cdkVersion,
