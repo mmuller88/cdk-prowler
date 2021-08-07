@@ -82,7 +82,7 @@ export class ProwlerAudit extends Construct {
           },
           build: {
             commands: [
-              'echo "Running Prowler as ./prowler $PROWLER_OPTIONS"',
+              'echo "Running Prowler as ./prowler"', // $PROWLER_OPTIONS
               'cd prowler',
               './prowler $PROWLER_OPTIONS',
             ],
@@ -112,6 +112,8 @@ export class ProwlerAudit extends Construct {
     prowlerBuild.addToRolePolicy(new statement.Ecr().allow().toDescribeImageScanFindings().toDescribeImages().toDescribeRegistry());
     prowlerBuild.addToRolePolicy(new statement.Tag().allow().toGetTagKeys());
     prowlerBuild.addToRolePolicy(new statement.Lambda().allow().toGetFunction());
+    prowlerBuild.addToRolePolicy(new statement.Glue().allow().toSearchTables().toGetConnections());
+    prowlerBuild.addToRolePolicy(new statement.Apigateway().allow().toGET());
     prowlerBuild.addToRolePolicy(new iam.PolicyStatement({ actions: ['support:Describe*'], resources: ['*'] }));
 
     const myRole = new iam.Role(this, 'MyRole', { assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com') });
