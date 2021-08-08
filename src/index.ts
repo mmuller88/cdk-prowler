@@ -41,7 +41,7 @@ export interface ProwlerAuditProps {
  * Creates a CodeBuild project to audit an AWS account with Prowler and stores the html report in a S3 bucket. This will run onece at the beginning and on a schedule afterwards. Partial contribution from https://github.com/stevecjones
  */
 export class ProwlerAudit extends Construct {
-  constructor(parent: Stack, id: string, props: ProwlerAuditProps = { serviceName: 'prowler', logsRetentionInDays: logs.RetentionDays.THREE_DAYS, prowlerScheduler: 'cron(0 22 * * ? *)', prowlerOptions: '-M text,junit-xml,html,csv,json' }) {
+  constructor(parent: Stack, id: string, props: ProwlerAuditProps = { serviceName: 'prowler', logsRetentionInDays: logs.RetentionDays.THREE_DAYS, prowlerScheduler: 'cron(0 22 * * ? *)', prowlerOptions: '-f eu-central-1 -g cislevel2 -M text,junit-xml,html,csv,json' }) {
     super(parent, id);
 
     const reportBucket = new s3.Bucket(this, 'ReportBucket', {
@@ -59,7 +59,7 @@ export class ProwlerAudit extends Construct {
       timeout: Duration.hours(5),
       environment: {
         environmentVariables: {
-          BUCKET_REPORT: { value: reportBucket.bucketArn || '' },
+          BUCKET_REPORT: { value: reportBucket.bucketName || '' },
           PROWLER_OPTIONS: { value: props.prowlerOptions || '' },
         },
         buildImage: codebuild.LinuxBuildImage.fromCodeBuildImageId('aws/codebuild/amazonlinux2-x86_64-standard:3.0'),
