@@ -1,5 +1,7 @@
 // import { Stack, Duration, RemovalPolicy, CustomResource } from 'aws-cdk-lib';
-// import { aws_logs as logs, aws_s3 as s3, aws_codebuild as codebuild, aws_lambda as lambda, custom_resources as cr } from 'aws-cdk-lib';
+// eslint-disable-next-line no-duplicate-imports
+// import { aws_iam as iam, aws_logs as logs, aws_s3 as s3, aws_codebuild as codebuild, aws_lambda as lambda, custom_resources as cr } from 'aws-cdk-lib';
+// import { Construct } from 'constructs';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as iam from '@aws-cdk/aws-iam';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -9,7 +11,6 @@ import * as s3 from '@aws-cdk/aws-s3';
 import { Stack, Duration, RemovalPolicy, Construct, CustomResource } from '@aws-cdk/core';
 import * as cr from '@aws-cdk/custom-resources';
 import * as statement from 'cdk-iam-floyd';
-// import { Construct } from 'constructs';
 export interface ProwlerAuditProps {
   /**
    * Specifies the service name used within component naming
@@ -84,7 +85,7 @@ export class ProwlerAudit extends Construct {
             commands: [
               `echo "Running Prowler as ./prowler ${props.prowlerOptions}"`,
               'cd prowler',
-              './prowler $PROWLER_OPTIONS',
+              `./prowler ${props.prowlerOptions}`,
             ],
           },
           post_build: {

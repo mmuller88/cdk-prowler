@@ -92,33 +92,7 @@
     {
       "name": "@aws-cdk/assert",
       "version": "1.117.0",
-      "type": "bundled"
-    },
-    {
-      "name": "@types/aws-lambda",
-      "type": "bundled"
-    },
-    {
-      "name": "aws-lambda",
-      "type": "bundled"
-    },
-    {
-      "name": "aws-sdk",
-      "type": "bundled"
-    },
-    {
-      "name": "cdk-iam-floyd",
-      "type": "bundled"
-    },
-    {
-      "name": "cdk",
-      "version": "1.117.0",
-      "type": "bundled"
-    },
-    {
-      "name": "esbuild",
-      "version": "^0",
-      "type": "bundled"
+      "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-codebuild",
@@ -152,6 +126,15 @@
     },
     {
       "name": "@aws-cdk/custom-resources",
+      "version": "1.117.0",
+      "type": "peer"
+    },
+    {
+      "name": "cdk-iam-floyd",
+      "type": "peer"
+    },
+    {
+      "name": "cdk",
       "version": "1.117.0",
       "type": "peer"
     },
@@ -201,29 +184,12 @@
       "type": "runtime"
     },
     {
-      "name": "@types/aws-lambda",
-      "type": "runtime"
-    },
-    {
-      "name": "aws-lambda",
-      "type": "runtime"
-    },
-    {
-      "name": "aws-sdk",
-      "type": "runtime"
-    },
-    {
       "name": "cdk-iam-floyd",
       "type": "runtime"
     },
     {
       "name": "cdk",
       "version": "1.117.0",
-      "type": "runtime"
-    },
-    {
-      "name": "esbuild",
-      "version": "^0",
       "type": "runtime"
     }
   ],

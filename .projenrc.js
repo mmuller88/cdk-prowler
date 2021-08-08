@@ -7,14 +7,15 @@ const example = exampleFile.slice(8, exampleFile.length - 7);
 const cdkVersion = '1.117.0';
 
 const deps = [
-  '@types/aws-lambda',
-  'aws-lambda',
-  'aws-sdk',
-  'esbuild@^0',
+  // '@types/aws-lambda',
+  // 'aws-lambda',
+  // 'aws-sdk',
+  // 'esbuild@^0',
   `@aws-cdk/assert@${cdkVersion}`,
   `cdk@${cdkVersion}`,
   'cdk-iam-floyd',
 ];
+deps;
 
 const cdkDependencies= [
   '@aws-cdk/aws-codebuild',
@@ -25,6 +26,7 @@ const cdkDependencies= [
   '@aws-cdk/aws-iam',
   '@aws-cdk/custom-resources',
 ];
+cdkDependencies;
 
 const project = new AwsCdkConstructLibrary({
   author: 'Martin Mueller',
@@ -45,18 +47,22 @@ const project = new AwsCdkConstructLibrary({
   cdkDependencies,
   cdkDependenciesAsDeps: cdkDependencies,
   deps,
-  // peerDeps: deps,
-  bundledDeps: deps,
+  peerDeps: deps,
+  // bundledDeps: deps,
   cdkDependencies,
   // peerDeps: [
   //   'aws-cdk-lib@2.0.0-rc.16',
   //   'constructs',
-  //   'ts-node',
+  //   'cdk-iam-floyd@0.207.1-pre.0',
+  //   'cdk@2.0.0-rc.16',
+  //   // 'ts-node',
   // ],
   // devDeps: [
   //   'aws-cdk-lib@2.0.0-rc.16',
   //   'constructs',
-  //   'ts-node',
+  //   'cdk-iam-floyd@0.207.1-pre.0',
+  //   'cdk@2.0.0-rc.16',
+  //   // 'ts-node',
   // ],
   // cdkDependencies: [
   //   '@aws-cdk/core',
@@ -85,6 +91,11 @@ Prowler is a security tool to perform AWS security best practices assessments, a
 \`\`\`ts
 ${example.join('\n')}
 \`\`\`
+
+# Planned Features
+* Supporting AWS SecurityHub https://github.com/toniblyx/prowler#security-hub-integration
+* Scheduler
+* AMI EC2 executable
 
 # Misc
 

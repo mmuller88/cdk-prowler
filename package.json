@@ -59,6 +59,7 @@
     "typescript": "^4.3.5"
   },
   "peerDependencies": {
+    "@aws-cdk/assert": "1.117.0",
     "@aws-cdk/aws-codebuild": "1.117.0",
     "@aws-cdk/aws-iam": "1.117.0",
     "@aws-cdk/aws-lambda": "1.117.0",
@@ -66,6 +67,8 @@
     "@aws-cdk/aws-s3": "1.117.0",
     "@aws-cdk/core": "1.117.0",
     "@aws-cdk/custom-resources": "1.117.0",
+    "cdk": "1.117.0",
+    "cdk-iam-floyd": "0.207.1-pre.0",
     "constructs": "^3.2.27"
   },
   "dependencies": {
@@ -77,22 +80,10 @@
     "@aws-cdk/aws-s3": "1.117.0",
     "@aws-cdk/core": "1.117.0",
     "@aws-cdk/custom-resources": "1.117.0",
-    "@types/aws-lambda": "^8.10.81",
-    "aws-lambda": "^1.0.6",
-    "aws-sdk": "^2.963.0",
     "cdk": "1.117.0",
-    "cdk-iam-floyd": "^0.224.0",
-    "esbuild": "^0"
+    "cdk-iam-floyd": "^0.224.0"
   },
-  "bundledDependencies": [
-    "@aws-cdk/assert",
-    "@types/aws-lambda",
-    "aws-lambda",
-    "aws-sdk",
-    "cdk-iam-floyd",
-    "cdk",
-    "esbuild"
-  ],
+  "bundledDependencies": [],
   "keywords": [
     "audit",
     "aws",
