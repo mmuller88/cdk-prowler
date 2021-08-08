@@ -15,7 +15,6 @@ const deps = [
   `cdk@${cdkVersion}`,
   'cdk-iam-floyd',
 ];
-deps;
 
 const cdkDependencies= [
   '@aws-cdk/aws-codebuild',
@@ -48,9 +47,10 @@ const project = new AwsCdkConstructLibrary({
   cdkVersionPinning: true,
   cdkDependencies,
   cdkDependenciesAsDeps: cdkDependencies,
-  deps,
-  peerDeps: deps,
-  // bundledDeps: deps,
+  // deps,
+  // peerDeps: deps,
+  devDeps: deps,
+  bundledDeps: deps,
   cdkDependencies,
   // peerDeps: [
   //   'aws-cdk-lib@2.0.0-rc.16',
@@ -96,11 +96,20 @@ ${example.join('\n')}
 
 # Planned Features
 * Supporting AWS SecurityHub https://github.com/toniblyx/prowler#security-hub-integration
+* Triggering an event with SNS when prowler finishes the run
 * AMI EC2 executable
 
 # Misc
 
+\`\`\`sh
 yes | yarn destroy && yarn deploy --require-approval never
+\`\`\`
+
+Rerun Prowler on deploy
+
+\`\`\`sh
+yarn deploy --require-approval never -c reRunProwler=true
+\`\`\`
 
 # Thanks To
 * My friend and fellaw ex colleague Tony de la Fuente (https://github.com/toniblyx https://twitter.com/ToniBlyx) for developing such a cool security tool as [Prowler](https://github.com/toniblyx/prowler)

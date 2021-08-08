@@ -10,7 +10,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as logs from '@aws-cdk/aws-logs';
 import * as s3 from '@aws-cdk/aws-s3';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Stack, Duration, RemovalPolicy, Construct, CustomResource } from '@aws-cdk/core';
+import { Stack, Duration, RemovalPolicy, Construct, CustomResource, Tags } from '@aws-cdk/core';
 import * as cr from '@aws-cdk/custom-resources';
 import * as statement from 'cdk-iam-floyd';
 export interface ProwlerAuditProps {
@@ -49,11 +49,11 @@ export interface ProwlerAuditProps {
  * Creates a CodeBuild project to audit an AWS account with Prowler and stores the html report in a S3 bucket. This will run onece at the beginning and on a schedule afterwards. Partial contribution from https://github.com/stevecjones
  */
 export class ProwlerAudit extends Construct {
-  serviceName;
-  logsRetentionInDays;
-  enableScheduler;
-  prowlerScheduler;
-  prowlerOptions;
+  serviceName: string;
+  logsRetentionInDays: logs.RetentionDays;
+  enableScheduler: boolean;
+  prowlerScheduler: string;
+  prowlerOptions: string;
 
   constructor(parent: Stack, id: string, props?: ProwlerAuditProps) {
     super(parent, id);
@@ -70,7 +70,11 @@ export class ProwlerAudit extends Construct {
       autoDeleteObjects: true,
       removalPolicy: RemovalPolicy.DESTROY,
     });
-    reportBucket;
+
+    const rerunProwler = Boolean(this.node.tryGetContext('reRunProwler'));
+    if (rerunProwler) {
+      Tags.of(this).add('reRunProwler', Date.now().toString());
+    }
 
     const reportGroup = new codebuild.ReportGroup(this, 'reportGroup', { /**reportGroupName: 'testReportGroup', */removalPolicy: RemovalPolicy.DESTROY });
     reportGroup;

@@ -23,6 +23,15 @@
       "type": "build"
     },
     {
+      "name": "cdk-iam-floyd",
+      "type": "build"
+    },
+    {
+      "name": "cdk",
+      "version": "1.117.0",
+      "type": "build"
+    },
+    {
       "name": "eslint",
       "type": "build"
     },
@@ -92,7 +101,16 @@
     {
       "name": "@aws-cdk/assert",
       "version": "1.117.0",
-      "type": "peer"
+      "type": "bundled"
+    },
+    {
+      "name": "cdk-iam-floyd",
+      "type": "bundled"
+    },
+    {
+      "name": "cdk",
+      "version": "1.117.0",
+      "type": "bundled"
     },
     {
       "name": "@aws-cdk/aws-codebuild",
@@ -136,15 +154,6 @@
     },
     {
       "name": "@aws-cdk/custom-resources",
-      "version": "1.117.0",
-      "type": "peer"
-    },
-    {
-      "name": "cdk-iam-floyd",
-      "type": "peer"
-    },
-    {
-      "name": "cdk",
       "version": "1.117.0",
       "type": "peer"
     },
@@ -154,11 +163,6 @@
       "type": "peer"
     },
     {
-      "name": "@aws-cdk/assert",
-      "version": "1.117.0",
-      "type": "runtime"
-    },
-    {
       "name": "@aws-cdk/aws-codebuild",
       "version": "1.117.0",
       "type": "runtime"
@@ -200,15 +204,6 @@
     },
     {
       "name": "@aws-cdk/custom-resources",
-      "version": "1.117.0",
-      "type": "runtime"
-    },
-    {
-      "name": "cdk-iam-floyd",
-      "type": "runtime"
-    },
-    {
-      "name": "cdk",
       "version": "1.117.0",
       "type": "runtime"
     }

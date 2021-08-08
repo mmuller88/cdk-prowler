@@ -19,11 +19,20 @@ Prowler is a security tool to perform AWS security best practices assessments, a
 
 # Planned Features
 * Supporting AWS SecurityHub https://github.com/toniblyx/prowler#security-hub-integration
+* Triggering an event with SNS when prowler finishes the run
 * AMI EC2 executable
 
 # Misc
 
+```sh
 yes | yarn destroy && yarn deploy --require-approval never
+```
+
+Rerun Prowler on deploy
+
+```sh
+yarn deploy --require-approval never -c reRunProwler=true
+```
 
 # Thanks To
 * My friend and fellaw ex colleague Tony de la Fuente (https://github.com/toniblyx https://twitter.com/ToniBlyx) for developing such a cool security tool as [Prowler](https://github.com/toniblyx/prowler)

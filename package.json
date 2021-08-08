@@ -41,6 +41,8 @@
     "@types/node": "^10.17.0",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
+    "cdk": "1.117.0",
+    "cdk-iam-floyd": "^0.224.0",
     "eslint": "^7.32.0",
     "eslint-import-resolver-node": "^0.3.4",
     "eslint-import-resolver-typescript": "^2.4.0",
@@ -49,17 +51,16 @@
     "jest-junit": "^12",
     "jsii": "^1.32.0",
     "jsii-diff": "^1.32.0",
-    "jsii-docgen": "^3.2.20",
+    "jsii-docgen": "^3.2.21",
     "jsii-pacmak": "^1.32.0",
     "json-schema": "^0.3.0",
     "npm-check-updates": "^11",
-    "projen": "^0.27.18",
+    "projen": "^0.27.20",
     "standard-version": "^9",
     "ts-jest": "^27.0.4",
     "typescript": "^4.3.5"
   },
   "peerDependencies": {
-    "@aws-cdk/assert": "1.117.0",
     "@aws-cdk/aws-codebuild": "1.117.0",
     "@aws-cdk/aws-events": "1.117.0",
     "@aws-cdk/aws-events-targets": "1.117.0",
@@ -69,8 +70,6 @@
     "@aws-cdk/aws-s3": "1.117.0",
     "@aws-cdk/core": "1.117.0",
     "@aws-cdk/custom-resources": "1.117.0",
-    "cdk": "1.117.0",
-    "cdk-iam-floyd": "0.207.1-pre.0",
     "constructs": "^3.2.27"
   },
   "dependencies": {
@@ -87,7 +86,11 @@
     "cdk": "1.117.0",
     "cdk-iam-floyd": "^0.224.0"
   },
-  "bundledDependencies": [],
+  "bundledDependencies": [
+    "@aws-cdk/assert",
+    "cdk-iam-floyd",
+    "cdk"
+  ],
   "keywords": [
     "audit",
     "aws",

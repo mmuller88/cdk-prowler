@@ -36,6 +36,37 @@ new ProwlerAudit(parent: Stack, id: string, props?: ProwlerAuditProps)
 
 
 
+#### Properties <a name="Properties"></a>
+
+##### `enableScheduler`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.enableScheduler"></a>
+
+- *Type:* `boolean`
+
+---
+
+##### `logsRetentionInDays`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.logsRetentionInDays"></a>
+
+- *Type:* [`@aws-cdk/aws-logs.RetentionDays`](#@aws-cdk/aws-logs.RetentionDays)
+
+---
+
+##### `prowlerOptions`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.prowlerOptions"></a>
+
+- *Type:* `string`
+
+---
+
+##### `prowlerScheduler`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.prowlerScheduler"></a>
+
+- *Type:* `string`
+
+---
+
+##### `serviceName`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.serviceName"></a>
+
+- *Type:* `string`
+
+---
 
 
 ## Structs <a name="Structs"></a>
@@ -50,7 +81,18 @@ import { ProwlerAuditProps } from 'cdk-prowler'
 const prowlerAuditProps: ProwlerAuditProps = { ... }
 ```
 
-##### `logsRetentionInDays`<sup>Required</sup> <a name="cdk-prowler.ProwlerAuditProps.property.logsRetentionInDays"></a>
+##### `enableScheduler`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.enableScheduler"></a>
+
+- *Type:* `boolean`
+- *Default:* false
+
+enables the scheduler for running prowler periodically.
+
+Together with prowlerScheduler.
+
+---
+
+##### `logsRetentionInDays`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.logsRetentionInDays"></a>
 
 - *Type:* [`@aws-cdk/aws-logs.RetentionDays`](#@aws-cdk/aws-logs.RetentionDays)
 - *Default:* : 3
@@ -61,10 +103,10 @@ Junit reports are kept for 30 days, HTML reports in S3 are not deleted
 
 ---
 
-##### `prowlerOptions`<sup>Required</sup> <a name="cdk-prowler.ProwlerAuditProps.property.prowlerOptions"></a>
+##### `prowlerOptions`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.prowlerOptions"></a>
 
 - *Type:* `string`
-- *Default:* '-M text,junit-xml,html,csv,json,json-asff -S -q'
+- *Default:* '-M text,junit-xml,html,csv,json'
 
 Options to pass to Prowler command, make sure at least -M junit-xml is used for CodeBuild reports.
 
@@ -72,7 +114,7 @@ Use -r for the region to send API queries, -f to filter only one region, -M outp
 
 ---
 
-##### `prowlerScheduler`<sup>Required</sup> <a name="cdk-prowler.ProwlerAuditProps.property.prowlerScheduler"></a>
+##### `prowlerScheduler`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.prowlerScheduler"></a>
 
 - *Type:* `string`
 - *Default:* 'cron(0 22 * * ? *)'
@@ -83,7 +125,7 @@ Default is daily at 22:00h or 10PM 'cron(0 22 * * ? *)', for every 5 hours also 
 
 ---
 
-##### `serviceName`<sup>Required</sup> <a name="cdk-prowler.ProwlerAuditProps.property.serviceName"></a>
+##### `serviceName`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.serviceName"></a>
 
 - *Type:* `string`
 - *Default:* : prowler
