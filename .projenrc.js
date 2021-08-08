@@ -24,6 +24,8 @@ const cdkDependencies= [
   '@aws-cdk/aws-logs',
   '@aws-cdk/aws-s3',
   '@aws-cdk/aws-iam',
+  '@aws-cdk/aws-events',
+  '@aws-cdk/aws-events-targets',
   '@aws-cdk/custom-resources',
 ];
 cdkDependencies;
@@ -94,7 +96,6 @@ ${example.join('\n')}
 
 # Planned Features
 * Supporting AWS SecurityHub https://github.com/toniblyx/prowler#security-hub-integration
-* Scheduler
 * AMI EC2 executable
 
 # Misc

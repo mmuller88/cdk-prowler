@@ -3,6 +3,8 @@
 // import { aws_iam as iam, aws_logs as logs, aws_s3 as s3, aws_codebuild as codebuild, aws_lambda as lambda, custom_resources as cr } from 'aws-cdk-lib';
 // import { Construct } from 'constructs';
 import * as codebuild from '@aws-cdk/aws-codebuild';
+import * as events from '@aws-cdk/aws-events';
+import * as targets from '@aws-cdk/aws-events-targets';
 import * as iam from '@aws-cdk/aws-iam';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as logs from '@aws-cdk/aws-logs';
@@ -16,33 +18,52 @@ export interface ProwlerAuditProps {
    * Specifies the service name used within component naming
    * @default: prowler
    */
-  readonly serviceName: string;
+  readonly serviceName?: string;
 
   /**
    * Specifies the number of days you want to retain CodeBuild run log events in the specified log group. Junit reports are kept for 30 days, HTML reports in S3 are not deleted
    * @default: 3
    */
-  readonly logsRetentionInDays: logs.RetentionDays;
+  readonly logsRetentionInDays?: logs.RetentionDays;
 
   /**
    * Options to pass to Prowler command, make sure at least -M junit-xml is used for CodeBuild reports. Use -r for the region to send API queries, -f to filter only one region, -M output formats, -c for comma separated checks, for all checks do not use -c or -g, for more options see -h. For a complete assessment use  "-M text,junit-xml,html,csv,json", for SecurityHub integration use "-r region -f region -M text,junit-xml,html,csv,json,json-asff -S -q"
    * @default '-M text,junit-xml,html,csv,json'
    */
-  readonly prowlerOptions: string;
+  readonly prowlerOptions?: string;
+
+  /**
+   * enables the scheduler for running prowler periodically. Together with prowlerScheduler.
+   * @default false
+   */
+  readonly enableScheduler?: boolean;
 
   /**
    * The time when Prowler will run in cron format. Default is daily at 22:00h or 10PM 'cron(0 22 * * ? *)', for every 5 hours also works 'rate(5 hours)'. More info here https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html.
    * @default 'cron(0 22 * * ? *)'
    */
-  readonly prowlerScheduler: string;
+  readonly prowlerScheduler?: string;
 }
 
 /**
  * Creates a CodeBuild project to audit an AWS account with Prowler and stores the html report in a S3 bucket. This will run onece at the beginning and on a schedule afterwards. Partial contribution from https://github.com/stevecjones
  */
 export class ProwlerAudit extends Construct {
-  constructor(parent: Stack, id: string, props: ProwlerAuditProps = { serviceName: 'prowler', logsRetentionInDays: logs.RetentionDays.THREE_DAYS, prowlerScheduler: 'cron(0 22 * * ? *)', prowlerOptions: '-f eu-central-1 -g cislevel2 -M text,junit-xml,html,csv,json' }) {
+  serviceName;
+  logsRetentionInDays;
+  enableScheduler;
+  prowlerScheduler;
+  prowlerOptions;
+
+  constructor(parent: Stack, id: string, props?: ProwlerAuditProps) {
     super(parent, id);
+
+    // defaults
+    this.serviceName = props?.serviceName ? props.serviceName : 'prowler';
+    this.logsRetentionInDays = props?.logsRetentionInDays ? props.logsRetentionInDays : logs.RetentionDays.THREE_DAYS;
+    this.enableScheduler = props?.enableScheduler ? props.enableScheduler : false;
+    this.prowlerScheduler = props?.prowlerScheduler ? props.prowlerScheduler : 'cron(0 22 * * ? *)';
+    this.prowlerOptions = props?.prowlerOptions ? props.prowlerOptions : '-M text,junit-xml,html,csv,json';
 
     const reportBucket = new s3.Bucket(this, 'ReportBucket', {
       //bucketName: `${'123456'}-prowler-reports`,
@@ -60,7 +81,7 @@ export class ProwlerAudit extends Construct {
       environment: {
         environmentVariables: {
           BUCKET_REPORT: { value: reportBucket.bucketName || '' },
-          PROWLER_OPTIONS: { value: props.prowlerOptions || '' },
+          PROWLER_OPTIONS: { value: this.prowlerOptions || '' },
         },
         buildImage: codebuild.LinuxBuildImage.fromCodeBuildImageId('aws/codebuild/amazonlinux2-x86_64-standard:3.0'),
       },
@@ -83,13 +104,13 @@ export class ProwlerAudit extends Construct {
           },
           build: {
             commands: [
-              `echo "Running Prowler as ./prowler ${props.prowlerOptions}"`,
+              `echo "Running Prowler as ./prowler ${this.prowlerOptions} && echo OK || echo FAILED"`,
               'cd prowler',
-              `./prowler ${props.prowlerOptions}`,
+              `./prowler ${this.prowlerOptions} && echo OK || echo FAILED`,
             ],
           },
           post_build: {
-            command: [
+            commands: [
               'echo "Uploading reports to S3..." ',
               'aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/ --recursive',
               'echo "Done!"',
@@ -116,6 +137,8 @@ export class ProwlerAudit extends Construct {
     prowlerBuild.addToRolePolicy(new statement.Glue().allow().toSearchTables().toGetConnections());
     prowlerBuild.addToRolePolicy(new statement.Apigateway().allow().toGET());
     prowlerBuild.addToRolePolicy(new iam.PolicyStatement({ actions: ['support:Describe*'], resources: ['*'] }));
+
+    reportBucket.grantPut(prowlerBuild);
 
     const myRole = new iam.Role(this, 'MyRole', { assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com') });
 
@@ -145,14 +168,40 @@ def lambda_handler(event,context):
 
     const myProvider = new cr.Provider(this, 'MyProvider', {
       onEventHandler: prowlerStartBuildLambda,
-      logRetention: props.logsRetentionInDays,
+      logRetention: this.logsRetentionInDays,
       role: myRole,
     });
-    myProvider;
+
     new CustomResource(this, 'Resource1', {
       serviceToken: myProvider.serviceToken,
       properties: { Build: prowlerBuild.projectName },
     });
-    // Build: !Ref ProwlerCodeBuild
+
+    if (this.enableScheduler) {
+      const prowlerSchedulerLambda = new lambda.Function(this, 'ScheduleLambda', {
+        runtime: lambda.Runtime.PYTHON_3_6,
+        timeout: Duration.seconds(120),
+        handler: 'index.lambda_handler',
+        environment: {
+          buildName: prowlerBuild.projectName,
+        },
+        code: lambda.Code.fromInline(`import boto3
+        import os
+        def lambda_handler(event,context):
+          codebuild_client = boto3.client('codebuild')
+          print("Running Prowler scheduled!: " + os.environ['buildName'])
+          project_name = os.environ['buildName']
+          response = codebuild_client.start_build(projectName=project_name)
+          print(response)
+          print("Respond: SUCCESS")
+        `),
+      });
+
+      new events.Rule(this, 'Rule', {
+        description: 'A schedule for the Lambda function that triggers Prowler in CodeBuild.',
+        targets: [new targets.LambdaFunction(prowlerSchedulerLambda)],
+        schedule: events.Schedule.expression(this.prowlerScheduler || ''),
+      });
+    }
   }
 }

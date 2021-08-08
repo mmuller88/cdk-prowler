@@ -100,6 +100,16 @@
       "type": "peer"
     },
     {
+      "name": "@aws-cdk/aws-events-targets",
+      "version": "1.117.0",
+      "type": "peer"
+    },
+    {
+      "name": "@aws-cdk/aws-events",
+      "version": "1.117.0",
+      "type": "peer"
+    },
+    {
       "name": "@aws-cdk/aws-iam",
       "version": "1.117.0",
       "type": "peer"
@@ -150,6 +160,16 @@
     },
     {
       "name": "@aws-cdk/aws-codebuild",
+      "version": "1.117.0",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-cdk/aws-events-targets",
+      "version": "1.117.0",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-cdk/aws-events",
       "version": "1.117.0",
       "type": "runtime"
     },

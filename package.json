@@ -61,6 +61,8 @@
   "peerDependencies": {
     "@aws-cdk/assert": "1.117.0",
     "@aws-cdk/aws-codebuild": "1.117.0",
+    "@aws-cdk/aws-events": "1.117.0",
+    "@aws-cdk/aws-events-targets": "1.117.0",
     "@aws-cdk/aws-iam": "1.117.0",
     "@aws-cdk/aws-lambda": "1.117.0",
     "@aws-cdk/aws-logs": "1.117.0",
@@ -74,6 +76,8 @@
   "dependencies": {
     "@aws-cdk/assert": "1.117.0",
     "@aws-cdk/aws-codebuild": "1.117.0",
+    "@aws-cdk/aws-events": "1.117.0",
+    "@aws-cdk/aws-events-targets": "1.117.0",
     "@aws-cdk/aws-iam": "1.117.0",
     "@aws-cdk/aws-lambda": "1.117.0",
     "@aws-cdk/aws-logs": "1.117.0",

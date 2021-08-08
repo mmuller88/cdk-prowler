@@ -14,14 +14,20 @@ Prowler is a security tool to perform AWS security best practices assessments, a
 
     const stack = new Stack(app, 'ProwlerAudit-stack');
 
-    new ProwlerAudit(stack, 'ProwlerAudit');
+    new ProwlerAudit(stack, 'ProwlerAudit', { enableScheduler: true });
 ```
+
+# Planned Features
+* Supporting AWS SecurityHub https://github.com/toniblyx/prowler#security-hub-integration
+* AMI EC2 executable
 
 # Misc
 
 yes | yarn destroy && yarn deploy --require-approval never
 
 # Thanks To
-* Tony de la Fuente (https://github.com/toniblyx https://twitter.com/ToniBlyx) for developing such a cool security tool as [Prowler](https://github.com/toniblyx/prowler)
+* My friend and fellaw ex colleague Tony de la Fuente (https://github.com/toniblyx https://twitter.com/ToniBlyx) for developing such a cool security tool as [Prowler](https://github.com/toniblyx/prowler)
 * As always to the amazing CDK / Projen Community. Join us on [Slack](https://cdk-dev.slack.com)!
 * [Projen](https://github.com/projen/projen) project and the community around it
+
+    
