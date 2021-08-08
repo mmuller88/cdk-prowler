@@ -25,7 +25,7 @@ export interface ProwlerAuditProps {
 
   /**
    * Options to pass to Prowler command, make sure at least -M junit-xml is used for CodeBuild reports. Use -r for the region to send API queries, -f to filter only one region, -M output formats, -c for comma separated checks, for all checks do not use -c or -g, for more options see -h. For a complete assessment use  "-M text,junit-xml,html,csv,json", for SecurityHub integration use "-r region -f region -M text,junit-xml,html,csv,json,json-asff -S -q"
-   * @default '-M text,junit-xml,html,csv,json,json-asff -S -q'
+   * @default '-M text,junit-xml,html,csv,json'
    */
   readonly prowlerOptions: string;
 
@@ -40,7 +40,7 @@ export interface ProwlerAuditProps {
  * Creates a CodeBuild project to audit an AWS account with Prowler and stores the html report in a S3 bucket. This will run onece at the beginning and on a schedule afterwards. Partial contribution from https://github.com/stevecjones
  */
 export class ProwlerAudit extends Construct {
-  constructor(parent: Stack, id: string, props: ProwlerAuditProps = { serviceName: 'prowler', logsRetentionInDays: logs.RetentionDays.THREE_DAYS, prowlerScheduler: 'cron(0 22 * * ? *)', prowlerOptions: '-M text,junit-xml,html,csv,json,json-asff -S -q' }) {
+  constructor(parent: Stack, id: string, props: ProwlerAuditProps = { serviceName: 'prowler', logsRetentionInDays: logs.RetentionDays.THREE_DAYS, prowlerScheduler: 'cron(0 22 * * ? *)', prowlerOptions: '-M text,junit-xml,html,csv,json' }) {
     super(parent, id);
 
     const reportBucket = new s3.Bucket(this, 'ReportBucket', {

@@ -9,19 +9,13 @@ An AWS CDK custom construct for deploying Prowler to you AWS Account. The follow
 Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA…
 
 # Example
-```ts
-    const app = new App();
-
-    const stack = new Stack(app, 'ProwlerAudit-stack');
-
-    new ProwlerAudit(stack, 'ProwlerAudit');
-```
+...
 
 # Misc
 
 yes | yarn destroy && yarn deploy --require-approval never
 
 # Thanks To
-* Tony de la Fuente (https://github.com/toniblyx https://twitter.com/ToniBlyx) for developing such a cool security tool as [Prowler](https://github.com/toniblyx/prowler)
+* My friend and fellaw ex colleague Tony de la Fuente (https://github.com/toniblyx https://twitter.com/ToniBlyx) for developing such a cool security tool as [Prowler](https://github.com/toniblyx/prowler)
 * As always to the amazing CDK / Projen Community. Join us on [Slack](https://cdk-dev.slack.com)!
 * [Projen](https://github.com/projen/projen) project and the community around it
