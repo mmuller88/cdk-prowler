@@ -35,6 +35,9 @@ You can see the supported properties in [Api.md](Api.md)
 * Triggering an event with SNS when prowler finishes the run
 * AMI EC2 executable
 
+# Architecture
+![cfn](misc/cfn.jpg)
+
 # Misc
 
 ```sh
