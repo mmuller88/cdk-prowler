@@ -10,7 +10,7 @@ export class IntegTesting {
 
     const stack = new Stack(app, 'ProwlerAudit-stack');
 
-    new ProwlerAudit(stack, 'ProwlerAudit', { enableScheduler: true });
+    new ProwlerAudit(stack, 'ProwlerAudit');
 
     this.stack = [stack];
   }

@@ -8,14 +8,27 @@ An AWS CDK custom construct for deploying Prowler to you AWS Account. The follow
 
 Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA…
 
+It generates security html results which are stored in an s3 bucket:
+
+![html results](misc/html-out.png)
+
+And in your Codebuild Report group:
+
+![Report group](misc/report-group-out.png)
+
 # Example
 ```ts
     const app = new App();
 
     const stack = new Stack(app, 'ProwlerAudit-stack');
 
-    new ProwlerAudit(stack, 'ProwlerAudit', { enableScheduler: true });
+    new ProwlerAudit(stack, 'ProwlerAudit');
 ```
+
+# cdk-prowler Properties
+cdk-prowler supports some properties to tweak your stack. Like for running a Cloudwatch schedule to regualary run the Prowler scan with a defined cron expression.
+
+You can see the supported properties in [Api.md](Api.md)
 
 # Planned Features
 * Supporting AWS SecurityHub https://github.com/toniblyx/prowler#security-hub-integration
