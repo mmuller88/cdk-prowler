@@ -69,6 +69,9 @@ const project = new AwsCdkConstructLibrary({
   // cdkDependencies: [
   //   '@aws-cdk/core',
   // ],
+  catalog: {
+    twitter: 'MartinMueller_',
+  },
   keywords: ['cdk', 'aws', 'prowler', 'audit', 'security', 'hardening'],
   python: {
     distName: 'cdk-prowler',
