@@ -33,6 +33,7 @@ const project = new AwsCdkConstructLibrary({
   author: 'Martin Mueller',
   authorAddress: 'damadden88@googlemail.com',
   // cdkVersion: '2.0.0-rc.16',
+  jsiiFqn: 'projen.AwsCdkConstructLibrary',
   cdkVersion,
   cdkVersionPinning: true,
   defaultReleaseBranch: 'main',
@@ -72,7 +73,7 @@ const project = new AwsCdkConstructLibrary({
   catalog: {
     twitter: 'MartinMueller_',
   },
-  keywords: ['awscdk', 'prowler', 'audit', 'security', 'hardening'],
+  keywords: ['awscdk', 'prowler', 'audit', 'security', 'hardening', 'aws', 'cdk'],
   python: {
     distName: 'cdk-prowler',
     module: 'cdk_prowler',

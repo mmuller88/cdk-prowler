@@ -93,6 +93,7 @@
   ],
   "keywords": [
     "audit",
+    "aws",
     "awscdk",
     "cdk",
     "hardening",
