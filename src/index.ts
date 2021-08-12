@@ -178,7 +178,10 @@ def lambda_handler(event,context):
 
     new CustomResource(this, 'Resource1', {
       serviceToken: myProvider.serviceToken,
-      properties: { Build: prowlerBuild.projectName },
+      properties: {
+        Build: prowlerBuild.projectName,
+        RERUN_PROWLER: rerunProwler ? Date.now().toString() : '',
+      },
     });
 
     if (this.enableScheduler) {

@@ -23,6 +23,8 @@ With buying the AMI you support my on my passion for creating open source produc
 
 # Example
 ```ts
+import { ProwlerAudit } from 'cdk-prowler';
+...
     const app = new App();
 
     const stack = new Stack(app, 'ProwlerAudit-stack');

@@ -108,6 +108,8 @@ With buying the AMI you support my on my passion for creating open source produc
 
 # Example
 \`\`\`ts
+import { ProwlerAudit } from 'cdk-prowler';
+...
 ${example.join('\n')}
 \`\`\`
 
