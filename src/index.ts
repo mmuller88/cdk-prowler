@@ -71,11 +71,6 @@ export class ProwlerAudit extends Construct {
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
-    const rerunProwler = Boolean(this.node.tryGetContext('reRunProwler'));
-    if (rerunProwler) {
-      Tags.of(this).add('reRunProwler', Date.now().toString());
-    }
-
     const reportGroup = new codebuild.ReportGroup(this, 'reportGroup', { /**reportGroupName: 'testReportGroup', */removalPolicy: RemovalPolicy.DESTROY });
     reportGroup;
 
@@ -180,7 +175,7 @@ def lambda_handler(event,context):
       serviceToken: myProvider.serviceToken,
       properties: {
         Build: prowlerBuild.projectName,
-        RERUN_PROWLER: rerunProwler ? Date.now().toString() : '',
+        RERUN_PROWLER: Boolean(this.node.tryGetContext('reRunProwler')) ? Date.now().toString() : '',
       },
     });
 
