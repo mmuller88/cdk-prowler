@@ -4,13 +4,9 @@ const { AwsCdkConstructLibrary } = require('projen');
 const exampleFile = fs.readFileSync('test/integ.default.ts', 'utf8').split('\n');
 const example = exampleFile.slice(8, exampleFile.length - 7);
 
-const cdkVersion = '1.117.0';
+const cdkVersion = '1.118.0';
 
 const deps = [
-  // '@types/aws-lambda',
-  // 'aws-lambda',
-  // 'aws-sdk',
-  // 'esbuild@^0',
   `@aws-cdk/assert@${cdkVersion}`,
   `cdk@${cdkVersion}`,
   'cdk-iam-floyd',

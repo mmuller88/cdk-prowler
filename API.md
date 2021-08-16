@@ -62,6 +62,12 @@ new ProwlerAudit(parent: Stack, id: string, props?: ProwlerAuditProps)
 
 ---
 
+##### `prowlerVersion`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.prowlerVersion"></a>
+
+- *Type:* `string`
+
+---
+
 ##### `serviceName`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.serviceName"></a>
 
 - *Type:* `string`
@@ -122,6 +128,15 @@ Use -r for the region to send API queries, -f to filter only one region, -M outp
 The time when Prowler will run in cron format.
 
 Default is daily at 22:00h or 10PM 'cron(0 22 * * ? *)', for every 5 hours also works 'rate(5 hours)'. More info here https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html.
+
+---
+
+##### `prowlerVersion`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.prowlerVersion"></a>
+
+- *Type:* `string`
+- *Default:* 2.5.0
+
+Specifies the concrete Prowler version.
 
 ---
 

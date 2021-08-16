@@ -10,7 +10,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as logs from '@aws-cdk/aws-logs';
 import * as s3 from '@aws-cdk/aws-s3';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Stack, Duration, RemovalPolicy, Construct, CustomResource, Tags } from '@aws-cdk/core';
+import { Stack, Duration, RemovalPolicy, Construct, CustomResource } from '@aws-cdk/core';
 import * as cr from '@aws-cdk/custom-resources';
 import * as statement from 'cdk-iam-floyd';
 export interface ProwlerAuditProps {
@@ -43,6 +43,12 @@ export interface ProwlerAuditProps {
    * @default 'cron(0 22 * * ? *)'
    */
   readonly prowlerScheduler?: string;
+
+  /**
+   * Specifies the concrete Prowler version
+   * @default 2.5.0
+   */
+  readonly prowlerVersion?: string;
 }
 
 /**
@@ -54,6 +60,7 @@ export class ProwlerAudit extends Construct {
   enableScheduler: boolean;
   prowlerScheduler: string;
   prowlerOptions: string;
+  prowlerVersion: string;
 
   constructor(parent: Stack, id: string, props?: ProwlerAuditProps) {
     super(parent, id);
@@ -64,6 +71,7 @@ export class ProwlerAudit extends Construct {
     this.enableScheduler = props?.enableScheduler ? props.enableScheduler : false;
     this.prowlerScheduler = props?.prowlerScheduler ? props.prowlerScheduler : 'cron(0 22 * * ? *)';
     this.prowlerOptions = props?.prowlerOptions ? props.prowlerOptions : '-M text,junit-xml,html,csv,json';
+    this.prowlerVersion = props?.prowlerVersion ? props.prowlerVersion : '2.5.0';
 
     const reportBucket = new s3.Bucket(this, 'ReportBucket', {
       //bucketName: `${'123456'}-prowler-reports`,
@@ -98,7 +106,7 @@ export class ProwlerAudit extends Construct {
               'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"',
               'unzip awscliv2.zip',
               './aws/install',
-              'git clone https://github.com/toniblyx/prowler',
+              `git clone -b ${this.prowlerVersion} https://github.com/toniblyx/prowler`,
             ],
           },
           build: {
