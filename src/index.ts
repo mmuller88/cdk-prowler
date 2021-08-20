@@ -10,6 +10,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as logs from '@aws-cdk/aws-logs';
 import * as s3 from '@aws-cdk/aws-s3';
 // eslint-disable-next-line import/no-extraneous-dependencies
+import { IBucket } from '@aws-cdk/aws-s3';
 import { Stack, Duration, RemovalPolicy, Construct, CustomResource } from '@aws-cdk/core';
 import * as cr from '@aws-cdk/custom-resources';
 import * as statement from 'cdk-iam-floyd';
@@ -49,6 +50,16 @@ export interface ProwlerAuditProps {
    * @default 2.5.0
    */
   readonly prowlerVersion?: string;
+
+  /**
+   * An optional S3 bucket to store the Prowler reports
+   */
+  readonly reportBucket?: IBucket;
+
+  /**
+   * An optional prefix for the report bucket objects
+   */
+  readonly reportBucketPrefix?: string;
 }
 
 /**
@@ -73,7 +84,7 @@ export class ProwlerAudit extends Construct {
     this.prowlerOptions = props?.prowlerOptions ? props.prowlerOptions : '-M text,junit-xml,html,csv,json';
     this.prowlerVersion = props?.prowlerVersion ? props.prowlerVersion : '2.5.0';
 
-    const reportBucket = new s3.Bucket(this, 'ReportBucket', {
+    const reportBucket = props?.reportBucket ?? new s3.Bucket(this, 'ReportBucket', {
       //bucketName: `${'123456'}-prowler-reports`,
       autoDeleteObjects: true,
       removalPolicy: RemovalPolicy.DESTROY,
@@ -88,6 +99,7 @@ export class ProwlerAudit extends Construct {
       environment: {
         environmentVariables: {
           BUCKET_REPORT: { value: reportBucket.bucketName || '' },
+          BUCKET_PREFIX: { value: props?.reportBucketPrefix ?? '' },
           PROWLER_OPTIONS: { value: this.prowlerOptions || '' },
         },
         buildImage: codebuild.LinuxBuildImage.fromCodeBuildImageId('aws/codebuild/amazonlinux2-x86_64-standard:3.0'),
@@ -119,7 +131,7 @@ export class ProwlerAudit extends Construct {
           post_build: {
             commands: [
               'echo "Uploading reports to S3..." ',
-              'aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/ --recursive',
+              'aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive',
               'echo "Done!"',
             ],
           },
