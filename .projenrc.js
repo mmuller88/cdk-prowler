@@ -7,12 +7,11 @@ const example = exampleFile.slice(8, exampleFile.length - 7);
 const cdkVersion = '1.118.0';
 
 const deps = [
-  `@aws-cdk/assert@${cdkVersion}`,
-  `cdk@${cdkVersion}`,
   'cdk-iam-floyd',
 ];
 
-const cdkDependencies= [
+const cdkDependencies = [
+  '@aws-cdk/assertions',
   '@aws-cdk/aws-codebuild',
   '@aws-cdk/core',
   '@aws-cdk/aws-lambda',
@@ -23,7 +22,7 @@ const cdkDependencies= [
   '@aws-cdk/aws-events-targets',
   '@aws-cdk/custom-resources',
 ];
-cdkDependencies;
+
 
 const project = new AwsCdkConstructLibrary({
   author: 'Martin Mueller',
@@ -32,6 +31,7 @@ const project = new AwsCdkConstructLibrary({
   jsiiFqn: 'projen.AwsCdkConstructLibrary',
   cdkVersion,
   cdkVersionPinning: true,
+  cdkDependenciesAsDeps: false,
   defaultReleaseBranch: 'main',
   name: 'cdk-prowler',
   repositoryUrl: 'https://github.com/mmuller88/cdk-prowler',
@@ -40,32 +40,9 @@ const project = new AwsCdkConstructLibrary({
     allowedUsernames: ['aws-cdk-automation', 'github-bot'],
     secret: 'GITHUB_TOKEN',
   },
-  cdkVersion,
-  cdkVersionPinning: true,
   cdkDependencies,
-  cdkDependenciesAsDeps: cdkDependencies,
-  // deps,
-  // peerDeps: deps,
+  peerDeps: deps,
   devDeps: deps,
-  bundledDeps: deps,
-  cdkDependencies,
-  // peerDeps: [
-  //   'aws-cdk-lib@2.0.0-rc.16',
-  //   'constructs',
-  //   'cdk-iam-floyd@0.207.1-pre.0',
-  //   'cdk@2.0.0-rc.16',
-  //   // 'ts-node',
-  // ],
-  // devDeps: [
-  //   'aws-cdk-lib@2.0.0-rc.16',
-  //   'constructs',
-  //   'cdk-iam-floyd@0.207.1-pre.0',
-  //   'cdk@2.0.0-rc.16',
-  //   // 'ts-node',
-  // ],
-  // cdkDependencies: [
-  //   '@aws-cdk/core',
-  // ],
   catalog: {
     twitter: 'MartinMueller_',
   },
