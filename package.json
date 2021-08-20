@@ -37,12 +37,21 @@
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.118.0",
+    "@aws-cdk/assertions": "1.118.0",
+    "@aws-cdk/aws-codebuild": "1.118.0",
+    "@aws-cdk/aws-events": "1.118.0",
+    "@aws-cdk/aws-events-targets": "1.118.0",
+    "@aws-cdk/aws-iam": "1.118.0",
+    "@aws-cdk/aws-lambda": "1.118.0",
+    "@aws-cdk/aws-logs": "1.118.0",
+    "@aws-cdk/aws-s3": "1.118.0",
+    "@aws-cdk/core": "1.118.0",
+    "@aws-cdk/custom-resources": "1.118.0",
     "@types/jest": "^26.0.24",
     "@types/node": "^10.17.0",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
-    "cdk": "1.118.0",
-    "cdk-iam-floyd": "^0.224.0",
+    "cdk-iam-floyd": "^0.229.0",
     "eslint": "^7.32.0",
     "eslint-import-resolver-node": "^0.3.4",
     "eslint-import-resolver-typescript": "^2.4.0",
@@ -61,6 +70,7 @@
     "typescript": "^4.3.5"
   },
   "peerDependencies": {
+    "@aws-cdk/assertions": "1.118.0",
     "@aws-cdk/aws-codebuild": "1.118.0",
     "@aws-cdk/aws-events": "1.118.0",
     "@aws-cdk/aws-events-targets": "1.118.0",
@@ -70,27 +80,10 @@
     "@aws-cdk/aws-s3": "1.118.0",
     "@aws-cdk/core": "1.118.0",
     "@aws-cdk/custom-resources": "1.118.0",
+    "cdk-iam-floyd": "^0.229.0",
     "constructs": "^3.2.27"
   },
-  "dependencies": {
-    "@aws-cdk/assert": "1.118.0",
-    "@aws-cdk/aws-codebuild": "1.118.0",
-    "@aws-cdk/aws-events": "1.118.0",
-    "@aws-cdk/aws-events-targets": "1.118.0",
-    "@aws-cdk/aws-iam": "1.118.0",
-    "@aws-cdk/aws-lambda": "1.118.0",
-    "@aws-cdk/aws-logs": "1.118.0",
-    "@aws-cdk/aws-s3": "1.118.0",
-    "@aws-cdk/core": "1.118.0",
-    "@aws-cdk/custom-resources": "1.118.0",
-    "cdk": "1.118.0",
-    "cdk-iam-floyd": "^0.224.0"
-  },
-  "bundledDependencies": [
-    "@aws-cdk/assert",
-    "cdk-iam-floyd",
-    "cdk"
-  ],
+  "bundledDependencies": [],
   "keywords": [
     "audit",
     "aws",
