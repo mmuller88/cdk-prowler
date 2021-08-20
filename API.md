@@ -140,6 +140,22 @@ Specifies the concrete Prowler version.
 
 ---
 
+##### `reportBucket`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.reportBucket"></a>
+
+- *Type:* [`@aws-cdk/aws-s3.IBucket`](#@aws-cdk/aws-s3.IBucket)
+
+An optional S3 bucket to store the Prowler reports.
+
+---
+
+##### `reportBucketPrefix`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.reportBucketPrefix"></a>
+
+- *Type:* `string`
+
+An optional prefix for the report bucket objects.
+
+---
+
 ##### `serviceName`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.serviceName"></a>
 
 - *Type:* `string`

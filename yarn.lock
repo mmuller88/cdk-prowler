@@ -2087,7 +2087,7 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-cdk-iam-floyd@*:
+cdk-iam-floyd@^0.229.0:
   version "0.229.0"
   resolved "https://registry.yarnpkg.com/cdk-iam-floyd/-/cdk-iam-floyd-0.229.0.tgz#c967204c24a9b73ba6670550f5ffa2aa71e15c26"
   integrity sha512-XSl6ZouUiGsqyOAChqPDra4FftIppR99+l1gqEU9nAsvF+h4VRk9pUQRZB3tGq3VVuEe+yIuwL/JpN8vut8ruw==
