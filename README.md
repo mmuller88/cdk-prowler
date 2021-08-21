@@ -10,11 +10,11 @@ Prowler is a security tool to perform AWS security best practices assessments, a
 
 It generates security html results which are stored in an s3 bucket:
 
-![html results](misc/html-out.png)
+![html results](https://raw.githubusercontent.com/mmuller88/cdk-prowler/main/misc/html-out.png)
 
 And in your Codebuild Report group:
 
-![Report group](misc/report-group-out.png)
+![Report group](https://raw.githubusercontent.com/mmuller88/cdk-prowler/main/misc/report-group-out.png)
 
 # AWS AMI
 If you just want to make the Prowler security checks in your account try my [Prowler AWS Marketplace AMI](https://aws.amazon.com/marketplace/pp/prodview-jlwcdlc3weta6). With just $1 Prowler will do over 180 security checks across a huge amount of AWS services in all your regions. Don't forget the terminate the Ec2 instance when the Prowler stack got created for not paying more than that $1 :).
@@ -35,7 +35,7 @@ import { ProwlerAudit } from 'cdk-prowler';
 # cdk-prowler Properties
 cdk-prowler supports some properties to tweak your stack. Like for running a Cloudwatch schedule to regualary run the Prowler scan with a defined cron expression.
 
-You can see the supported properties in [Api.md](Api.md)
+You can see the supported properties in [Api.md](https://raw.githubusercontent.com/mmuller88/cdk-prowler/main/Api.md)
 
 # Planned Features
 * Supporting AWS SecurityHub https://github.com/toniblyx/prowler#security-hub-integration
