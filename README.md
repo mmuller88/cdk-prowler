@@ -35,7 +35,7 @@ import { ProwlerAudit } from 'cdk-prowler';
 # cdk-prowler Properties
 cdk-prowler supports some properties to tweak your stack. Like for running a Cloudwatch schedule to regualary run the Prowler scan with a defined cron expression.
 
-You can see the supported properties in [Api.md](https://raw.githubusercontent.com/mmuller88/cdk-prowler/main/Api.md)
+You can see the supported properties in [Api.md](https://github.com/mmuller88/cdk-prowler/blob/main/API.md)
 
 # Planned Features
 * Supporting AWS SecurityHub https://github.com/toniblyx/prowler#security-hub-integration
