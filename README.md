@@ -37,6 +37,11 @@ cdk-prowler supports some properties to tweak your stack. Like for running a Clo
 
 You can see the supported properties in [Api.md](https://github.com/mmuller88/cdk-prowler/blob/main/API.md)
 
+# Cross Account Buckets
+
+By providing your own Bucket you can have the CodeBuild project drop the Prowler results in another account. Make sure that you have your Bucket policy setup to allow the account running the Prowler reports access to writing those record.
+Additionally, you will probably want to provide an `additionalS3CopyArgs: '--acl bucket-owner-full-control'` to ensure that those object can be read by the account owner.
+
 # Planned Features
 * Supporting AWS SecurityHub https://github.com/toniblyx/prowler#security-hub-integration
 * Triggering an event with SNS when prowler finishes the run

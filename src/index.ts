@@ -8,12 +8,13 @@ import * as targets from '@aws-cdk/aws-events-targets';
 import * as iam from '@aws-cdk/aws-iam';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as logs from '@aws-cdk/aws-logs';
-import * as s3 from '@aws-cdk/aws-s3';
 // eslint-disable-next-line import/no-extraneous-dependencies
+import * as s3 from '@aws-cdk/aws-s3';
 import { IBucket } from '@aws-cdk/aws-s3';
-import { Stack, Duration, RemovalPolicy, Construct, CustomResource } from '@aws-cdk/core';
+import { Construct, CustomResource, Duration, RemovalPolicy, Stack } from '@aws-cdk/core';
 import * as cr from '@aws-cdk/custom-resources';
 import * as statement from 'cdk-iam-floyd';
+
 export interface ProwlerAuditProps {
   /**
    * Specifies the service name used within component naming
@@ -60,6 +61,13 @@ export interface ProwlerAuditProps {
    * An optional prefix for the report bucket objects
    */
   readonly reportBucketPrefix?: string;
+
+  /**
+   * An optional parameter to add to the S3 bucket copy command.
+   *
+   * @example --acl bucket-owner-full-control
+   */
+  readonly additionalS3CopyArgs?: string;
 }
 
 /**
@@ -92,7 +100,6 @@ export class ProwlerAudit extends Construct {
     });
 
     const reportGroup = new codebuild.ReportGroup(this, 'reportGroup', { /**reportGroupName: 'testReportGroup', */removalPolicy: RemovalPolicy.DESTROY });
-    reportGroup;
 
     const prowlerBuild = this.codebuildProject = new codebuild.Project(this, 'prowlerBuild', {
       description: 'Run Prowler assessment',
@@ -101,6 +108,7 @@ export class ProwlerAudit extends Construct {
         environmentVariables: {
           BUCKET_REPORT: { value: reportBucket.bucketName || '' },
           BUCKET_PREFIX: { value: props?.reportBucketPrefix ?? '' },
+          ADDITIONAL_S3_ARGS: { value: props?.additionalS3CopyArgs ?? '' },
           PROWLER_OPTIONS: { value: this.prowlerOptions || '' },
         },
         buildImage: codebuild.LinuxBuildImage.fromCodeBuildImageId('aws/codebuild/amazonlinux2-x86_64-standard:3.0'),
@@ -132,7 +140,7 @@ export class ProwlerAudit extends Construct {
           post_build: {
             commands: [
               'echo "Uploading reports to S3..." ',
-              'aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive',
+              'aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive $ADDITIONAL_S3_ARGS',
               'echo "Done!"',
             ],
           },
