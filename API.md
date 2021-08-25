@@ -93,6 +93,14 @@ import { ProwlerAuditProps } from 'cdk-prowler'
 const prowlerAuditProps: ProwlerAuditProps = { ... }
 ```
 
+##### `additionalS3CopyArgs`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.additionalS3CopyArgs"></a>
+
+- *Type:* `string`
+
+An optional parameter to add to the S3 bucket copy command.
+
+---
+
 ##### `enableScheduler`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.enableScheduler"></a>
 
 - *Type:* `boolean`

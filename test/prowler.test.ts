@@ -32,30 +32,96 @@ describe('Prowler Construct', () => {
     });
     assert.hasResourceProperties('AWS::CodeBuild::Project', {
       Environment: {
-        EnvironmentVariables: [{
-          Name: 'BUCKET_REPORT',
-          Type: 'PLAINTEXT',
-          Value: {
-            Ref: 'TestAuditReportBucket865A4698',
+        EnvironmentVariables: [
+          {
+            Name: 'BUCKET_REPORT',
+            Type: 'PLAINTEXT',
+            Value: {
+              Ref: 'TestAuditReportBucket865A4698',
+            },
           },
-        },
-        {
-          Name: 'BUCKET_PREFIX',
-          Type: 'PLAINTEXT',
-          Value: 'someprefix',
-        },
-        {
-          Name: 'PROWLER_OPTIONS',
-          Type: 'PLAINTEXT',
-          Value: '-M text,junit-xml,html,csv,json',
-        }],
+          {
+            Name: 'BUCKET_PREFIX',
+            Type: 'PLAINTEXT',
+            Value: 'someprefix',
+          },
+          {
+            Name: 'ADDITIONAL_S3_ARGS',
+            Type: 'PLAINTEXT',
+            Value: '',
+          },
+          {
+            Name: 'PROWLER_OPTIONS',
+            Type: 'PLAINTEXT',
+            Value: '-M text,junit-xml,html,csv,json',
+          },
+        ],
       },
       Source: {
         BuildSpec: {
           'Fn::Join': [
             '',
             [
-              '{\n  "version": "0.2",\n  "phases": {\n    "install": {\n      "runtime-versions": {\n        "python": 3.8\n      },\n      "commands": [\n        "echo \\"Installing Prowler and dependencies...\\"",\n        "pip3 install detect-secrets",\n        "yum -y install jq",\n        "curl \\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\" -o \\"awscliv2.zip\\"",\n        "unzip awscliv2.zip",\n        "./aws/install",\n        "git clone -b 2.5.0 https://github.com/toniblyx/prowler"\n      ]\n    },\n    "build": {\n      "commands": [\n        "echo \\"Running Prowler as ./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED\\"",\n        "cd prowler",\n        "./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED"\n      ]\n    },\n    "post_build": {\n      "commands": [\n        "echo \\"Uploading reports to S3...\\" ",\n        "aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive",\n        "echo \\"Done!\\""\n      ]\n    }\n  },\n  "reports": {\n    "',
+              '{\n  "version": "0.2",\n  "phases": {\n    "install": {\n      "runtime-versions": {\n        "python": 3.8\n      },\n      "commands": [\n        "echo \\"Installing Prowler and dependencies...\\"",\n        "pip3 install detect-secrets",\n        "yum -y install jq",\n        "curl \\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\" -o \\"awscliv2.zip\\"",\n        "unzip awscliv2.zip",\n        "./aws/install",\n        "git clone -b 2.5.0 https://github.com/toniblyx/prowler"\n      ]\n    },\n    "build": {\n      "commands": [\n        "echo \\"Running Prowler as ./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED\\"",\n        "cd prowler",\n        "./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED"\n      ]\n    },\n    "post_build": {\n      "commands": [\n        "echo \\"Uploading reports to S3...\\" ",\n        "aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive $ADDITIONAL_S3_ARGS",\n        "echo \\"Done!\\""\n      ]\n    }\n  },\n  "reports": {\n    "',
+              {
+                'Fn::Select': [
+                  1,
+                  {
+                    'Fn::Split': [
+                      '/',
+                      {
+                        Ref: 'TestAuditreportGroup202AA555',
+                      },
+                    ],
+                  },
+                ],
+              },
+              '": {\n      "files": [\n        "**/*"\n      ],\n      "base-directory": "prowler/junit-reports",\n      "file-format": "JunitXml"\n    }\n  }\n}',
+            ],
+          ],
+        },
+        Type: 'NO_SOURCE',
+      },
+    });
+  });
+
+  test('Uses provided s3 copy arguments', () => {
+    const { assert } = createTestStack((): ProwlerAuditProps => {
+      return { additionalS3CopyArgs: '--acl bucket-owner-full-control' };
+    });
+    assert.hasResourceProperties('AWS::CodeBuild::Project', {
+      Environment: {
+        EnvironmentVariables: [
+          {
+            Name: 'BUCKET_REPORT',
+            Type: 'PLAINTEXT',
+            Value: {
+              Ref: 'TestAuditReportBucket865A4698',
+            },
+          },
+          {
+            Name: 'BUCKET_PREFIX',
+            Type: 'PLAINTEXT',
+            Value: '',
+          },
+          {
+            Name: 'ADDITIONAL_S3_ARGS',
+            Type: 'PLAINTEXT',
+            Value: '--acl bucket-owner-full-control',
+          },
+          {
+            Name: 'PROWLER_OPTIONS',
+            Type: 'PLAINTEXT',
+            Value: '-M text,junit-xml,html,csv,json',
+          },
+        ],
+      },
+      Source: {
+        BuildSpec: {
+          'Fn::Join': [
+            '',
+            [
+              '{\n  "version": "0.2",\n  "phases": {\n    "install": {\n      "runtime-versions": {\n        "python": 3.8\n      },\n      "commands": [\n        "echo \\"Installing Prowler and dependencies...\\"",\n        "pip3 install detect-secrets",\n        "yum -y install jq",\n        "curl \\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\" -o \\"awscliv2.zip\\"",\n        "unzip awscliv2.zip",\n        "./aws/install",\n        "git clone -b 2.5.0 https://github.com/toniblyx/prowler"\n      ]\n    },\n    "build": {\n      "commands": [\n        "echo \\"Running Prowler as ./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED\\"",\n        "cd prowler",\n        "./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED"\n      ]\n    },\n    "post_build": {\n      "commands": [\n        "echo \\"Uploading reports to S3...\\" ",\n        "aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive $ADDITIONAL_S3_ARGS",\n        "echo \\"Done!\\""\n      ]\n    }\n  },\n  "reports": {\n    "',
               {
                 'Fn::Select': [
                   1,
