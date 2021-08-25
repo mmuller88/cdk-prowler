@@ -38,6 +38,12 @@ new ProwlerAudit(parent: Stack, id: string, props?: ProwlerAuditProps)
 
 #### Properties <a name="Properties"></a>
 
+##### `codebuildProject`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.codebuildProject"></a>
+
+- *Type:* [`@aws-cdk/aws-codebuild.Project`](#@aws-cdk/aws-codebuild.Project)
+
+---
+
 ##### `enableScheduler`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.enableScheduler"></a>
 
 - *Type:* `boolean`
