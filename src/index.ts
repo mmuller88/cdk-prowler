@@ -72,6 +72,7 @@ export class ProwlerAudit extends Construct {
   prowlerScheduler: string;
   prowlerOptions: string;
   prowlerVersion: string;
+  codebuildProject: codebuild.Project;
 
   constructor(parent: Stack, id: string, props?: ProwlerAuditProps) {
     super(parent, id);
@@ -93,7 +94,7 @@ export class ProwlerAudit extends Construct {
     const reportGroup = new codebuild.ReportGroup(this, 'reportGroup', { /**reportGroupName: 'testReportGroup', */removalPolicy: RemovalPolicy.DESTROY });
     reportGroup;
 
-    const prowlerBuild = new codebuild.Project(this, 'prowlerBuild', {
+    const prowlerBuild = this.codebuildProject = new codebuild.Project(this, 'prowlerBuild', {
       description: 'Run Prowler assessment',
       timeout: Duration.hours(5),
       environment: {
