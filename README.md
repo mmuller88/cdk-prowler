@@ -21,6 +21,8 @@ If you just want to make the Prowler security checks in your account try my [Pro
 
 With buying the AMI you support my on my passion for creating open source products like this cdk-prowler construct. Furthermore you enable me to work on future features like mentioned in the **Planned Features** section. Thank you so much :) !
 
+Find out more about the AMI in my [blogpost](https://martinmueller.dev/prowler-ami-eng)
+
 # Example
 ```ts
 import { ProwlerAudit } from 'cdk-prowler';
