@@ -21,6 +21,8 @@ If you just want to make the Prowler security checks in your account try my [Pro
 
 With buying the AMI you support my on my passion for creating open source products like this cdk-prowler construct. Furthermore you enable me to work on future features like mentioned in the **Planned Features** section. Thank you so much :) !
 
+Find out more about the AMI in my [blogpost](https://martinmueller.dev/prowler-ami-eng)
+
 # Example
 ```ts
 import { ProwlerAudit } from 'cdk-prowler';
@@ -36,6 +38,11 @@ import { ProwlerAudit } from 'cdk-prowler';
 cdk-prowler supports some properties to tweak your stack. Like for running a Cloudwatch schedule to regualary run the Prowler scan with a defined cron expression.
 
 You can see the supported properties in [Api.md](https://github.com/mmuller88/cdk-prowler/blob/main/API.md)
+
+# Cross Account Buckets
+
+By providing your own Bucket you can have the CodeBuild project drop the Prowler results in another account. Make sure that you have your Bucket policy setup to allow the account running the Prowler reports access to writing those record.
+Additionally, you will probably want to provide an `additionalS3CopyArgs: '--acl bucket-owner-full-control'` to ensure that those object can be read by the account owner.
 
 # Planned Features
 * Supporting AWS SecurityHub https://github.com/toniblyx/prowler#security-hub-integration

@@ -38,6 +38,12 @@ new ProwlerAudit(parent: Stack, id: string, props?: ProwlerAuditProps)
 
 #### Properties <a name="Properties"></a>
 
+##### `codebuildProject`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.codebuildProject"></a>
+
+- *Type:* [`@aws-cdk/aws-codebuild.Project`](#@aws-cdk/aws-codebuild.Project)
+
+---
+
 ##### `enableScheduler`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.enableScheduler"></a>
 
 - *Type:* `boolean`
@@ -86,6 +92,14 @@ import { ProwlerAuditProps } from 'cdk-prowler'
 
 const prowlerAuditProps: ProwlerAuditProps = { ... }
 ```
+
+##### `additionalS3CopyArgs`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.additionalS3CopyArgs"></a>
+
+- *Type:* `string`
+
+An optional parameter to add to the S3 bucket copy command.
+
+---
 
 ##### `enableScheduler`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.enableScheduler"></a>
 
