@@ -8,6 +8,11 @@ const cdkVersion = '1.120.0';
 
 const deps = [
   'cdk-iam-floyd',
+  'aws-sdk',
+  'aws-lambda',
+  'esbuild@^0',
+  '@types/aws-lambda',
+  `cdk@${cdkVersion}`, // neccessary for using cdk.json / create / synth cdk stacks with the same version
 ];
 
 const cdkDependencies = [
@@ -15,6 +20,7 @@ const cdkDependencies = [
   '@aws-cdk/aws-codebuild',
   '@aws-cdk/core',
   '@aws-cdk/aws-lambda',
+  '@aws-cdk/aws-lambda-nodejs',
   '@aws-cdk/aws-logs',
   '@aws-cdk/aws-s3',
   '@aws-cdk/aws-iam',
@@ -119,6 +125,7 @@ yarn deploy --require-approval never -c reRunProwler=true
 # Thanks To
 * My friend and fellaw ex colleague Tony de la Fuente (https://github.com/toniblyx https://twitter.com/ToniBlyx) for developing such a cool security tool as [Prowler](https://github.com/toniblyx/prowler)
 * As always to the amazing CDK / Projen Community. Join us on [Slack](https://cdk-dev.slack.com)!
+* In special thanks to Matthew Bonig for helping me maintaining cdk-prowler :)
 * [Projen](https://github.com/projen/projen) project and the community around it
 
     `,

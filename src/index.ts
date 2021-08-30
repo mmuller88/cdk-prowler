@@ -7,6 +7,7 @@ import * as events from '@aws-cdk/aws-events';
 import * as targets from '@aws-cdk/aws-events-targets';
 import * as iam from '@aws-cdk/aws-iam';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as lambdajs from '@aws-cdk/aws-lambda-nodejs';
 import * as logs from '@aws-cdk/aws-logs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as s3 from '@aws-cdk/aws-s3';
@@ -14,40 +15,47 @@ import { IBucket } from '@aws-cdk/aws-s3';
 import { Construct, CustomResource, Duration, RemovalPolicy, Stack } from '@aws-cdk/core';
 import * as cr from '@aws-cdk/custom-resources';
 import * as statement from 'cdk-iam-floyd';
+// import { OrganizationsList } from './organizations-list';
 
 export interface ProwlerAuditProps {
   /**
    * Specifies the service name used within component naming
+   *
    * @default: prowler
    */
   readonly serviceName?: string;
 
   /**
    * Specifies the number of days you want to retain CodeBuild run log events in the specified log group. Junit reports are kept for 30 days, HTML reports in S3 are not deleted
+   *
    * @default: 3
    */
   readonly logsRetentionInDays?: logs.RetentionDays;
 
   /**
    * Options to pass to Prowler command, make sure at least -M junit-xml is used for CodeBuild reports. Use -r for the region to send API queries, -f to filter only one region, -M output formats, -c for comma separated checks, for all checks do not use -c or -g, for more options see -h. For a complete assessment use  "-M text,junit-xml,html,csv,json", for SecurityHub integration use "-r region -f region -M text,junit-xml,html,csv,json,json-asff -S -q"
+   *
    * @default '-M text,junit-xml,html,csv,json'
    */
   readonly prowlerOptions?: string;
 
   /**
    * enables the scheduler for running prowler periodically. Together with prowlerScheduler.
+   *
    * @default false
    */
   readonly enableScheduler?: boolean;
 
   /**
    * The time when Prowler will run in cron format. Default is daily at 22:00h or 10PM 'cron(0 22 * * ? *)', for every 5 hours also works 'rate(5 hours)'. More info here https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html.
+   *
    * @default 'cron(0 22 * * ? *)'
    */
   readonly prowlerScheduler?: string;
 
   /**
    * Specifies the concrete Prowler version
+   *
    * @default 2.5.0
    */
   readonly prowlerVersion?: string;
@@ -68,6 +76,13 @@ export interface ProwlerAuditProps {
    * @example --acl bucket-owner-full-control
    */
   readonly additionalS3CopyArgs?: string;
+
+  /**
+   * Uses AWS Organization to run prowler against all the accounts member of the organization
+   *
+   * @default false
+   */
+  readonly enableAwsOrganizationScan?: boolean;
 }
 
 /**
@@ -81,6 +96,7 @@ export class ProwlerAudit extends Construct {
   prowlerOptions: string;
   prowlerVersion: string;
   codebuildProject: codebuild.Project;
+  enableAwsOrganizationScan: boolean;
 
   constructor(parent: Stack, id: string, props?: ProwlerAuditProps) {
     super(parent, id);
@@ -92,6 +108,7 @@ export class ProwlerAudit extends Construct {
     this.prowlerScheduler = props?.prowlerScheduler ? props.prowlerScheduler : 'cron(0 22 * * ? *)';
     this.prowlerOptions = props?.prowlerOptions ? props.prowlerOptions : '-M text,junit-xml,html,csv,json';
     this.prowlerVersion = props?.prowlerVersion ? props.prowlerVersion : '2.5.0';
+    this.enableAwsOrganizationScan = props?.enableAwsOrganizationScan ? props.enableAwsOrganizationScan : false;
 
     const reportBucket = props?.reportBucket ?? new s3.Bucket(this, 'ReportBucket', {
       //bucketName: `${'123456'}-prowler-reports`,
@@ -100,6 +117,22 @@ export class ProwlerAudit extends Construct {
     });
 
     const reportGroup = new codebuild.ReportGroup(this, 'reportGroup', { /**reportGroupName: 'testReportGroup', */removalPolicy: RemovalPolicy.DESTROY });
+
+    const prowlerRole = new iam.Role(this, 'prowlerRole', {
+      assumedBy: new iam.AccountRootPrincipal(),
+    });
+
+    prowlerRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('SecurityAudit'));
+    prowlerRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('job-function/ViewOnlyAccess'));
+    // prowlerBuild.addToRolePolicy(new statement.Dax().allow().to());
+    prowlerRole.addToPolicy(new statement.Ds().allow().toListAuthorizedApplications());
+    prowlerRole.addToPolicy(new statement.Ec2().allow().toGetEbsEncryptionByDefault());
+    prowlerRole.addToPolicy(new statement.Ecr().allow().toDescribeImageScanFindings().toDescribeImages().toDescribeRegistry());
+    prowlerRole.addToPolicy(new statement.Tag().allow().toGetTagKeys());
+    prowlerRole.addToPolicy(new statement.Lambda().allow().toGetFunction());
+    prowlerRole.addToPolicy(new statement.Glue().allow().toSearchTables().toGetConnections());
+    prowlerRole.addToPolicy(new statement.Apigateway().allow().toGET());
+    prowlerRole.addToPolicy(new iam.PolicyStatement({ actions: ['support:Describe*'], resources: ['*'] }));
 
     const prowlerBuild = this.codebuildProject = new codebuild.Project(this, 'prowlerBuild', {
       description: 'Run Prowler assessment',
@@ -134,7 +167,7 @@ export class ProwlerAudit extends Construct {
             commands: [
               `echo "Running Prowler as ./prowler ${this.prowlerOptions} && echo OK || echo FAILED"`,
               'cd prowler',
-              `./prowler ${this.prowlerOptions} && echo OK || echo FAILED`,
+              `./prowler -A $ACCOUNT_ID -R ${prowlerRole.roleName} ${this.prowlerOptions} && echo OK || echo FAILED`,
             ],
           },
           post_build: {
@@ -154,42 +187,13 @@ export class ProwlerAudit extends Construct {
         },
       }),
     });
-    prowlerBuild.role?.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('SecurityAudit'));
-    prowlerBuild.role?.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('job-function/ViewOnlyAccess'));
-    // prowlerBuild.addToRolePolicy(new statement.Dax().allow().to());
-    prowlerBuild.addToRolePolicy(new statement.Ds().allow().toListAuthorizedApplications());
-    prowlerBuild.addToRolePolicy(new statement.Ec2().allow().toGetEbsEncryptionByDefault());
-    prowlerBuild.addToRolePolicy(new statement.Ecr().allow().toDescribeImageScanFindings().toDescribeImages().toDescribeRegistry());
-    prowlerBuild.addToRolePolicy(new statement.Tag().allow().toGetTagKeys());
-    prowlerBuild.addToRolePolicy(new statement.Lambda().allow().toGetFunction());
-    prowlerBuild.addToRolePolicy(new statement.Glue().allow().toSearchTables().toGetConnections());
-    prowlerBuild.addToRolePolicy(new statement.Apigateway().allow().toGET());
-    prowlerBuild.addToRolePolicy(new iam.PolicyStatement({ actions: ['support:Describe*'], resources: ['*'] }));
-
+    prowlerBuild.addToRolePolicy(new iam.PolicyStatement({ actions: ['sts:AssumeRole'], resources: [prowlerRole.roleArn] }));
     reportBucket.grantPut(prowlerBuild);
 
     const myRole = new iam.Role(this, 'MyRole', { assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com') });
 
-    const prowlerStartBuildLambda = new lambda.Function(this, 'Lambda', {
-      runtime: lambda.Runtime.PYTHON_3_6,
+    const prowlerStartBuildLambda = new lambdajs.NodejsFunction(this, 'runprowler', {
       timeout: Duration.seconds(120),
-      handler: 'index.lambda_handler',
-      code: lambda.Code.fromInline(`import boto3
-import cfnresponse
-from botocore.exceptions import ClientError
-def lambda_handler(event,context):
-  props = event['ResourceProperties']
-  codebuild_client = boto3.client('codebuild')
-  if (event['RequestType'] == 'Create' or event['RequestType'] == 'Update'):
-    try:
-        response = codebuild_client.start_build(projectName=props['Build'])
-        print(response)
-        print("Respond: SUCCESS")
-        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
-    except Exception as ex:
-        print(ex.response['Error']['Message'])
-        cfnresponse.send(event, context, cfnresponse.FAILED, ex.response)
-      `),
     });
 
     prowlerStartBuildLambda.addToRolePolicy(new statement.Codebuild().allow().toStartBuild()); // onResource project ...
@@ -234,5 +238,10 @@ def lambda_handler(event,context):
         schedule: events.Schedule.expression(this.prowlerScheduler || ''),
       });
     }
+
+    // if (this.enableAwsOrganizationScan) {
+    // let orgList = new OrganizationsList(this, 'OrganizationsList', {});
+    // orgList.ids;
+    // }
   }
 }

@@ -31,6 +31,11 @@
       "type": "build"
     },
     {
+      "name": "@aws-cdk/aws-lambda-nodejs",
+      "version": "1.120.0",
+      "type": "build"
+    },
+    {
       "name": "@aws-cdk/aws-lambda",
       "version": "1.120.0",
       "type": "build"
@@ -56,6 +61,10 @@
       "type": "build"
     },
     {
+      "name": "@types/aws-lambda",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
       "type": "build"
     },
@@ -73,7 +82,25 @@
       "type": "build"
     },
     {
+      "name": "aws-lambda",
+      "type": "build"
+    },
+    {
+      "name": "aws-sdk",
+      "type": "build"
+    },
+    {
       "name": "cdk-iam-floyd",
+      "type": "build"
+    },
+    {
+      "name": "cdk",
+      "version": "1.120.0",
+      "type": "build"
+    },
+    {
+      "name": "esbuild",
+      "version": "^0",
       "type": "build"
     },
     {
@@ -169,6 +196,11 @@
       "type": "peer"
     },
     {
+      "name": "@aws-cdk/aws-lambda-nodejs",
+      "version": "1.120.0",
+      "type": "peer"
+    },
+    {
       "name": "@aws-cdk/aws-lambda",
       "version": "1.120.0",
       "type": "peer"
@@ -194,12 +226,34 @@
       "type": "peer"
     },
     {
+      "name": "@types/aws-lambda",
+      "type": "peer"
+    },
+    {
+      "name": "aws-lambda",
+      "type": "peer"
+    },
+    {
+      "name": "aws-sdk",
+      "type": "peer"
+    },
+    {
       "name": "cdk-iam-floyd",
+      "type": "peer"
+    },
+    {
+      "name": "cdk",
+      "version": "1.120.0",
       "type": "peer"
     },
     {
       "name": "constructs",
       "version": "^3.2.27",
+      "type": "peer"
+    },
+    {
+      "name": "esbuild",
+      "version": "^0",
       "type": "peer"
     }
   ],
