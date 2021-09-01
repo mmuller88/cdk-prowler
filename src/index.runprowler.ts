@@ -21,7 +21,8 @@ export async function handler(event: lambda.CloudFormationCustomResourceEvent, c
       ids = listAccounts.Accounts?.map<string>(account => account.Id?.toString() || '') || [];
     }
 
-    let accounts = [JSON.stringify(context.invokedFunctionArn).split(':')[4]].concat(ids);
+    // merge used account with organizations accounts and de duplicate
+    let accounts = [...new Set([JSON.stringify(context.invokedFunctionArn).split(':')[4], ...ids])];
     console.debug(`accounts: ${JSON.stringify(accounts)}`);
 
     for (let account of accounts) {
