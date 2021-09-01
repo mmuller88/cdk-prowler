@@ -17,6 +17,7 @@ const cdkDependencies = [
   '@aws-cdk/aws-lambda',
   '@aws-cdk/aws-logs',
   '@aws-cdk/aws-s3',
+  '@aws-cdk/aws-s3-assets',
   '@aws-cdk/aws-iam',
   '@aws-cdk/aws-events',
   '@aws-cdk/aws-events-targets',
@@ -128,6 +129,8 @@ yarn deploy --require-approval never -c reRunProwler=true
 project.setScript('deploy', './node_modules/.bin/cdk deploy');
 project.setScript('destroy', './node_modules/.bin/cdk destroy');
 project.setScript('synth', './node_modules/.bin/cdk synth');
+
+project.setScript('integ:allowlist', 'cdk synth --app \'ts-node -P tsconfig.jest.json test/integ.allowlist.ts\'');
 
 const common_exclude = ['cdk.out'];
 project.npmignore.exclude(...common_exclude);

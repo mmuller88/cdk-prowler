@@ -11,6 +11,7 @@ import * as logs from '@aws-cdk/aws-logs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as s3 from '@aws-cdk/aws-s3';
 import { IBucket } from '@aws-cdk/aws-s3';
+import { Asset } from '@aws-cdk/aws-s3-assets';
 import { Construct, CustomResource, Duration, RemovalPolicy, Stack } from '@aws-cdk/core';
 import * as cr from '@aws-cdk/custom-resources';
 import * as statement from 'cdk-iam-floyd';
@@ -68,6 +69,15 @@ export interface ProwlerAuditProps {
    * @example --acl bucket-owner-full-control
    */
   readonly additionalS3CopyArgs?: string;
+
+  /**
+   * An Prowler-specific Allowlist file. If a value is provided then this is passed to Prowler on runs using the '-w' flag.
+   * If no value is provided, the -w parameter is not used.
+   *
+   * @example new Asset(this, 'AllowList', { path: path.join(__dirname, 'allowlist.txt') })
+   * @default undefined
+   */
+  readonly allowlist?: Asset;
 }
 
 /**
@@ -101,6 +111,20 @@ export class ProwlerAudit extends Construct {
 
     const reportGroup = new codebuild.ReportGroup(this, 'reportGroup', { /**reportGroupName: 'testReportGroup', */removalPolicy: RemovalPolicy.DESTROY });
 
+    const preBuildCommands: string[] = [];
+    if (!!props?.allowlist) {
+      const prowlerFilename = 'prowler-exemptions.txt';
+
+      preBuildCommands.push(`aws s3 cp ${props.allowlist.s3ObjectUrl} prowler/${prowlerFilename}`);
+      if (props.allowlist.isZipArchive) {
+        // this isn't as simple as just unzipping.. we need to know the filename(s?) that are in there
+        preBuildCommands.push(`unzip ${props.allowlist.s3ObjectKey}`);
+      }
+      preBuildCommands.push('ls prowler'); // remove this after testing
+
+      this.prowlerOptions = this.prowlerOptions + ` -w ${prowlerFilename}`;
+    }
+
     const prowlerBuild = this.codebuildProject = new codebuild.Project(this, 'prowlerBuild', {
       description: 'Run Prowler assessment',
       timeout: Duration.hours(5),
@@ -130,6 +154,9 @@ export class ProwlerAudit extends Construct {
               `git clone -b ${this.prowlerVersion} https://github.com/toniblyx/prowler`,
             ],
           },
+          pre_build: {
+            commands: preBuildCommands,
+          },
           build: {
             commands: [
               `echo "Running Prowler as ./prowler ${this.prowlerOptions} && echo OK || echo FAILED"`,
@@ -154,6 +181,11 @@ export class ProwlerAudit extends Construct {
         },
       }),
     });
+
+    if (!!props?.allowlist) {
+      props.allowlist.bucket.grantRead(prowlerBuild);
+    }
+
     prowlerBuild.role?.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('SecurityAudit'));
     prowlerBuild.role?.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('job-function/ViewOnlyAccess'));
     // prowlerBuild.addToRolePolicy(new statement.Dax().allow().to());
