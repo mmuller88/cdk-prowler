@@ -118,7 +118,7 @@ export class ProwlerAudit extends Construct {
       preBuildCommands.push(`aws s3 cp ${props.allowlist.s3ObjectUrl} prowler/${prowlerFilename}`);
       if (props.allowlist.isZipArchive) {
         // this isn't as simple as just unzipping.. we need to know the filename(s?) that are in there
-        preBuildCommands.push(`unzip ${props.allowlist.s3ObjectKey}`);
+        preBuildCommands.push(`unzip ${props.allowlist.s3ObjectKey} -d prowler`);
       }
       preBuildCommands.push('ls prowler'); // remove this after testing
 
