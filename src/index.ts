@@ -108,7 +108,11 @@ export class ProwlerAudit extends Construct {
     this.prowlerScheduler = props?.prowlerScheduler ? props.prowlerScheduler : 'cron(0 22 * * ? *)';
     this.prowlerOptions = props?.prowlerOptions ? props.prowlerOptions : '-M text,junit-xml,html,csv,json';
     this.prowlerVersion = props?.prowlerVersion ? props.prowlerVersion : '2.5.0';
-    this.enableAwsOrganizationScan = props?.enableAwsOrganizationScan ? props.enableAwsOrganizationScan : false;
+    this.enableAwsOrganizationScan = props?.enableAwsOrganizationScan ? props.enableAwsOrganizationScan : true;
+
+    // if (this.enableAwsOrganizationScan && parent.region !== 'us-east-1') {
+    //   throw new Error('enableAwsOrganizationScan works only in the us-east-1 region!');
+    // }
 
     const reportBucket = props?.reportBucket ?? new s3.Bucket(this, 'ReportBucket', {
       //bucketName: `${'123456'}-prowler-reports`,
@@ -160,14 +164,15 @@ export class ProwlerAudit extends Construct {
               'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"',
               'unzip awscliv2.zip',
               './aws/install',
-              `git clone -b ${this.prowlerVersion} https://github.com/toniblyx/prowler`,
+              // `git clone -b ${this.prowlerVersion} https://github.com/toniblyx/prowler`,
+              'git clone -b feature/859_role_arn https://github.com/mmuller88/prowler',
             ],
           },
           build: {
             commands: [
               `echo "Running Prowler as ./prowler ${this.prowlerOptions} && echo OK || echo FAILED"`,
               'cd prowler',
-              `./prowler -A $ACCOUNT_ID -R ${prowlerRole.roleName} ${this.prowlerOptions} && echo OK || echo FAILED`,
+              `./prowler -A $ACCOUNT_ID -R ${prowlerRole.roleArn} ${this.prowlerOptions} && echo OK || echo FAILED`,
             ],
           },
           post_build: {
@@ -194,9 +199,12 @@ export class ProwlerAudit extends Construct {
 
     const prowlerStartBuildLambda = new lambdajs.NodejsFunction(this, 'runprowler', {
       timeout: Duration.seconds(120),
+      environment: {
+        USE_ORGANIZATION: this.enableAwsOrganizationScan ? 'true' : 'false',
+      },
     });
-
     prowlerStartBuildLambda.addToRolePolicy(new statement.Codebuild().allow().toStartBuild()); // onResource project ...
+    prowlerStartBuildLambda.addToRolePolicy(new iam.PolicyStatement({ actions: ['organizations:ListAccounts*'], resources: ['*'] }));
 
     const myProvider = new cr.Provider(this, 'MyProvider', {
       onEventHandler: prowlerStartBuildLambda,
