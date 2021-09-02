@@ -109,7 +109,8 @@ An optional parameter to add to the S3 bucket copy command.
 An Prowler-specific Allowlist file.
 
 If a value is provided then this is passed to Prowler on runs using the '-w' flag.
-If no value is provided, the -w parameter is not used.
+If no value is provided, the -w parameter is not used. If you provide an asset that is zipped, it must contain
+an 'allowlist.txt' file which will be passed to Prowler.
 
 ---
 
