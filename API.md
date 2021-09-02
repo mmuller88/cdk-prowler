@@ -101,6 +101,18 @@ An optional parameter to add to the S3 bucket copy command.
 
 ---
 
+##### `allowlist`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.allowlist"></a>
+
+- *Type:* [`@aws-cdk/aws-s3-assets.Asset`](#@aws-cdk/aws-s3-assets.Asset)
+- *Default:* undefined
+
+An Prowler-specific Allowlist file.
+
+If a value is provided then this is passed to Prowler on runs using the '-w' flag.
+If no value is provided, the -w parameter is not used.
+
+---
+
 ##### `enableScheduler`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.enableScheduler"></a>
 
 - *Type:* `boolean`

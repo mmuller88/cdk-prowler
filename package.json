@@ -29,7 +29,8 @@
     "projen": "npx projen",
     "deploy": "./node_modules/.bin/cdk deploy",
     "destroy": "./node_modules/.bin/cdk destroy",
-    "synth": "./node_modules/.bin/cdk synth"
+    "synth": "./node_modules/.bin/cdk synth",
+    "integ:allowlist": "cdk synth --app 'ts-node -P tsconfig.jest.json test/integ.allowlist.ts'"
   },
   "author": {
     "name": "Martin Mueller",
@@ -46,6 +47,7 @@
     "@aws-cdk/aws-lambda": "1.120.0",
     "@aws-cdk/aws-logs": "1.120.0",
     "@aws-cdk/aws-s3": "1.120.0",
+    "@aws-cdk/aws-s3-assets": "1.120.0",
     "@aws-cdk/core": "1.120.0",
     "@aws-cdk/custom-resources": "1.120.0",
     "@types/jest": "^26.0.24",
@@ -79,6 +81,7 @@
     "@aws-cdk/aws-lambda": "1.120.0",
     "@aws-cdk/aws-logs": "1.120.0",
     "@aws-cdk/aws-s3": "1.120.0",
+    "@aws-cdk/aws-s3-assets": "1.120.0",
     "@aws-cdk/core": "1.120.0",
     "@aws-cdk/custom-resources": "1.120.0",
     "cdk-iam-floyd": "^0.229.0",
