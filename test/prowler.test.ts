@@ -180,7 +180,7 @@ describe('Prowler Construct', () => {
           {
             Name: 'PROWLER_OPTIONS',
             Type: 'PLAINTEXT',
-            Value: '-M text,junit-xml,html,csv,json -w prowler-exemptions.txt',
+            Value: '-M text,junit-xml,html,csv,json -w allowlist.txt',
           },
         ],
       },
@@ -220,7 +220,7 @@ describe('Prowler Construct', () => {
                   },
                 ],
               },
-              ' prowler/prowler-exemptions.txt",\n        "ls prowler"\n      ]\n    },\n    "build": {\n      "commands": [\n        "echo \\"Running Prowler as ./prowler -M text,junit-xml,html,csv,json -w prowler-exemptions.txt && echo OK || echo FAILED\\"",\n        "cd prowler",\n        "./prowler -M text,junit-xml,html,csv,json -w prowler-exemptions.txt && echo OK || echo FAILED"\n      ]\n    },\n    "post_build": {\n      "commands": [\n        "echo \\"Uploading reports to S3...\\" ",\n        "aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive $ADDITIONAL_S3_ARGS",\n        "echo \\"Done!\\""\n      ]\n    }\n  },\n  "reports": {\n    "',
+              ' prowler/allowlist.txt"\n      ]\n    },\n    "build": {\n      "commands": [\n        "echo \\"Running Prowler as ./prowler -M text,junit-xml,html,csv,json -w allowlist.txt && echo OK || echo FAILED\\"",\n        "cd prowler",\n        "./prowler -M text,junit-xml,html,csv,json -w allowlist.txt && echo OK || echo FAILED"\n      ]\n    },\n    "post_build": {\n      "commands": [\n        "echo \\"Uploading reports to S3...\\" ",\n        "aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive $ADDITIONAL_S3_ARGS",\n        "echo \\"Done!\\""\n      ]\n    }\n  },\n  "reports": {\n    "',
               {
                 'Fn::Select': [
                   1,

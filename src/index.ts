@@ -72,7 +72,8 @@ export interface ProwlerAuditProps {
 
   /**
    * An Prowler-specific Allowlist file. If a value is provided then this is passed to Prowler on runs using the '-w' flag.
-   * If no value is provided, the -w parameter is not used.
+   * If no value is provided, the -w parameter is not used. If you provide an asset that is zipped, it must contain
+   * an 'allowlist.txt' file which will be passed to Prowler.
    *
    * @example new Asset(this, 'AllowList', { path: path.join(__dirname, 'allowlist.txt') })
    * @default undefined
@@ -113,15 +114,14 @@ export class ProwlerAudit extends Construct {
 
     const preBuildCommands: string[] = [];
     if (!!props?.allowlist) {
-      const prowlerFilename = 'prowler-exemptions.txt';
+      const prowlerFilename = 'allowlist.txt';
 
-      preBuildCommands.push(`aws s3 cp ${props.allowlist.s3ObjectUrl} prowler/${prowlerFilename}`);
       if (props.allowlist.isZipArchive) {
-        // this isn't as simple as just unzipping.. we need to know the filename(s?) that are in there
+        preBuildCommands.push(`aws s3 cp ${props.allowlist.s3ObjectUrl} .`);
         preBuildCommands.push(`unzip ${props.allowlist.s3ObjectKey} -d prowler`);
+      } else {
+        preBuildCommands.push(`aws s3 cp ${props.allowlist.s3ObjectUrl} prowler/${prowlerFilename}`);
       }
-      preBuildCommands.push('ls prowler'); // remove this after testing
-
       this.prowlerOptions = this.prowlerOptions + ` -w ${prowlerFilename}`;
     }
 

@@ -30,7 +30,8 @@
     "deploy": "./node_modules/.bin/cdk deploy",
     "destroy": "./node_modules/.bin/cdk destroy",
     "synth": "./node_modules/.bin/cdk synth",
-    "integ:allowlist": "cdk synth --app 'ts-node -P tsconfig.jest.json test/integ.allowlist.ts'"
+    "integ:allowlist": "cdk synth --app 'ts-node -P tsconfig.jest.json test/integ.allowlist.ts'",
+    "integ:allowlist-zip": "cdk synth --app 'ts-node -P tsconfig.jest.json test/integ.allowlist-zip.ts'"
   },
   "author": {
     "name": "Martin Mueller",

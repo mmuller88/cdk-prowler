@@ -131,6 +131,7 @@ project.setScript('destroy', './node_modules/.bin/cdk destroy');
 project.setScript('synth', './node_modules/.bin/cdk synth');
 
 project.setScript('integ:allowlist', 'cdk synth --app \'ts-node -P tsconfig.jest.json test/integ.allowlist.ts\'');
+project.setScript('integ:allowlist-zip', 'cdk synth --app \'ts-node -P tsconfig.jest.json test/integ.allowlist-zip.ts\'');
 
 const common_exclude = ['cdk.out'];
 project.npmignore.exclude(...common_exclude);
