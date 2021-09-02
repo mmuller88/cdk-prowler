@@ -31,7 +31,7 @@ const project = new AwsCdkConstructLibrary({
   // cdkVersion: '2.0.0-rc.16',
   jsiiFqn: 'projen.AwsCdkConstructLibrary',
   cdkVersion,
-  cdkVersionPinning: true,
+  cdkVersionPinning: false,
   cdkDependenciesAsDeps: false,
   defaultReleaseBranch: 'main',
   name: 'cdk-prowler',
