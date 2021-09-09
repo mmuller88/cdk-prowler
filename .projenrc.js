@@ -4,7 +4,7 @@ const { AwsCdkConstructLibrary } = require('projen');
 const exampleFile = fs.readFileSync('test/integ.default.ts', 'utf8').split('\n');
 const example = exampleFile.slice(8, exampleFile.length - 7);
 
-const cdkVersion = '1.120.0';
+const cdkVersion = '1.121.0';
 
 const deps = [
   'cdk-iam-floyd',
