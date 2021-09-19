@@ -4,7 +4,9 @@ const { AwsCdkConstructLibrary } = require('projen');
 const exampleFile = fs.readFileSync('test/integ.default.ts', 'utf8').split('\n');
 const example = exampleFile.slice(8, exampleFile.length - 7);
 
-const cdkVersion = '1.122.0';
+const propertiesFile = fs.readFileSync('API.md', 'utf8');
+
+const cdkVersion = '1.123.0';
 
 const deps = [
   'cdk-iam-floyd',
@@ -87,10 +89,13 @@ import { ProwlerAudit } from 'cdk-prowler';
 ${example.join('\n')}
 \`\`\`
 
+# Architect diagram
+![diagram](https://raw.githubusercontent.com/mmuller88/cdk-prowler/main/misc/cdk-prowler.png)
+
 # cdk-prowler Properties
 cdk-prowler supports some properties to tweak your stack. Like for running a Cloudwatch schedule to regualary run the Prowler scan with a defined cron expression.
 
-You can see the supported properties in [Api.md](https://github.com/mmuller88/cdk-prowler/blob/main/API.md)
+${propertiesFile}
 
 # Cross Account Buckets
 
