@@ -55,6 +55,7 @@
     "@types/node": "^14.17.0",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",
+    "cdk": "^1.124.0",
     "cdk-iam-floyd": "^0.246.0",
     "eslint": "^7.32.0",
     "eslint-import-resolver-node": "^0.3.6",
@@ -85,6 +86,7 @@
     "@aws-cdk/aws-s3-assets": "^1.124.0",
     "@aws-cdk/core": "^1.124.0",
     "@aws-cdk/custom-resources": "^1.124.0",
+    "cdk": "^1.124.0",
     "cdk-iam-floyd": "^0.246.0",
     "constructs": "^3.2.27"
   },

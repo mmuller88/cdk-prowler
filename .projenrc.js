@@ -24,6 +24,7 @@ const cdkDependencies = [
   '@aws-cdk/aws-events',
   '@aws-cdk/aws-events-targets',
   '@aws-cdk/custom-resources',
+  'cdk',
 ];
 
 const project = new AwsCdkConstructLibrary({

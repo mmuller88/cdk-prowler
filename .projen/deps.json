@@ -82,6 +82,11 @@
       "type": "build"
     },
     {
+      "name": "cdk",
+      "version": "^1.124.0",
+      "type": "build"
+    },
+    {
       "name": "eslint",
       "type": "build"
     },
@@ -205,6 +210,11 @@
     },
     {
       "name": "cdk-iam-floyd",
+      "type": "peer"
+    },
+    {
+      "name": "cdk",
+      "version": "^1.124.0",
       "type": "peer"
     },
     {
