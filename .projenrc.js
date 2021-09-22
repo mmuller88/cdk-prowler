@@ -1,16 +1,16 @@
 const fs = require('fs');
 const { AwsCdkConstructLibrary } = require('projen');
 
-const exampleFile = fs.readFileSync('test/integ.default.ts', 'utf8').split('\n');
+const exampleFile = fs
+  .readFileSync('test/integ.default.ts', 'utf8')
+  .split('\n');
 const example = exampleFile.slice(8, exampleFile.length - 7);
 
 const propertiesFile = fs.readFileSync('API.md', 'utf8');
 
-const cdkVersion = '1.123.0';
+const cdkVersion = '1.124.0';
 
-const deps = [
-  'cdk-iam-floyd',
-];
+const deps = ['cdk-iam-floyd'];
 
 const cdkDependencies = [
   '@aws-cdk/assertions',
@@ -25,7 +25,6 @@ const cdkDependencies = [
   '@aws-cdk/aws-events-targets',
   '@aws-cdk/custom-resources',
 ];
-
 
 const project = new AwsCdkConstructLibrary({
   author: 'Martin Mueller',
@@ -49,7 +48,15 @@ const project = new AwsCdkConstructLibrary({
   catalog: {
     twitter: 'MartinMueller_',
   },
-  keywords: ['awscdk', 'prowler', 'audit', 'security', 'hardening', 'aws', 'cdk'],
+  keywords: [
+    'awscdk',
+    'prowler',
+    'audit',
+    'security',
+    'hardening',
+    'aws',
+    'cdk',
+  ],
   python: {
     distName: 'cdk-prowler',
     module: 'cdk_prowler',
@@ -135,8 +142,14 @@ project.setScript('deploy', './node_modules/.bin/cdk deploy');
 project.setScript('destroy', './node_modules/.bin/cdk destroy');
 project.setScript('synth', './node_modules/.bin/cdk synth');
 
-project.setScript('integ:allowlist', 'cdk synth --app \'ts-node -P tsconfig.jest.json test/integ.allowlist.ts\'');
-project.setScript('integ:allowlist-zip', 'cdk synth --app \'ts-node -P tsconfig.jest.json test/integ.allowlist-zip.ts\'');
+project.setScript(
+  'integ:allowlist',
+  "cdk synth --app 'ts-node -P tsconfig.jest.json test/integ.allowlist.ts'",
+);
+project.setScript(
+  'integ:allowlist-zip',
+  "cdk synth --app 'ts-node -P tsconfig.jest.json test/integ.allowlist-zip.ts'",
+);
 
 const common_exclude = ['cdk.out'];
 project.npmignore.exclude(...common_exclude);
