@@ -8,7 +8,7 @@ const example = exampleFile.slice(8, exampleFile.length - 7);
 
 const propertiesFile = fs.readFileSync('API.md', 'utf8');
 
-const cdkVersion = '1.124.0';
+const cdkVersion = '1.125.0';
 
 const deps = ['cdk-iam-floyd'];
 
@@ -24,13 +24,15 @@ const cdkDependencies = [
   '@aws-cdk/aws-events',
   '@aws-cdk/aws-events-targets',
   '@aws-cdk/custom-resources',
-  'cdk',
+];
+
+const devDeps = [
+  `cdk@${cdkVersion}`,
 ];
 
 const project = new AwsCdkConstructLibrary({
   author: 'Martin Mueller',
   authorAddress: 'damadden88@googlemail.com',
-  // cdkVersion: '2.0.0-rc.16',
   jsiiFqn: 'projen.AwsCdkConstructLibrary',
   cdkVersion,
   cdkVersionPinning: false,
@@ -45,7 +47,7 @@ const project = new AwsCdkConstructLibrary({
   },
   cdkDependencies,
   peerDeps: deps,
-  devDeps: deps,
+  devDeps: [...deps, ...devDeps],
   catalog: {
     twitter: 'MartinMueller_',
   },
