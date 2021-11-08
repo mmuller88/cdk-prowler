@@ -2,62 +2,62 @@
   "dependencies": [
     {
       "name": "@aws-cdk/assert",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "build"
     },
     {
       "name": "@aws-cdk/assertions",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "build"
     },
     {
       "name": "@aws-cdk/aws-codebuild",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "build"
     },
     {
       "name": "@aws-cdk/aws-events-targets",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "build"
     },
     {
       "name": "@aws-cdk/aws-events",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "build"
     },
     {
       "name": "@aws-cdk/aws-iam",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "build"
     },
     {
       "name": "@aws-cdk/aws-lambda",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "build"
     },
     {
       "name": "@aws-cdk/aws-logs",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "build"
     },
     {
       "name": "@aws-cdk/aws-s3-assets",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "build"
     },
     {
       "name": "@aws-cdk/aws-s3",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "build"
     },
     {
       "name": "@aws-cdk/core",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "build"
     },
     {
       "name": "@aws-cdk/custom-resources",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "build"
     },
     {
@@ -83,7 +83,7 @@
     },
     {
       "name": "cdk",
-      "version": "1.129.0",
+      "version": "1.130.0",
       "type": "build"
     },
     {
@@ -155,57 +155,57 @@
     },
     {
       "name": "@aws-cdk/assertions",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-codebuild",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-events-targets",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-events",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-iam",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-lambda",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-logs",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-s3-assets",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/aws-s3",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/core",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/custom-resources",
-      "version": "^1.129.0",
+      "version": "^1.130.0",
       "type": "peer"
     },
     {
