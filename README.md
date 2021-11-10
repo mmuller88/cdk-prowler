@@ -3,10 +3,13 @@
 [![.NET version](https://img.shields.io/nuget/v/com.github.mmuller88.awsCdkBuildBadge.svg?style=flat-square)](https://www.nuget.org/packages/com.github.mmuller88.cdkProwler/)
 ![Release](https://github.com/mmuller88/cdk-prowler/workflows/Release/badge.svg)
 
+Author = <https://martinmueller.dev>
+
 # cdk-prowler
 An AWS CDK custom construct for deploying Prowler to you AWS Account. The following description about Prowler is taken from https://github.com/toniblyx/prowler: 
 
-Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA…
+Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …
+
 
 It generates security html results which are stored in an s3 bucket:
 
@@ -48,7 +51,7 @@ Creates a CodeBuild project to audit an AWS account with Prowler and stores the 
 
 This will run onece at the beginning and on a schedule afterwards. Partial contribution from https://github.com/stevecjones
 
-#### Initializer <a name="cdk-prowler.ProwlerAudit.Initializer"></a>
+#### Initializers <a name="cdk-prowler.ProwlerAudit.Initializer"></a>
 
 ```typescript
 import { ProwlerAudit } from 'cdk-prowler'
@@ -80,11 +83,19 @@ new ProwlerAudit(parent: Stack, id: string, props?: ProwlerAuditProps)
 
 ##### `codebuildProject`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.codebuildProject"></a>
 
+```typescript
+public readonly codebuildProject: Project;
+```
+
 - *Type:* [`@aws-cdk/aws-codebuild.Project`](#@aws-cdk/aws-codebuild.Project)
 
 ---
 
 ##### `enableScheduler`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.enableScheduler"></a>
+
+```typescript
+public readonly enableScheduler: boolean;
+```
 
 - *Type:* `boolean`
 
@@ -92,11 +103,19 @@ new ProwlerAudit(parent: Stack, id: string, props?: ProwlerAuditProps)
 
 ##### `logsRetentionInDays`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.logsRetentionInDays"></a>
 
+```typescript
+public readonly logsRetentionInDays: RetentionDays;
+```
+
 - *Type:* [`@aws-cdk/aws-logs.RetentionDays`](#@aws-cdk/aws-logs.RetentionDays)
 
 ---
 
 ##### `prowlerOptions`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.prowlerOptions"></a>
+
+```typescript
+public readonly prowlerOptions: string;
+```
 
 - *Type:* `string`
 
@@ -104,17 +123,29 @@ new ProwlerAudit(parent: Stack, id: string, props?: ProwlerAuditProps)
 
 ##### `prowlerScheduler`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.prowlerScheduler"></a>
 
+```typescript
+public readonly prowlerScheduler: string;
+```
+
 - *Type:* `string`
 
 ---
 
 ##### `prowlerVersion`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.prowlerVersion"></a>
 
+```typescript
+public readonly prowlerVersion: string;
+```
+
 - *Type:* `string`
 
 ---
 
 ##### `serviceName`<sup>Required</sup> <a name="cdk-prowler.ProwlerAudit.property.serviceName"></a>
+
+```typescript
+public readonly serviceName: string;
+```
 
 - *Type:* `string`
 
@@ -135,6 +166,10 @@ const prowlerAuditProps: ProwlerAuditProps = { ... }
 
 ##### `additionalS3CopyArgs`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.additionalS3CopyArgs"></a>
 
+```typescript
+public readonly additionalS3CopyArgs: string;
+```
+
 - *Type:* `string`
 
 An optional parameter to add to the S3 bucket copy command.
@@ -142,6 +177,10 @@ An optional parameter to add to the S3 bucket copy command.
 ---
 
 ##### `allowlist`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.allowlist"></a>
+
+```typescript
+public readonly allowlist: Asset;
+```
 
 - *Type:* [`@aws-cdk/aws-s3-assets.Asset`](#@aws-cdk/aws-s3-assets.Asset)
 - *Default:* undefined
@@ -156,6 +195,10 @@ an 'allowlist.txt' file which will be passed to Prowler.
 
 ##### `enableScheduler`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.enableScheduler"></a>
 
+```typescript
+public readonly enableScheduler: boolean;
+```
+
 - *Type:* `boolean`
 - *Default:* false
 
@@ -166,6 +209,10 @@ Together with prowlerScheduler.
 ---
 
 ##### `logsRetentionInDays`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.logsRetentionInDays"></a>
+
+```typescript
+public readonly logsRetentionInDays: RetentionDays;
+```
 
 - *Type:* [`@aws-cdk/aws-logs.RetentionDays`](#@aws-cdk/aws-logs.RetentionDays)
 - *Default:* : 3
@@ -178,6 +225,10 @@ Junit reports are kept for 30 days, HTML reports in S3 are not deleted
 
 ##### `prowlerOptions`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.prowlerOptions"></a>
 
+```typescript
+public readonly prowlerOptions: string;
+```
+
 - *Type:* `string`
 - *Default:* '-M text,junit-xml,html,csv,json'
 
@@ -188,6 +239,10 @@ Use -r for the region to send API queries, -f to filter only one region, -M outp
 ---
 
 ##### `prowlerScheduler`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.prowlerScheduler"></a>
+
+```typescript
+public readonly prowlerScheduler: string;
+```
 
 - *Type:* `string`
 - *Default:* 'cron(0 22 * * ? *)'
@@ -200,6 +255,10 @@ Default is daily at 22:00h or 10PM 'cron(0 22 * * ? *)', for every 5 hours also 
 
 ##### `prowlerVersion`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.prowlerVersion"></a>
 
+```typescript
+public readonly prowlerVersion: string;
+```
+
 - *Type:* `string`
 - *Default:* 2.5.0
 
@@ -209,6 +268,10 @@ Specifies the concrete Prowler version.
 
 ##### `reportBucket`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.reportBucket"></a>
 
+```typescript
+public readonly reportBucket: IBucket;
+```
+
 - *Type:* [`@aws-cdk/aws-s3.IBucket`](#@aws-cdk/aws-s3.IBucket)
 
 An optional S3 bucket to store the Prowler reports.
@@ -217,6 +280,10 @@ An optional S3 bucket to store the Prowler reports.
 
 ##### `reportBucketPrefix`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.reportBucketPrefix"></a>
 
+```typescript
+public readonly reportBucketPrefix: string;
+```
+
 - *Type:* `string`
 
 An optional prefix for the report bucket objects.
@@ -224,6 +291,10 @@ An optional prefix for the report bucket objects.
 ---
 
 ##### `serviceName`<sup>Optional</sup> <a name="cdk-prowler.ProwlerAuditProps.property.serviceName"></a>
+
+```typescript
+public readonly serviceName: string;
+```
 
 - *Type:* `string`
 - *Default:* : prowler

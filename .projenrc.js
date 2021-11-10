@@ -80,6 +80,8 @@ const project = new AwsCdkConstructLibrary({
 [![.NET version](https://img.shields.io/nuget/v/com.github.mmuller88.awsCdkBuildBadge.svg?style=flat-square)](https://www.nuget.org/packages/com.github.mmuller88.cdkProwler/)
 ![Release](https://github.com/mmuller88/cdk-prowler/workflows/Release/badge.svg)
 
+Author = <https://martinmueller.dev>
+
 # cdk-prowler
 ${shortDescription}
 
