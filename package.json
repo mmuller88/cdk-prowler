@@ -1,5 +1,6 @@
 {
   "name": "cdk-prowler",
+  "description": "An AWS CDK custom construct for deploying Prowler to you AWS Account. The following description about Prowler is taken from https://github.com/toniblyx/prowler: \n\nProwler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …\n",
   "repository": {
     "type": "git",
     "url": "https://github.com/mmuller88/cdk-prowler"

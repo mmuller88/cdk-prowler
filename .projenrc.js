@@ -30,6 +30,11 @@ const devDeps = [
   `cdk@${cdkVersion}`,
 ];
 
+const shortDescription = `An AWS CDK custom construct for deploying Prowler to you AWS Account. The following description about Prowler is taken from https://github.com/toniblyx/prowler: 
+
+Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …
+`;
+
 const project = new AwsCdkConstructLibrary({
   author: 'Martin Mueller',
   authorAddress: 'damadden88@googlemail.com',
@@ -37,6 +42,7 @@ const project = new AwsCdkConstructLibrary({
   cdkVersion,
   cdkVersionPinning: false,
   cdkDependenciesAsDeps: false,
+  description: shortDescription,
   defaultReleaseBranch: 'main',
   name: 'cdk-prowler',
   repositoryUrl: 'https://github.com/mmuller88/cdk-prowler',
@@ -75,9 +81,7 @@ const project = new AwsCdkConstructLibrary({
 ![Release](https://github.com/mmuller88/cdk-prowler/workflows/Release/badge.svg)
 
 # cdk-prowler
-An AWS CDK custom construct for deploying Prowler to you AWS Account. The following description about Prowler is taken from https://github.com/toniblyx/prowler: 
-
-Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA…
+${shortDescription}
 
 It generates security html results which are stored in an s3 bucket:
 
