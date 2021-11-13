@@ -66,10 +66,10 @@ const project = new AwsCdkConstructLibrary({
     'aws',
     'cdk',
   ],
-  python: {
-    distName: 'cdk-prowler',
-    module: 'cdk_prowler',
-  },
+  // python: {
+  //   distName: 'cdk-prowler',
+  //   module: 'cdk_prowler',
+  // },
   dotnet: {
     dotNetNamespace: 'com.github.mmuller88',
     packageId: 'com.github.mmuller88.cdkProwler',
