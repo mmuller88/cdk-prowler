@@ -1,5 +1,4 @@
 const fs = require('fs');
-
 const { awscdk } = require('projen');
 
 const exampleFile = fs
