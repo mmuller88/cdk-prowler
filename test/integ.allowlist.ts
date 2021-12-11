@@ -1,7 +1,7 @@
 // import { App, Stack } from 'aws-cdk-lib';
 import * as path from 'path';
-import { Asset } from '@aws-cdk/aws-s3-assets';
-import { App, Stack } from '@aws-cdk/core';
+import { Asset } from 'aws-cdk-lib/aws-s3-assets';
+import { App, Stack } from 'aws-cdk-lib/core';
 
 import { ProwlerAudit } from '../src/index';
 

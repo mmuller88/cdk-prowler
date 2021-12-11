@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { AwsCdkConstructLibrary } = require('projen');
+const { awscdk } = require('projen');
 
 const exampleFile = fs
   .readFileSync('test/integ.default.ts', 'utf8')
@@ -8,40 +8,19 @@ const example = exampleFile.slice(8, exampleFile.length - 7);
 
 const propertiesFile = fs.readFileSync('API.md', 'utf8');
 
-const cdkVersion = '1.135.0';
-
 const deps = ['cdk-iam-floyd'];
-
-const cdkDependencies = [
-  '@aws-cdk/assertions',
-  '@aws-cdk/aws-codebuild',
-  '@aws-cdk/core',
-  '@aws-cdk/aws-lambda',
-  '@aws-cdk/aws-logs',
-  '@aws-cdk/aws-s3',
-  '@aws-cdk/aws-s3-assets',
-  '@aws-cdk/aws-iam',
-  '@aws-cdk/aws-events',
-  '@aws-cdk/aws-events-targets',
-  '@aws-cdk/custom-resources',
-];
-
-const devDeps = [
-  `cdk@${cdkVersion}`,
-];
 
 const shortDescription = `An AWS CDK custom construct for deploying Prowler to you AWS Account. The following description about Prowler is taken from https://github.com/toniblyx/prowler: 
 
 Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …
 `;
 
-const project = new AwsCdkConstructLibrary({
+const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Martin Mueller',
   authorAddress: 'damadden88@googlemail.com',
   jsiiFqn: 'projen.AwsCdkConstructLibrary',
-  cdkVersion,
+  cdkVersion: '2.1.0',
   cdkVersionPinning: false,
-  cdkDependenciesAsDeps: false,
   description: shortDescription,
   defaultReleaseBranch: 'main',
   name: 'cdk-prowler',
@@ -51,9 +30,8 @@ const project = new AwsCdkConstructLibrary({
     allowedUsernames: ['aws-cdk-automation', 'github-bot'],
     secret: 'GITHUB_TOKEN',
   },
-  cdkDependencies,
   peerDeps: deps,
-  devDeps: [...deps, ...devDeps],
+  devDeps: deps,
   catalog: {
     twitter: 'MartinMueller_',
   },

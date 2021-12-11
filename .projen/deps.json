@@ -1,66 +1,6 @@
 {
   "dependencies": [
     {
-      "name": "@aws-cdk/assert",
-      "version": "^1.135.0",
-      "type": "build"
-    },
-    {
-      "name": "@aws-cdk/assertions",
-      "version": "^1.135.0",
-      "type": "build"
-    },
-    {
-      "name": "@aws-cdk/aws-codebuild",
-      "version": "^1.135.0",
-      "type": "build"
-    },
-    {
-      "name": "@aws-cdk/aws-events-targets",
-      "version": "^1.135.0",
-      "type": "build"
-    },
-    {
-      "name": "@aws-cdk/aws-events",
-      "version": "^1.135.0",
-      "type": "build"
-    },
-    {
-      "name": "@aws-cdk/aws-iam",
-      "version": "^1.135.0",
-      "type": "build"
-    },
-    {
-      "name": "@aws-cdk/aws-lambda",
-      "version": "^1.135.0",
-      "type": "build"
-    },
-    {
-      "name": "@aws-cdk/aws-logs",
-      "version": "^1.135.0",
-      "type": "build"
-    },
-    {
-      "name": "@aws-cdk/aws-s3-assets",
-      "version": "^1.135.0",
-      "type": "build"
-    },
-    {
-      "name": "@aws-cdk/aws-s3",
-      "version": "^1.135.0",
-      "type": "build"
-    },
-    {
-      "name": "@aws-cdk/core",
-      "version": "^1.135.0",
-      "type": "build"
-    },
-    {
-      "name": "@aws-cdk/custom-resources",
-      "version": "^1.135.0",
-      "type": "build"
-    },
-    {
       "name": "@types/jest",
       "type": "build"
     },
@@ -71,10 +11,17 @@
     },
     {
       "name": "@typescript-eslint/eslint-plugin",
+      "version": "^5",
       "type": "build"
     },
     {
       "name": "@typescript-eslint/parser",
+      "version": "^5",
+      "type": "build"
+    },
+    {
+      "name": "aws-cdk-lib",
+      "version": "2.1.0",
       "type": "build"
     },
     {
@@ -82,12 +29,8 @@
       "type": "build"
     },
     {
-      "name": "cdk",
-      "version": "1.135.0",
-      "type": "build"
-    },
-    {
-      "name": "eslint",
+      "name": "constructs",
+      "version": "10.0.5",
       "type": "build"
     },
     {
@@ -103,12 +46,17 @@
       "type": "build"
     },
     {
+      "name": "eslint",
+      "version": "^8",
+      "type": "build"
+    },
+    {
       "name": "jest",
       "type": "build"
     },
     {
       "name": "jest-junit",
-      "version": "^12",
+      "version": "^13",
       "type": "build"
     },
     {
@@ -154,58 +102,8 @@
       "type": "build"
     },
     {
-      "name": "@aws-cdk/assertions",
-      "version": "^1.135.0",
-      "type": "peer"
-    },
-    {
-      "name": "@aws-cdk/aws-codebuild",
-      "version": "^1.135.0",
-      "type": "peer"
-    },
-    {
-      "name": "@aws-cdk/aws-events-targets",
-      "version": "^1.135.0",
-      "type": "peer"
-    },
-    {
-      "name": "@aws-cdk/aws-events",
-      "version": "^1.135.0",
-      "type": "peer"
-    },
-    {
-      "name": "@aws-cdk/aws-iam",
-      "version": "^1.135.0",
-      "type": "peer"
-    },
-    {
-      "name": "@aws-cdk/aws-lambda",
-      "version": "^1.135.0",
-      "type": "peer"
-    },
-    {
-      "name": "@aws-cdk/aws-logs",
-      "version": "^1.135.0",
-      "type": "peer"
-    },
-    {
-      "name": "@aws-cdk/aws-s3-assets",
-      "version": "^1.135.0",
-      "type": "peer"
-    },
-    {
-      "name": "@aws-cdk/aws-s3",
-      "version": "^1.135.0",
-      "type": "peer"
-    },
-    {
-      "name": "@aws-cdk/core",
-      "version": "^1.135.0",
-      "type": "peer"
-    },
-    {
-      "name": "@aws-cdk/custom-resources",
-      "version": "^1.135.0",
+      "name": "aws-cdk-lib",
+      "version": "^2.1.0",
       "type": "peer"
     },
     {
@@ -214,7 +112,7 @@
     },
     {
       "name": "constructs",
-      "version": "^3.2.27",
+      "version": "^10.0.5",
       "type": "peer"
     }
   ],
