@@ -127,9 +127,9 @@
   "jsii": {
     "outdir": "dist",
     "targets": {
-      "dotnet": {
-        "namespace": "com.github.mmuller88",
-        "packageId": "com.github.mmuller88.cdkProwler"
+      "python": {
+        "distName": "cdk-prowler",
+        "module": "cdk_prowler"
       }
     },
     "tsc": {
