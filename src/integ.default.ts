@@ -1,5 +1,4 @@
-// import { App, Stack } from 'aws-cdk-lib';
-import { App, Stack } from 'aws-cdk-lib/core';
+import { App, Stack } from 'aws-cdk-lib';
 
 import { ProwlerAudit } from '../src/index';
 

@@ -1,6 +1,7 @@
 // import { Stack, Duration, RemovalPolicy, CustomResource } from 'aws-cdk-lib';
 // eslint-disable-next-line no-duplicate-imports
 // import { aws_iam as iam, aws_logs as logs, aws_s3 as s3, aws_codebuild as codebuild, aws_lambda as lambda, custom_resources as cr } from 'aws-cdk-lib';
+import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as targets from 'aws-cdk-lib/aws-events-targets';
@@ -11,7 +12,6 @@ import * as logs from 'aws-cdk-lib/aws-logs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
-import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib/core';
 import * as cr from 'aws-cdk-lib/custom-resources';
 import * as statement from 'cdk-iam-floyd';
 import { Construct } from 'constructs';

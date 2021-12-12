@@ -8,7 +8,10 @@ const example = exampleFile.slice(8, exampleFile.length - 7);
 
 const propertiesFile = fs.readFileSync('API.md', 'utf8');
 
+const cdkVersion = '2.1.0';
+
 const deps = ['cdk-iam-floyd'];
+const devDeps = [`aws-cdk@${cdkVersion}`];
 
 const shortDescription = `An AWS CDK custom construct for deploying Prowler to you AWS Account. The following description about Prowler is taken from https://github.com/toniblyx/prowler: 
 
@@ -20,9 +23,10 @@ const project = new awscdk.AwsCdkConstructLibrary({
   authorAddress: 'damadden88@googlemail.com',
   jsiiFqn: 'projen.AwsCdkConstructLibrary',
   minNodeVersion: '14.17.0',
-  cdkVersion: '2.1.0',
+  cdkVersion,
   cdkVersionPinning: false,
   description: shortDescription,
+  // tsconfigDevFile: 'tsconfig.jest.json',
   defaultReleaseBranch: 'main',
   name: 'cdk-prowler',
   repositoryUrl: 'https://github.com/mmuller88/cdk-prowler',
@@ -32,7 +36,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     secret: 'GITHUB_TOKEN',
   },
   peerDeps: deps,
-  devDeps: deps,
+  devDeps: [...deps, ...devDeps],
   catalog: {
     twitter: 'MartinMueller_',
   },

@@ -25,6 +25,11 @@
       "type": "build"
     },
     {
+      "name": "aws-cdk",
+      "version": "2.1.0",
+      "type": "build"
+    },
+    {
       "name": "cdk-iam-floyd",
       "type": "build"
     },
