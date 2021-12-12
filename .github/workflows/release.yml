@@ -88,8 +88,8 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     container:
       image: jsii/superchain:1-buster-slim-node14
-  release_pypi:
-    name: Publish to PyPI
+  release_nuget:
+    name: Publish to NuGet Gallery
     needs: release
     runs-on: ubuntu-latest
     permissions:
@@ -102,9 +102,8 @@ jobs:
           name: dist
           path: dist
       - name: Release
-        run: npx -p jsii-release@latest jsii-release-pypi
+        run: npx -p jsii-release@latest jsii-release-nuget
         env:
-          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
     container:
       image: jsii/superchain:1-buster-slim-node14
