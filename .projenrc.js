@@ -2,7 +2,7 @@ const fs = require('fs');
 const { awscdk } = require('projen');
 
 const exampleFile = fs
-  .readFileSync('test/integ.default.ts', 'utf8')
+  .readFileSync('src/integ.default.ts', 'utf8')
   .split('\n');
 const example = exampleFile.slice(8, exampleFile.length - 7);
 
@@ -136,11 +136,11 @@ project.setScript('synth', './node_modules/.bin/cdk synth');
 
 project.setScript(
   'integ:allowlist',
-  "cdk synth --app 'ts-node -P tsconfig.jest.json test/integ.allowlist.ts'",
+  "cdk synth --app 'ts-node -P tsconfig.jest.json src/integ.allowlist.ts'",
 );
 project.setScript(
   'integ:allowlist-zip',
-  "cdk synth --app 'ts-node -P tsconfig.jest.json test/integ.allowlist-zip.ts'",
+  "cdk synth --app 'ts-node -P tsconfig.jest.json src/integ.allowlist-zip.ts'",
 );
 
 const common_exclude = ['cdk.out'];
