@@ -126,7 +126,12 @@
   "stability": "stable",
   "jsii": {
     "outdir": "dist",
-    "targets": {},
+    "targets": {
+      "python": {
+        "distName": "cdk-prowler",
+        "module": "cdk_prowler"
+      }
+    },
     "tsc": {
       "outDir": "lib",
       "rootDir": "src"

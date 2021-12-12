@@ -48,10 +48,10 @@ const project = new awscdk.AwsCdkConstructLibrary({
     'aws',
     'cdk',
   ],
-  // publishToPypi: {
-  //   distName: 'cdk-prowler',
-  //   module: 'cdk_prowler',
-  // },
+  publishToPypi: {
+    distName: 'cdk-prowler',
+    module: 'cdk_prowler',
+  },
   // publishToNuget: {
   //   dotNetNamespace: 'com.github.mmuller88',
   //   packageId: 'com.github.mmuller88.cdkProwler',
