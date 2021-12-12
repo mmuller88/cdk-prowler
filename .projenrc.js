@@ -25,7 +25,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   minNodeVersion: '14.17.0',
   cdkVersion,
   cdkVersionPinning: false,
-  description: shortDescription,
+  // description: shortDescription,
   defaultReleaseBranch: 'main',
   name: 'cdk-prowler',
   repositoryUrl: 'https://github.com/mmuller88/cdk-prowler',
@@ -48,10 +48,10 @@ const project = new awscdk.AwsCdkConstructLibrary({
     'aws',
     'cdk',
   ],
-  // publishToPypi: {
-  //   distName: 'cdk-prowler',
-  //   module: 'cdk_prowler',
-  // },
+  publishToPypi: {
+    distName: 'cdk-prowler',
+    module: 'cdk_prowler',
+  },
   // publishToNuget: {
   //   dotNetNamespace: 'com.github.mmuller88',
   //   packageId: 'com.github.mmuller88.cdkProwler',
