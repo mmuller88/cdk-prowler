@@ -26,7 +26,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
   cdkVersion,
   cdkVersionPinning: false,
   description: shortDescription,
-  // tsconfigDevFile: 'tsconfig.jest.json',
   defaultReleaseBranch: 'main',
   name: 'cdk-prowler',
   repositoryUrl: 'https://github.com/mmuller88/cdk-prowler',
