@@ -19,7 +19,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Martin Mueller',
   authorAddress: 'damadden88@googlemail.com',
   jsiiFqn: 'projen.AwsCdkConstructLibrary',
-  // minNodeVersion: '14.17.0',
+  minNodeVersion: '14.17.0',
   cdkVersion,
   cdkVersionPinning: false,
   description: shortDescription,
