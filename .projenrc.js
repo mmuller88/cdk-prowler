@@ -13,19 +13,16 @@ const cdkVersion = '2.1.0';
 const deps = ['cdk-iam-floyd'];
 const devDeps = [`aws-cdk@${cdkVersion}`];
 
-const shortDescription = `An AWS CDK custom construct for deploying Prowler to you AWS Account. The following description about Prowler is taken from https://github.com/toniblyx/prowler: 
-
-Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …
-`;
+const shortDescription = 'An AWS CDK custom construct for deploying Prowler to you AWS Account. The following description about Prowler is taken from https://github.com/toniblyx/prowler: Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …';
 
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Martin Mueller',
   authorAddress: 'damadden88@googlemail.com',
   jsiiFqn: 'projen.AwsCdkConstructLibrary',
-  minNodeVersion: '14.17.0',
+  // minNodeVersion: '14.17.0',
   cdkVersion,
   cdkVersionPinning: false,
-  // description: shortDescription,
+  description: shortDescription,
   defaultReleaseBranch: 'main',
   name: 'cdk-prowler',
   repositoryUrl: 'https://github.com/mmuller88/cdk-prowler',
@@ -52,10 +49,10 @@ const project = new awscdk.AwsCdkConstructLibrary({
     distName: 'cdk-prowler',
     module: 'cdk_prowler',
   },
-  publishToNuget: {
-    dotNetNamespace: 'com.github.mmuller88',
-    packageId: 'com.github.mmuller88.cdkProwler',
-  },
+  // publishToNuget: {
+  //   dotNetNamespace: 'com.github.mmuller88',
+  //   packageId: 'com.github.mmuller88.cdkProwler',
+  // },
   readme: {
     contents: `[![NPM version](https://badge.fury.io/js/cdk-prowler.svg)](https://badge.fury.io/js/cdk-prowler)
 [![PyPI version](https://badge.fury.io/py/cdk-prowler.svg)](https://badge.fury.io/py/cdk-prowler)
