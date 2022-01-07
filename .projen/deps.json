@@ -6,7 +6,7 @@
     },
     {
       "name": "@types/node",
-      "version": "^14.17.0",
+      "version": "^14",
       "type": "build"
     },
     {
@@ -21,12 +21,12 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "2.3.0",
+      "version": "2.4.0",
       "type": "build"
     },
     {
       "name": "aws-cdk",
-      "version": "2.3.0",
+      "version": "2.4.0",
       "type": "build"
     },
     {
@@ -77,16 +77,12 @@
       "type": "build"
     },
     {
-      "name": "jsii-pacmak",
-      "type": "build"
-    },
-    {
       "name": "json-schema",
       "type": "build"
     },
     {
       "name": "npm-check-updates",
-      "version": "^11",
+      "version": "^12",
       "type": "build"
     },
     {
@@ -108,7 +104,7 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "^2.3.0",
+      "version": "^2.4.0",
       "type": "peer"
     },
     {
