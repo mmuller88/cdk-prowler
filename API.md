@@ -252,7 +252,7 @@ public readonly prowlerVersion: string;
 ```
 
 - *Type:* `string`
-- *Default:* 2.6.0
+- *Default:* 2.7.0
 
 Specifies the concrete Prowler version.
 
