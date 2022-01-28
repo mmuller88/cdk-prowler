@@ -49,7 +49,7 @@ export interface ProwlerAuditProps {
 
   /**
    * Specifies the concrete Prowler version
-   * @default 2.6.0
+   * @default 2.7.0
    */
   readonly prowlerVersion?: string;
 
@@ -102,7 +102,7 @@ export class ProwlerAudit extends Construct {
     this.enableScheduler = props?.enableScheduler ? props.enableScheduler : false;
     this.prowlerScheduler = props?.prowlerScheduler ? props.prowlerScheduler : 'cron(0 22 * * ? *)';
     this.prowlerOptions = props?.prowlerOptions ? props.prowlerOptions : '-M text,junit-xml,html,csv,json';
-    this.prowlerVersion = props?.prowlerVersion ? props.prowlerVersion : '2.6.0';
+    this.prowlerVersion = props?.prowlerVersion ? props.prowlerVersion : '2.7.0';
 
     const reportBucket = props?.reportBucket ?? new s3.Bucket(this, 'ReportBucket', {
       //bucketName: `${'123456'}-prowler-reports`,
