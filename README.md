@@ -6,6 +6,7 @@
 Author = <https://martinmueller.dev>
 
 # cdk-prowler
+
 An AWS CDK custom construct for deploying Prowler to you AWS Account. The following description about Prowler is taken from https://github.com/toniblyx/prowler: 
 
 Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …
@@ -20,6 +21,7 @@ And in your Codebuild Report group:
 ![Report group](https://raw.githubusercontent.com/mmuller88/cdk-prowler/main/misc/report-group-out.png)
 
 # AWS AMI
+
 If you just want to make the Prowler security checks in your account try my [Prowler AWS Marketplace AMI](https://aws.amazon.com/marketplace/pp/prodview-jlwcdlc3weta6). With just $1 Prowler will do over 180 security checks across a huge amount of AWS services in all your regions. Don't forget the terminate the Ec2 instance when the Prowler stack got created for not paying more than that $1 :).
 
 With buying the AMI you support my on my passion for creating open source products like this cdk-prowler construct. Furthermore you enable me to work on future features like mentioned in the **Planned Features** section. Thank you so much :) !
@@ -36,9 +38,11 @@ import { ProwlerAudit } from 'cdk-prowler';
 ```
 
 # Architect diagram
+
 ![diagram](https://raw.githubusercontent.com/mmuller88/cdk-prowler/main/misc/cdk-prowler.png)
 
 # cdk-prowler Properties
+
 cdk-prowler supports some properties to tweak your stack. Like for running a Cloudwatch schedule to regualary run the Prowler scan with a defined cron expression.
 
 # API Reference <a name="API Reference"></a>
@@ -333,8 +337,7 @@ yarn deploy --require-approval never -c reRunProwler=true
 ```
 
 # Thanks To
+
 * My friend and fellaw ex colleague Tony de la Fuente (https://github.com/toniblyx https://twitter.com/ToniBlyx) for developing such a cool security tool as [Prowler](https://github.com/toniblyx/prowler)
 * As always to the amazing CDK / Projen Community. Join us on [Slack](https://cdk-dev.slack.com)!
 * [Projen](https://github.com/projen/projen) project and the community around it
-
-    
