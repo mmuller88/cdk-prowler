@@ -151,7 +151,7 @@ export class ProwlerAudit extends Construct {
               'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"',
               'unzip awscliv2.zip',
               './aws/install',
-              `git clone -b ${this.prowlerVersion} https://github.com/toniblyx/prowler`,
+              `git clone -b ${this.prowlerVersion} https://github.com/prowler-cloud/prowler`,
             ],
           },
           pre_build: {
