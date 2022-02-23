@@ -104,7 +104,19 @@
       "description": "Generate API.md from .jsii manifest",
       "steps": [
         {
-          "exec": "jsii-docgen"
+          "exec": "jsii-docgen -o API.md"
+        }
+      ]
+    },
+    "eject": {
+      "name": "eject",
+      "description": "Remove projen from the project",
+      "env": {
+        "PROJEN_EJECTING": "true"
+      },
+      "steps": [
+        {
+          "spawn": "default"
         }
       ]
     },
@@ -122,10 +134,7 @@
       "description": "Creates the distribution package",
       "steps": [
         {
-          "exec": "mkdir -p dist"
-        },
-        {
-          "exec": "rsync -a . dist --exclude .git --exclude node_modules"
+          "exec": "if [ ! -z ${CI} ]; then mkdir -p dist && rsync -a . dist --exclude .git --exclude node_modules; else npx projen package-all; fi"
         }
       ]
     },
@@ -173,6 +182,10 @@
           "spawn": "docgen"
         }
       ]
+    },
+    "post-upgrade": {
+      "name": "post-upgrade",
+      "description": "Runs after upgrading dependencies"
     },
     "pre-compile": {
       "name": "pre-compile",
@@ -277,6 +290,9 @@
         },
         {
           "exec": "npx projen"
+        },
+        {
+          "spawn": "post-upgrade"
         }
       ]
     },
