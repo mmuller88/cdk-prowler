@@ -13,7 +13,7 @@ const cdkVersion = '2.10.0';
 const deps = ['cdk-iam-floyd'];
 const devDeps = [`aws-cdk@${cdkVersion}`];
 
-const shortDescription = 'An AWS CDK custom construct for deploying Prowler to you AWS Account. The following description about Prowler is taken from https://github.com/prowler-cloud/prowler: Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …';
+const shortDescription = 'An AWS CDK custom construct for deploying Prowler to your AWS Account. Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …';
 
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Martin Mueller',
