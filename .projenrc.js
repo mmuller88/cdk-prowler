@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { awscdk } = require('projen');
+const { NpmAccess } = require('projen/lib/javascript');
 
 const exampleFile = fs
   .readFileSync('src/integ.default.ts', 'utf8')
@@ -34,7 +35,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   peerDeps: deps,
   devDeps: [...deps, ...devDeps],
   catalog: {
-    twitter: 'MartinMueller_',
+    twitter: 'mattbonig',
   },
   keywords: [
     'awscdk',
@@ -45,6 +46,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     'aws',
     'cdk',
   ],
+  npmAccess: NpmAccess.PUBLIC,
   publishToPypi: {
     distName: 'cdk-prowler',
     module: 'cdk_prowler',
