@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { awscdk } = require('projen');
+const {awscdk} = require('projen');
 
 const exampleFile = fs
   .readFileSync('src/integ.default.ts', 'utf8')
@@ -124,6 +124,7 @@ yarn deploy --require-approval never -c reRunProwler=true
 
     `,
   },
+  gitignore: ['.idea/']
 });
 
 project.setScript('deploy', './node_modules/.bin/cdk deploy');
