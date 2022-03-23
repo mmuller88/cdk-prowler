@@ -2,6 +2,7 @@ import * as path from 'path';
 import { Template } from 'aws-cdk-lib/assertions';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
+import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { App, Stack } from 'aws-cdk-lib/core';
 import { ProwlerAudit, ProwlerAuditProps } from '../src';
 
@@ -28,6 +29,14 @@ describe('Prowler Construct', () => {
     });
     assert.resourceCountIs('AWS::S3::Bucket', 1);
     assert.hasResourceProperties('AWS::S3::Bucket', { BucketName: 'mytestbucket' });
+  });
+
+  test('Uses secret for bucket if provided', ()=>{
+    const { assert } = createTestStack(({ stack }: { stack: Stack }) => {
+      return { reportBucketSecret: Secret.fromSecretPartialArn(stack, 'TestSecret', 'arn:aws:secretsmanager:us-east-1:012345678912:secret:ProwlerAccessPointAlias') };
+    });
+    assert.resourceCountIs('AWS::S3::Bucket', 1);
+    expect(assert.toJSON()).toMatchSnapshot();
   });
 
   test('Uses provided report prefix', () => {

@@ -207,6 +207,7 @@ const prowlerAuditProps: ProwlerAuditProps = { ... }
 | <code><a href="#cdk-prowler.ProwlerAuditProps.property.prowlerVersion">prowlerVersion</a></code> | <code>string</code> | Specifies the concrete Prowler version. |
 | <code><a href="#cdk-prowler.ProwlerAuditProps.property.reportBucket">reportBucket</a></code> | <code>aws-cdk-lib.aws_s3.IBucket</code> | An optional S3 bucket to store the Prowler reports. |
 | <code><a href="#cdk-prowler.ProwlerAuditProps.property.reportBucketPrefix">reportBucketPrefix</a></code> | <code>string</code> | An optional prefix for the report bucket objects. |
+| <code><a href="#cdk-prowler.ProwlerAuditProps.property.reportBucketSecret">reportBucketSecret</a></code> | <code>aws-cdk-lib.aws_secretsmanager.ISecret</code> | An optional Secret that has, in plaintext, the bucket to write to. |
 | <code><a href="#cdk-prowler.ProwlerAuditProps.property.serviceName">serviceName</a></code> | <code>string</code> | Specifies the service name used within component naming. |
 
 ---
@@ -332,6 +333,18 @@ public readonly reportBucketPrefix: string;
 - *Type:* string
 
 An optional prefix for the report bucket objects.
+
+---
+
+##### `reportBucketSecret`<sup>Optional</sup> <a name="reportBucketSecret" id="cdk-prowler.ProwlerAuditProps.property.reportBucketSecret"></a>
+
+```typescript
+public readonly reportBucketSecret: ISecret;
+```
+
+- *Type:* aws-cdk-lib.aws_secretsmanager.ISecret
+
+An optional Secret that has, in plaintext, the bucket to write to.
 
 ---
 
