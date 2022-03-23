@@ -3,6 +3,7 @@
 // import { aws_iam as iam, aws_logs as logs, aws_s3 as s3, aws_codebuild as codebuild, aws_lambda as lambda, custom_resources as cr } from 'aws-cdk-lib';
 import { CustomResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
+import { BuildEnvironmentVariable, BuildEnvironmentVariableType } from 'aws-cdk-lib/aws-codebuild';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as targets from 'aws-cdk-lib/aws-events-targets';
 import * as iam from 'aws-cdk-lib/aws-iam';
@@ -12,6 +13,7 @@ import * as logs from 'aws-cdk-lib/aws-logs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
+import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import * as cr from 'aws-cdk-lib/custom-resources';
 import * as statement from 'cdk-iam-floyd';
 import { Construct } from 'constructs';
@@ -57,6 +59,11 @@ export interface ProwlerAuditProps {
    * An optional S3 bucket to store the Prowler reports
    */
   readonly reportBucket?: IBucket;
+
+  /**
+   * An optional Secret that has, in plaintext, the bucket to write to
+   */
+  readonly reportBucketSecret?: ISecret;
 
   /**
    * An optional prefix for the report bucket objects
@@ -125,12 +132,16 @@ export class ProwlerAudit extends Construct {
       this.prowlerOptions = this.prowlerOptions + ` -w ${prowlerFilename}`;
     }
 
+    let bucketReportEnvVariable: BuildEnvironmentVariable = { value: reportBucket.bucketName || '' };
+    if (props?.reportBucketSecret) {
+      bucketReportEnvVariable = { value: props.reportBucketSecret.secretArn, type: BuildEnvironmentVariableType.SECRETS_MANAGER };
+    }
     const prowlerBuild = this.codebuildProject = new codebuild.Project(this, 'prowlerBuild', {
       description: 'Run Prowler assessment',
       timeout: Duration.hours(5),
       environment: {
         environmentVariables: {
-          BUCKET_REPORT: { value: reportBucket.bucketName || '' },
+          BUCKET_REPORT: bucketReportEnvVariable,
           BUCKET_PREFIX: { value: props?.reportBucketPrefix ?? '' },
           ADDITIONAL_S3_ARGS: { value: props?.additionalS3CopyArgs ?? '' },
           PROWLER_OPTIONS: { value: this.prowlerOptions || '' },

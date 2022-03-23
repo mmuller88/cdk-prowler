@@ -1,0 +1,823 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Prowler Construct Uses secret for bucket if provided 1`] = `
+Object {
+  "Parameters": Object {
+    "BootstrapVersion": Object {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": Object {
+    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": Object {
+      "DependsOn": Array [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "bdb08b9984816ecf43301a0c6d8913e270ee2448940b6b95e430dd222a4d90be.zip",
+        },
+        "Description": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "Lambda function for auto-deleting objects in ",
+              Object {
+                "Ref": "TestAuditReportBucket865A4698",
+              },
+              " S3 bucket.",
+            ],
+          ],
+        },
+        "Handler": "__entrypoint__.handler",
+        "MemorySize": 128,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Sub": "arn:\${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": Object {
+      "DependsOn": Array [
+        "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+        "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "6c0316fef24d0df8a9a705c77052001217d864f49af386539d01df54618cd131.zip",
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:PutRetentionPolicy",
+                "logs:DeleteRetentionPolicy",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+        "Roles": Array [
+          Object {
+            "Ref": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "TestAuditLambda439C8E7D": Object {
+      "DependsOn": Array [
+        "TestAuditLambdaServiceRoleDefaultPolicyDF978A40",
+        "TestAuditLambdaServiceRoleF8B36418",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "ZipFile": "import boto3
+import cfnresponse
+from botocore.exceptions import ClientError
+def lambda_handler(event,context):
+  props = event['ResourceProperties']
+  codebuild_client = boto3.client('codebuild')
+  if (event['RequestType'] == 'Create' or event['RequestType'] == 'Update'):
+    try:
+        response = codebuild_client.start_build(projectName=props['Build'])
+        print(response)
+        print(\\"Respond: SUCCESS\\")
+        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
+    except Exception as ex:
+        print(ex.response['Error']['Message'])
+        cfnresponse.send(event, context, cfnresponse.FAILED, ex.response)
+      ",
+        },
+        "Handler": "index.lambda_handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "TestAuditLambdaServiceRoleF8B36418",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.6",
+        "Timeout": 120,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "TestAuditLambdaServiceRoleDefaultPolicyDF978A40": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "codebuild:StartBuild",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "TestAuditLambdaServiceRoleDefaultPolicyDF978A40",
+        "Roles": Array [
+          Object {
+            "Ref": "TestAuditLambdaServiceRoleF8B36418",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "TestAuditLambdaServiceRoleF8B36418": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "TestAuditMyProviderframeworkonEvent1656C9AD": Object {
+      "DependsOn": Array [
+        "TestAuditMyRoleDefaultPolicy137CC4BD",
+        "TestAuditMyRole6C629AF0",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "8673bd36bbfce694fb944a5bd855eac5d342df85f1f9a67cb19fa5fbf3d5bde3.zip",
+        },
+        "Description": "AWS CDK resource provider framework - onEvent (TestStack/TestAudit/MyProvider)",
+        "Environment": Object {
+          "Variables": Object {
+            "USER_ON_EVENT_FUNCTION_ARN": Object {
+              "Fn::GetAtt": Array [
+                "TestAuditLambda439C8E7D",
+                "Arn",
+              ],
+            },
+          },
+        },
+        "Handler": "framework.onEvent",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "TestAuditMyRole6C629AF0",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "TestAuditMyProviderframeworkonEventLogRetentionD7D03A70": Object {
+      "Properties": Object {
+        "LogGroupName": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "/aws/lambda/",
+              Object {
+                "Ref": "TestAuditMyProviderframeworkonEvent1656C9AD",
+              },
+            ],
+          ],
+        },
+        "RetentionInDays": 3,
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::LogRetention",
+    },
+    "TestAuditMyRole6C629AF0": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "TestAuditMyRoleDefaultPolicy137CC4BD": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "TestAuditLambda439C8E7D",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "TestAuditMyRoleDefaultPolicy137CC4BD",
+        "Roles": Array [
+          Object {
+            "Ref": "TestAuditMyRole6C629AF0",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "TestAuditReportBucket865A4698": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true",
+          },
+        ],
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "TestAuditReportBucketAutoDeleteObjectsCustomResource780C7D5D": Object {
+      "DeletionPolicy": "Delete",
+      "DependsOn": Array [
+        "TestAuditReportBucketPolicyAB16F52E",
+      ],
+      "Properties": Object {
+        "BucketName": Object {
+          "Ref": "TestAuditReportBucket865A4698",
+        },
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::S3AutoDeleteObjects",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "TestAuditReportBucketPolicyAB16F52E": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "TestAuditReportBucket865A4698",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::GetAtt": Array [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn",
+                  ],
+                },
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "TestAuditReportBucket865A4698",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "TestAuditReportBucket865A4698",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "TestAuditResource16AE8A3C5": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "Build": Object {
+          "Ref": "TestAuditprowlerBuild8EACE101",
+        },
+        "RERUN_PROWLER": "",
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "TestAuditMyProviderframeworkonEvent1656C9AD",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::CloudFormation::CustomResource",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "TestAuditprowlerBuild8EACE101": Object {
+      "Properties": Object {
+        "Artifacts": Object {
+          "Type": "NO_ARTIFACTS",
+        },
+        "Cache": Object {
+          "Type": "NO_CACHE",
+        },
+        "Description": "Run Prowler assessment",
+        "EncryptionKey": "alias/aws/s3",
+        "Environment": Object {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "EnvironmentVariables": Array [
+            Object {
+              "Name": "BUCKET_REPORT",
+              "Type": "SECRETS_MANAGER",
+              "Value": "arn:aws:secretsmanager:us-east-1:012345678912:secret:ProwlerAccessPointAlias",
+            },
+            Object {
+              "Name": "BUCKET_PREFIX",
+              "Type": "PLAINTEXT",
+              "Value": "",
+            },
+            Object {
+              "Name": "ADDITIONAL_S3_ARGS",
+              "Type": "PLAINTEXT",
+              "Value": "",
+            },
+            Object {
+              "Name": "PROWLER_OPTIONS",
+              "Type": "PLAINTEXT",
+              "Value": "-M text,junit-xml,html,csv,json",
+            },
+          ],
+          "Image": "aws/codebuild/amazonlinux2-x86_64-standard:3.0",
+          "ImagePullCredentialsType": "CODEBUILD",
+          "PrivilegedMode": false,
+          "Type": "LINUX_CONTAINER",
+        },
+        "ServiceRole": Object {
+          "Fn::GetAtt": Array [
+            "TestAuditprowlerBuildRole641FE8C6",
+            "Arn",
+          ],
+        },
+        "Source": Object {
+          "BuildSpec": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "{
+  \\"version\\": \\"0.2\\",
+  \\"phases\\": {
+    \\"install\\": {
+      \\"runtime-versions\\": {
+        \\"python\\": 3.8
+      },
+      \\"commands\\": [
+        \\"echo \\\\\\"Installing Prowler and dependencies...\\\\\\"\\",
+        \\"pip3 install detect-secrets\\",
+        \\"yum -y install jq\\",
+        \\"curl \\\\\\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\\\\\" -o \\\\\\"awscliv2.zip\\\\\\"\\",
+        \\"unzip awscliv2.zip\\",
+        \\"./aws/install\\",
+        \\"git clone -b 2.7.0 https://github.com/prowler-cloud/prowler\\"
+      ]
+    },
+    \\"pre_build\\": {
+      \\"commands\\": []
+    },
+    \\"build\\": {
+      \\"commands\\": [
+        \\"echo \\\\\\"Running Prowler as ./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED\\\\\\"\\",
+        \\"cd prowler\\",
+        \\"./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED\\"
+      ]
+    },
+    \\"post_build\\": {
+      \\"commands\\": [
+        \\"echo \\\\\\"Uploading reports to S3...\\\\\\" \\",
+        \\"aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive $ADDITIONAL_S3_ARGS\\",
+        \\"echo \\\\\\"Done!\\\\\\"\\"
+      ]
+    }
+  },
+  \\"reports\\": {
+    \\"",
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "/",
+                        Object {
+                          "Ref": "TestAuditreportGroup202AA555",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                "\\": {
+      \\"files\\": [
+        \\"**/*\\"
+      ],
+      \\"base-directory\\": \\"prowler/junit-reports\\",
+      \\"file-format\\": \\"JunitXml\\"
+    }
+  }
+}",
+              ],
+            ],
+          },
+          "Type": "NO_SOURCE",
+        },
+        "TimeoutInMinutes": 300,
+      },
+      "Type": "AWS::CodeBuild::Project",
+    },
+    "TestAuditprowlerBuildRole641FE8C6": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "codebuild.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/SecurityAudit",
+              ],
+            ],
+          },
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/job-function/ViewOnlyAccess",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "TestAuditprowlerBuildRoleDefaultPolicy35D5A4B0": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "secretsmanager:GetSecretValue",
+              "Effect": "Allow",
+              "Resource": "arn:aws:secretsmanager:us-east-1:012345678912:secret:ProwlerAccessPointAlias*",
+            },
+            Object {
+              "Action": Array [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":logs:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":log-group:/aws/codebuild/",
+                      Object {
+                        "Ref": "TestAuditprowlerBuild8EACE101",
+                      },
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":logs:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":log-group:/aws/codebuild/",
+                      Object {
+                        "Ref": "TestAuditprowlerBuild8EACE101",
+                      },
+                      ":*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases",
+                "codebuild:BatchPutCodeCoverages",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":codebuild:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":report-group/",
+                    Object {
+                      "Ref": "TestAuditprowlerBuild8EACE101",
+                    },
+                    "-*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": "ds:ListAuthorizedApplications",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "ec2:GetEbsEncryptionByDefault",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "ecr:DescribeImageScanFindings",
+                "ecr:DescribeImages",
+                "ecr:DescribeRegistry",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "tag:GetTagKeys",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "lambda:GetFunction",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "glue:GetConnections",
+                "glue:SearchTables",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "apigateway:GET",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "support:Describe*",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "TestAuditReportBucket865A4698",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "TestAuditprowlerBuildRoleDefaultPolicy35D5A4B0",
+        "Roles": Array [
+          Object {
+            "Ref": "TestAuditprowlerBuildRole641FE8C6",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "TestAuditreportGroup202AA555": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "ExportConfig": Object {
+          "ExportConfigType": "NO_EXPORT",
+        },
+        "Type": "TEST",
+      },
+      "Type": "AWS::CodeBuild::ReportGroup",
+      "UpdateReplacePolicy": "Delete",
+    },
+  },
+  "Rules": Object {
+    "CheckBootstrapVersion": Object {
+      "Assertions": Array [
+        Object {
+          "Assert": Object {
+            "Fn::Not": Array [
+              Object {
+                "Fn::Contains": Array [
+                  Array [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  Object {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
