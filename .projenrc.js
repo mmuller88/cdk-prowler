@@ -128,7 +128,7 @@ yarn deploy --require-approval never -c reRunProwler=true
 
 project.setScript('deploy', './node_modules/.bin/cdk deploy');
 project.setScript('destroy', './node_modules/.bin/cdk destroy');
-project.setScript('synth', 'yarn cdk synth -c reRunProwler=true && yarn cdk-dia && mv diagram.png diagrams/prowler.png');
+project.setScript('synth', 'yarn cdk synth && yarn cdk-dia && mv diagram.png diagrams/prowler.png');
 
 project.setScript(
   'integ:allowlist',

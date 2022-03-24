@@ -58,37 +58,11 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-#### Static Functions <a name="Static Functions" id="Static Functions"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#cdk-prowler.ProwlerAudit.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-
----
-
-##### ~~`isConstruct`~~ <a name="isConstruct" id="cdk-prowler.ProwlerAudit.isConstruct"></a>
-
-```typescript
-import { ProwlerAudit } from 'cdk-prowler'
-
-ProwlerAudit.isConstruct(x: any)
-```
-
-Checks if `x` is a construct.
-
-###### `x`<sup>Required</sup> <a name="x" id="cdk-prowler.ProwlerAudit.isConstruct.parameter.x"></a>
-
-- *Type:* any
-
-Any object.
-
----
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-prowler.ProwlerAudit.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#cdk-prowler.ProwlerAudit.property.codebuildProject">codebuildProject</a></code> | <code>aws-cdk-lib.aws_codebuild.Project</code> | *No description.* |
 | <code><a href="#cdk-prowler.ProwlerAudit.property.enableScheduler">enableScheduler</a></code> | <code>boolean</code> | *No description.* |
 | <code><a href="#cdk-prowler.ProwlerAudit.property.logsRetentionInDays">logsRetentionInDays</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | *No description.* |
@@ -96,18 +70,6 @@ Any object.
 | <code><a href="#cdk-prowler.ProwlerAudit.property.prowlerScheduler">prowlerScheduler</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#cdk-prowler.ProwlerAudit.property.prowlerVersion">prowlerVersion</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#cdk-prowler.ProwlerAudit.property.serviceName">serviceName</a></code> | <code>string</code> | *No description.* |
-
----
-
-##### `node`<sup>Required</sup> <a name="node" id="cdk-prowler.ProwlerAudit.property.node"></a>
-
-```typescript
-public readonly node: Node;
-```
-
-- *Type:* constructs.Node
-
-The tree node.
 
 ---
 

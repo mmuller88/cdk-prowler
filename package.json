@@ -32,7 +32,7 @@
     "projen": "npx projen",
     "deploy": "./node_modules/.bin/cdk deploy",
     "destroy": "./node_modules/.bin/cdk destroy",
-    "synth": "yarn cdk synth -c reRunProwler=true && yarn cdk-dia && mv diagram.png diagrams/prowler.png",
+    "synth": "yarn cdk synth && yarn cdk-dia && mv diagram.png diagrams/prowler.png",
     "integ:allowlist": "cdk synth --app 'ts-node -P tsconfig.jest.json src/integ.allowlist.ts'",
     "integ:allowlist-zip": "cdk synth --app 'ts-node -P tsconfig.jest.json src/integ.allowlist-zip.ts'"
   },
