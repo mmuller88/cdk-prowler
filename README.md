@@ -7,9 +7,9 @@ Author = <https://martinmueller.dev>
 
 # cdk-prowler
 
-An AWS CDK custom construct for deploying Prowler to your AWS Account. The following description about Prowler is taken from https://github.com/prowler-cloud/prowler
+An AWS CDK custom construct for deploying Prowler to your AWS Account. The following description about Prowler is taken from <https://github.com/prowler-cloud/prowler>
 
-Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …
+Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here <https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf> and more than 100 additional checks that help on GDPR, HIPAA …
 
 It generates security html results which are stored in an s3 bucket:
 
@@ -28,6 +28,7 @@ If you just want to make the Prowler security checks in your account try my [Pro
 With buying the AMI you support my on my passion for creating open source products like this cdk-prowler construct. Furthermore you enable me to work on future features like mentioned in the **Planned Features** section. Thank you so much :) !
 
 # Example
+
 ```ts
 import { ProwlerAudit } from 'cdk-prowler';
 ...
@@ -54,7 +55,7 @@ cdk-prowler supports some properties to tweak your stack. Like for running a Clo
 
 Creates a CodeBuild project to audit an AWS account with Prowler and stores the html report in a S3 bucket.
 
-This will run onece at the beginning and on a schedule afterwards. Partial contribution from https://github.com/stevecjones
+This will run onece at the beginning and on a schedule afterwards. Partial contribution from <https://github.com/stevecjones>
 
 #### Initializers <a name="cdk-prowler.ProwlerAudit.Initializer"></a>
 
@@ -81,8 +82,6 @@ new ProwlerAudit(parent: Stack, id: string, props?: ProwlerAuditProps)
 - *Type:* [`cdk-prowler.ProwlerAuditProps`](#cdk-prowler.ProwlerAuditProps)
 
 ---
-
-
 
 #### Properties <a name="Properties"></a>
 
@@ -155,7 +154,6 @@ public readonly serviceName: string;
 - *Type:* `string`
 
 ---
-
 
 ## Structs <a name="Structs"></a>
 
@@ -250,11 +248,11 @@ public readonly prowlerScheduler: string;
 ```
 
 - *Type:* `string`
-- *Default:* 'cron(0 22 * * ? *)'
+- *Default:* 'cron(0 22 ** ? *)'
 
 The time when Prowler will run in cron format.
 
-Default is daily at 22:00h or 10PM 'cron(0 22 * * ? *)', for every 5 hours also works 'rate(5 hours)'. More info here https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html.
+Default is daily at 22:00h or 10PM 'cron(0 22 ** ? *)', for every 5 hours also works 'rate(5 hours)'. More info here <https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html>.
 
 ---
 
@@ -308,21 +306,19 @@ Specifies the service name used within component naming.
 
 ---
 
-
-
-
-
 # Cross Account Buckets
 
 By providing your own Bucket you can have the CodeBuild project drop the Prowler results in another account. Make sure that you have your Bucket policy setup to allow the account running the Prowler reports access to writing those record.
 Additionally, you will probably want to provide an `additionalS3CopyArgs: '--acl bucket-owner-full-control'` to ensure that those object can be read by the account owner.
 
 # Planned Features
-* Supporting AWS SecurityHub https://github.com/prowler-cloud/prowler#security-hub-integration
-* Triggering an event with SNS when prowler finishes the run
-* AMI EC2 executable
+
+- Supporting AWS SecurityHub <https://github.com/prowler-cloud/prowler#security-hub-integration>
+- Triggering an event with SNS when prowler finishes the run
+- AMI EC2 executable
 
 # Architecture
+
 ![cfn](misc/cfn.jpg)
 
 # Misc
@@ -339,6 +335,6 @@ yarn deploy --require-approval never -c reRunProwler=true
 
 # Thanks To
 
-- My friend and fellaw ex colleague Tony de la Fuente (https://github.com/toniblyx https://twitter.com/ToniBlyx) for developing such a cool security tool as [Prowler](https://github.com/prowler-cloud/prowler)
+- My friend and fellaw ex colleague Tony de la Fuente (<https://github.com/toniblyx> <https://twitter.com/ToniBlyx>) for developing such a cool security tool as [Prowler](https://github.com/prowler-cloud/prowler)
 - As always to the amazing CDK / Projen Community. Join us on [Slack](https://cdk-dev.slack.com)!
 - [Projen](https://github.com/projen/projen) project and the community around it

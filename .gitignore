@@ -52,4 +52,6 @@ junit.xml
 tsconfig.json
 !/API.md
 cdk.out
+diagram.dot
+diagram.png
 !/.github/workflows/upgrade-main.yml
