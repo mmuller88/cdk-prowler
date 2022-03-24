@@ -41,7 +41,9 @@ import { ProwlerAudit } from 'cdk-prowler';
 
 # Architect diagram
 
-![diagram](https://raw.githubusercontent.com/mmuller88/cdk-prowler/main/misc/cdk-prowler.png)
+![diagram](diagrams/prowler.png)
+
+Curious how I did the diagram? Have a look here https://martinmueller.dev/cdk-dia-eng .
 
 # cdk-prowler Properties
 
