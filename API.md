@@ -185,6 +185,13 @@ An optional parameter to add to the S3 bucket copy command.
 
 ---
 
+*Example*
+
+```typescript
+--acl bucket-owner-full-control
+```
+
+
 ##### `allowlist`<sup>Optional</sup> <a name="allowlist" id="cdk-prowler.ProwlerAuditProps.property.allowlist"></a>
 
 ```typescript
@@ -196,9 +203,18 @@ public readonly allowlist: Asset;
 
 An Prowler-specific Allowlist file.
 
-If a value is provided then this is passed to Prowler on runs using the '-w' flag. If no value is provided, the -w parameter is not used. If you provide an asset that is zipped, it must contain an 'allowlist.txt' file which will be passed to Prowler.
+If a value is provided then this is passed to Prowler on runs using the '-w' flag.
+If no value is provided, the -w parameter is not used. If you provide an asset that is zipped, it must contain
+an 'allowlist.txt' file which will be passed to Prowler.
 
 ---
+
+*Example*
+
+```typescript
+new Asset(this, 'AllowList', { path: path.join(__dirname, 'allowlist.txt') })
+```
+
 
 ##### `enableScheduler`<sup>Optional</sup> <a name="enableScheduler" id="cdk-prowler.ProwlerAuditProps.property.enableScheduler"></a>
 
