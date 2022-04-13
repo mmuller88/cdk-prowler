@@ -8,7 +8,7 @@ const example = exampleFile.slice(8, exampleFile.length - 7);
 
 const propertiesFile = fs.readFileSync('API.md', 'utf8');
 
-const cdkVersion = '2.18.0';
+const cdkVersion = '2.19.0';
 
 const deps = ['cdk-iam-floyd'];
 const devDeps = [`aws-cdk@${cdkVersion}`, 'cdk-dia'];

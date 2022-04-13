@@ -1168,10 +1168,10 @@ available-typed-arrays@^1.0.5:
   resolved "https://registry.yarnpkg.com/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz#92f95616501069d07d10edb2fc37d3e1c65123b7"
   integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
 
-aws-cdk-lib@2.18.0:
-  version "2.18.0"
-  resolved "https://registry.yarnpkg.com/aws-cdk-lib/-/aws-cdk-lib-2.18.0.tgz#a130edf9d90ec166d5c0f14d275ab49cbbe75261"
-  integrity sha512-4XpEqRgKSzDmcpeNGRqRlnWEltnt5+NoHWKpQDHUsAmyJ2QNQ5dYxVLIReaGiE9H8zS0rlpp3exuDEy0UgKj2Q==
+aws-cdk-lib@2.19.0:
+  version "2.19.0"
+  resolved "https://registry.yarnpkg.com/aws-cdk-lib/-/aws-cdk-lib-2.19.0.tgz#80c3054dc925c4bc95639c4a2911a8aa6058ca4c"
+  integrity sha512-zt0lAsTpYfrDitjJXp1smEi4o1EYtAAj4fb0WW4GYBW+P6FqymXyAF5mUT8YWPkMJTnSP8d4FeDUyatQVWYRJA==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
     case "1.6.3"
@@ -1183,10 +1183,10 @@ aws-cdk-lib@2.18.0:
     semver "^7.3.5"
     yaml "1.10.2"
 
-aws-cdk@2.18.0:
-  version "2.18.0"
-  resolved "https://registry.yarnpkg.com/aws-cdk/-/aws-cdk-2.18.0.tgz#a5ef6b76a8dad4903a6d1bfe8fd7e4f4d6ed7c51"
-  integrity sha512-REaeBhJdx+oLBzOycuiGXtIhs/8zuZTlo267Seq5JTP3Ww4zTttZLy+mN52lDj5HWchcnvMLUHLHQywzDh8Muw==
+aws-cdk@2.19.0:
+  version "2.19.0"
+  resolved "https://registry.yarnpkg.com/aws-cdk/-/aws-cdk-2.19.0.tgz#b5d03bb1e0f08f62e73e84c0f0f1f4903820ff53"
+  integrity sha512-qOwxDKd1xKsiBW3laYrFBiAF510okJvslEeHViO08SKIyhitUe/HTn2iqfdVBb/zF6wSdm/sRsj2WNHpiKFcBQ==
   optionalDependencies:
     fsevents "2.3.2"
 
