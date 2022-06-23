@@ -26,7 +26,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   description: shortDescription,
   defaultReleaseBranch: 'main',
   name: '@matthewbonig/cdk-prowler',
-  repositoryUrl: 'https://github.com/mmuller88/cdk-prowler',
+  repositoryUrl: 'https://github.com/mbonig/cdk-prowler',
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
   autoApproveOptions: {
     allowedUsernames: ['aws-cdk-automation', 'github-bot'],

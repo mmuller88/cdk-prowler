@@ -63,17 +63,17 @@ Returns a string representation of this construct.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-prowler.ProwlerAudit.property.codebuildProject">codebuildProject</a></code> | <code>aws-cdk-lib.aws_codebuild.Project</code> | *No description.* |
-| <code><a href="#cdk-prowler.ProwlerAudit.property.enableScheduler">enableScheduler</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#cdk-prowler.ProwlerAudit.property.logsRetentionInDays">logsRetentionInDays</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | *No description.* |
-| <code><a href="#cdk-prowler.ProwlerAudit.property.prowlerOptions">prowlerOptions</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#cdk-prowler.ProwlerAudit.property.prowlerScheduler">prowlerScheduler</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#cdk-prowler.ProwlerAudit.property.prowlerVersion">prowlerVersion</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#cdk-prowler.ProwlerAudit.property.serviceName">serviceName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@matthewbonig/cdk-prowler.ProwlerAudit.property.codebuildProject">codebuildProject</a></code> | <code>aws-cdk-lib.aws_codebuild.Project</code> | *No description.* |
+| <code><a href="#@matthewbonig/cdk-prowler.ProwlerAudit.property.enableScheduler">enableScheduler</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#@matthewbonig/cdk-prowler.ProwlerAudit.property.logsRetentionInDays">logsRetentionInDays</a></code> | <code>aws-cdk-lib.aws_logs.RetentionDays</code> | *No description.* |
+| <code><a href="#@matthewbonig/cdk-prowler.ProwlerAudit.property.prowlerOptions">prowlerOptions</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@matthewbonig/cdk-prowler.ProwlerAudit.property.prowlerScheduler">prowlerScheduler</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@matthewbonig/cdk-prowler.ProwlerAudit.property.prowlerVersion">prowlerVersion</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@matthewbonig/cdk-prowler.ProwlerAudit.property.serviceName">serviceName</a></code> | <code>string</code> | *No description.* |
 
 ---
 
-##### `codebuildProject`<sup>Required</sup> <a name="codebuildProject" id="cdk-prowler.ProwlerAudit.property.codebuildProject"></a>
+##### `codebuildProject`<sup>Required</sup> <a name="codebuildProject" id="@matthewbonig/cdk-prowler.ProwlerAudit.property.codebuildProject"></a>
 
 ```typescript
 public readonly codebuildProject: Project;
@@ -193,7 +193,7 @@ An optional parameter to add to the S3 bucket copy command.
 ```
 
 
-##### `allowlist`<sup>Optional</sup> <a name="allowlist" id="cdk-prowler.ProwlerAuditProps.property.allowlist"></a>
+##### `allowlist`<sup>Optional</sup> <a name="allowlist" id="@matthewbonig/cdk-prowler.ProwlerAuditProps.property.allowlist"></a>
 
 ```typescript
 public readonly allowlist: Asset;
@@ -217,7 +217,7 @@ new Asset(this, 'AllowList', { path: path.join(__dirname, 'allowlist.txt') })
 ```
 
 
-##### `enableScheduler`<sup>Optional</sup> <a name="enableScheduler" id="cdk-prowler.ProwlerAuditProps.property.enableScheduler"></a>
+##### `enableScheduler`<sup>Optional</sup> <a name="enableScheduler" id="@matthewbonig/cdk-prowler.ProwlerAuditProps.property.enableScheduler"></a>
 
 ```typescript
 public readonly enableScheduler: boolean;
