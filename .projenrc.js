@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { awscdk } = require('projen');
+const { NpmAccess } = require('projen/lib/javascript');
 
 const exampleFile = fs
   .readFileSync('src/integ.default.ts', 'utf8')
@@ -16,16 +17,16 @@ const devDeps = [`aws-cdk@${cdkVersion}`, 'cdk-dia'];
 const shortDescription = 'An AWS CDK custom construct for deploying Prowler to your AWS Account. Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …';
 
 const project = new awscdk.AwsCdkConstructLibrary({
-  author: 'Martin Mueller',
-  authorAddress: 'damadden88@googlemail.com',
+  author: 'Matthew Bonig',
+  authorAddress: 'matthew.bonig@gmail.com',
   jsiiFqn: 'projen.AwsCdkConstructLibrary',
   minNodeVersion: '14.17.0',
   cdkVersion,
   cdkVersionPinning: false,
   description: shortDescription,
   defaultReleaseBranch: 'main',
-  name: 'cdk-prowler',
-  repositoryUrl: 'https://github.com/mmuller88/cdk-prowler',
+  name: '@matthewbonig/cdk-prowler',
+  repositoryUrl: 'https://github.com/mbonig/cdk-prowler',
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
   autoApproveOptions: {
     allowedUsernames: ['aws-cdk-automation', 'github-bot'],
@@ -34,7 +35,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   peerDeps: deps,
   devDeps: [...deps, ...devDeps],
   catalog: {
-    twitter: 'MartinMueller_',
+    twitter: 'mattbonig',
   },
   keywords: [
     'awscdk',
@@ -45,6 +46,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     'aws',
     'cdk',
   ],
+  npmAccess: NpmAccess.PUBLIC,
   publishToPypi: {
     distName: 'cdk-prowler',
     module: 'cdk_prowler',
@@ -124,6 +126,7 @@ yarn deploy --require-approval never -c reRunProwler=true
 
     `,
   },
+  gitignore: ['.idea/'],
 });
 
 project.setScript('deploy', './node_modules/.bin/cdk deploy');
