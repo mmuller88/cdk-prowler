@@ -213,8 +213,8 @@ export class ProwlerAudit extends Construct {
 
     const myRole = new iam.Role(this, 'MyRole', { assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com') });
 
-    const prowlerStartBuildLambda = new lambda.Function(this, 'Lambda', {
-      runtime: lambda.Runtime.PYTHON_3_6,
+    const prowlerStartBuildLambda = new lambda.Function(this, 'prowlerStartBuildLambda', {
+      runtime: lambda.Runtime.PYTHON_3_8,
       timeout: Duration.seconds(120),
       handler: 'index.lambda_handler',
       code: lambda.Code.fromInline(`import boto3
@@ -271,7 +271,7 @@ def lambda_handler(event,context):
         `),
       });
 
-      new events.Rule(this, 'Rule', {
+      new events.Rule(this, 'Scheduler', {
         description: 'A schedule for the Lambda function that triggers Prowler in CodeBuild.',
         targets: [new targets.LambdaFunction(prowlerSchedulerLambda)],
         schedule: events.Schedule.expression(this.prowlerScheduler || ''),

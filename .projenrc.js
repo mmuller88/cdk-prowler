@@ -9,10 +9,10 @@ const example = exampleFile.slice(8, exampleFile.length - 7);
 
 const propertiesFile = fs.readFileSync('API.md', 'utf8');
 
-const cdkVersion = '2.15.0';
+const cdkVersion = '2.23.0';
 
 const deps = ['cdk-iam-floyd'];
-const devDeps = [`aws-cdk@${cdkVersion}`];
+const devDeps = [`aws-cdk@${cdkVersion}`, 'cdk-dia'];
 
 const shortDescription = 'An AWS CDK custom construct for deploying Prowler to your AWS Account. Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …';
 
@@ -26,7 +26,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   description: shortDescription,
   defaultReleaseBranch: 'main',
   name: '@matthewbonig/cdk-prowler',
-  repositoryUrl: 'https://github.com/mmuller88/cdk-prowler',
+  repositoryUrl: 'https://github.com/mbonig/cdk-prowler',
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
   autoApproveOptions: {
     allowedUsernames: ['aws-cdk-automation', 'github-bot'],
@@ -131,7 +131,7 @@ yarn deploy --require-approval never -c reRunProwler=true
 
 project.setScript('deploy', './node_modules/.bin/cdk deploy');
 project.setScript('destroy', './node_modules/.bin/cdk destroy');
-project.setScript('synth', './node_modules/.bin/cdk synth');
+project.setScript('synth', 'yarn cdk synth && yarn cdk-dia && mv diagram.png diagrams/prowler.png');
 
 project.setScript(
   'integ:allowlist',
@@ -145,5 +145,6 @@ project.setScript(
 const common_exclude = ['cdk.out'];
 project.npmignore.exclude(...common_exclude);
 project.gitignore.exclude(...common_exclude);
+project.gitignore.addPatterns('diagram.dot', 'diagram.png');
 
 project.synth();

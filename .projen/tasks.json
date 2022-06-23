@@ -87,7 +87,7 @@
       "description": "Only compile",
       "steps": [
         {
-          "exec": "jsii --silence-warnings=reserved-word --no-fix-peer-dependencies"
+          "exec": "jsii --silence-warnings=reserved-word"
         }
       ]
     },
@@ -264,6 +264,9 @@
       },
       "steps": [
         {
+          "exec": "yarn upgrade npm-check-updates"
+        },
+        {
           "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='aws-cdk-lib,aws-cdk,constructs'"
         },
         {
@@ -297,7 +300,7 @@
       "description": "Watch & compile in the background",
       "steps": [
         {
-          "exec": "jsii -w --silence-warnings=reserved-word --no-fix-peer-dependencies"
+          "exec": "jsii -w --silence-warnings=reserved-word"
         }
       ]
     }
