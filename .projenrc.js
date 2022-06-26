@@ -36,7 +36,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   catalog: {
     twitter: 'MartinMueller_',
   },
-  minNodeVersion: "16.15.1",
+  minNodeVersion: '16.15.1',
   keywords: [
     'awscdk',
     'prowler',
