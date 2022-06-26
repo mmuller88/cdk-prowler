@@ -19,7 +19,7 @@ And in your Codebuild Report group:
 
 ![Report group](https://raw.githubusercontent.com/mmuller88/cdk-prowler/main/misc/report-group-out.png)
 
-The current Prowler version is [2.7.0](https://blyx.com/2022/01/24/prowler-2-7-0-brave/)
+The current Prowler version is [2.10.0](https://github.com/prowler-cloud/prowler/releases/tag/2.10.0)
 
 # AWS AMI
 

@@ -5,7 +5,7 @@ import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import { App, Stack } from 'aws-cdk-lib/core';
 import { ProwlerAudit, ProwlerAuditProps } from '../src';
 
-const prowlerVersion = '2.7.0';
+const prowlerVersion = '2.10.0';
 
 describe('Prowler Construct', () => {
   function createTestStack(makeProps: Function = () => ({})) {
@@ -66,7 +66,7 @@ describe('Prowler Construct', () => {
           'Fn::Join': [
             '',
             [
-              `{\n  "version": "0.2",\n  "phases": {\n    "install": {\n      "runtime-versions": {\n        "python": 3.8\n      },\n      "commands": [\n        "echo \\"Installing Prowler and dependencies...\\"",\n        "pip3 install detect-secrets",\n        "yum -y install jq",\n        "curl \\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\" -o \\"awscliv2.zip\\"",\n        "unzip awscliv2.zip",\n        "./aws/install",\n        "git clone -b ${prowlerVersion} https://github.com/prowler-cloud/prowler"\n      ]\n    },\n    "pre_build": {\n      "commands": []\n    },\n    "build": {\n      "commands": [\n        "echo \\"Running Prowler as ./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED\\"",\n        "cd prowler",\n        "./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED"\n      ]\n    },\n    "post_build": {\n      "commands": [\n        "echo \\"Uploading reports to S3...\\" ",\n        "aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive $ADDITIONAL_S3_ARGS",\n        "echo \\"Done!\\""\n      ]\n    }\n  },\n  "reports": {\n    "`,
+              `{\n  "version": "0.2",\n  "phases": {\n    "install": {\n      "runtime-versions": {\n        "python": 3.9\n      },\n      "commands": [\n        "echo \\"Installing Prowler and dependencies...\\"",\n        "pip3 install detect-secrets",\n        "yum -y install jq",\n        "curl \\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\" -o \\"awscliv2.zip\\"",\n        "unzip awscliv2.zip",\n        "./aws/install",\n        "git clone -b ${prowlerVersion} https://github.com/prowler-cloud/prowler"\n      ]\n    },\n    "pre_build": {\n      "commands": []\n    },\n    "build": {\n      "commands": [\n        "echo \\"Running Prowler as ./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED\\"",\n        "cd prowler",\n        "./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED"\n      ]\n    },\n    "post_build": {\n      "commands": [\n        "echo \\"Uploading reports to S3...\\" ",\n        "aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive $ADDITIONAL_S3_ARGS",\n        "echo \\"Done!\\""\n      ]\n    }\n  },\n  "reports": {\n    "`,
               {
                 'Fn::Select': [
                   1,
@@ -125,7 +125,7 @@ describe('Prowler Construct', () => {
           'Fn::Join': [
             '',
             [
-              `{\n  "version": "0.2",\n  "phases": {\n    "install": {\n      "runtime-versions": {\n        "python": 3.8\n      },\n      "commands": [\n        "echo \\"Installing Prowler and dependencies...\\"",\n        "pip3 install detect-secrets",\n        "yum -y install jq",\n        "curl \\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\" -o \\"awscliv2.zip\\"",\n        "unzip awscliv2.zip",\n        "./aws/install",\n        "git clone -b ${prowlerVersion} https://github.com/prowler-cloud/prowler"\n      ]\n    },\n    "pre_build": {\n      "commands": []\n    },\n    "build": {\n      "commands": [\n        "echo \\"Running Prowler as ./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED\\"",\n        "cd prowler",\n        "./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED"\n      ]\n    },\n    "post_build": {\n      "commands": [\n        "echo \\"Uploading reports to S3...\\" ",\n        "aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive $ADDITIONAL_S3_ARGS",\n        "echo \\"Done!\\""\n      ]\n    }\n  },\n  "reports": {\n    "`,
+              `{\n  "version": "0.2",\n  "phases": {\n    "install": {\n      "runtime-versions": {\n        "python": 3.9\n      },\n      "commands": [\n        "echo \\"Installing Prowler and dependencies...\\"",\n        "pip3 install detect-secrets",\n        "yum -y install jq",\n        "curl \\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\" -o \\"awscliv2.zip\\"",\n        "unzip awscliv2.zip",\n        "./aws/install",\n        "git clone -b ${prowlerVersion} https://github.com/prowler-cloud/prowler"\n      ]\n    },\n    "pre_build": {\n      "commands": []\n    },\n    "build": {\n      "commands": [\n        "echo \\"Running Prowler as ./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED\\"",\n        "cd prowler",\n        "./prowler -M text,junit-xml,html,csv,json && echo OK || echo FAILED"\n      ]\n    },\n    "post_build": {\n      "commands": [\n        "echo \\"Uploading reports to S3...\\" ",\n        "aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive $ADDITIONAL_S3_ARGS",\n        "echo \\"Done!\\""\n      ]\n    }\n  },\n  "reports": {\n    "`,
               {
                 'Fn::Select': [
                   1,
@@ -202,7 +202,7 @@ describe('Prowler Construct', () => {
           'Fn::Join': [
             '',
             [
-              '{\n  "version": "0.2",\n  "phases": {\n    "install": {\n      "runtime-versions": {\n        "python": 3.8\n      },\n      "commands": [\n        "echo \\"Installing Prowler and dependencies...\\"",\n        "pip3 install detect-secrets",\n        "yum -y install jq",\n        "curl \\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\" -o \\"awscliv2.zip\\"",\n        "unzip awscliv2.zip",\n        "./aws/install",\n        "git clone -b ' + prowlerVersion + ' https://github.com/prowler-cloud/prowler"\n      ]\n    },\n    "pre_build": {\n      "commands": [\n        "aws s3 cp ',
+              '{\n  "version": "0.2",\n  "phases": {\n    "install": {\n      "runtime-versions": {\n        "python": 3.9\n      },\n      "commands": [\n        "echo \\"Installing Prowler and dependencies...\\"",\n        "pip3 install detect-secrets",\n        "yum -y install jq",\n        "curl \\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\" -o \\"awscliv2.zip\\"",\n        "unzip awscliv2.zip",\n        "./aws/install",\n        "git clone -b ' + prowlerVersion + ' https://github.com/prowler-cloud/prowler"\n      ]\n    },\n    "pre_build": {\n      "commands": [\n        "aws s3 cp ',
               {
                 'Fn::Sub': 's3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9aea54d9a7efe166d507f4871a7a1a483e26e0735cb063ce42afd545ce703601.txt',
               },

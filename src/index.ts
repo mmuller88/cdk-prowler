@@ -49,7 +49,7 @@ export interface ProwlerAuditProps {
 
   /**
    * Specifies the concrete Prowler version
-   * @default 2.7.0
+   * @default 2.10.0
    */
   readonly prowlerVersion?: string;
 
@@ -102,7 +102,7 @@ export class ProwlerAudit extends Construct {
     this.enableScheduler = props?.enableScheduler ? props.enableScheduler : false;
     this.prowlerScheduler = props?.prowlerScheduler ? props.prowlerScheduler : 'cron(0 22 * * ? *)';
     this.prowlerOptions = props?.prowlerOptions ? props.prowlerOptions : '-M text,junit-xml,html,csv,json';
-    this.prowlerVersion = props?.prowlerVersion ? props.prowlerVersion : '2.7.0';
+    this.prowlerVersion = props?.prowlerVersion ? props.prowlerVersion : '2.10.0';
 
     const reportBucket = props?.reportBucket ?? new s3.Bucket(this, 'ReportBucket', {
       //bucketName: `${'123456'}-prowler-reports`,
@@ -142,7 +142,7 @@ export class ProwlerAudit extends Construct {
         phases: {
           install: {
             'runtime-versions': {
-              python: 3.8,
+              python: 3.9,
             },
             'commands': [
               'echo "Installing Prowler and dependencies..."',
@@ -203,7 +203,7 @@ export class ProwlerAudit extends Construct {
     const myRole = new iam.Role(this, 'MyRole', { assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com') });
 
     const prowlerStartBuildLambda = new lambda.Function(this, 'prowlerStartBuildLambda', {
-      runtime: lambda.Runtime.PYTHON_3_6,
+      runtime: lambda.Runtime.PYTHON_3_9,
       timeout: Duration.seconds(120),
       handler: 'index.lambda_handler',
       code: lambda.Code.fromInline(`import boto3
@@ -242,7 +242,7 @@ def lambda_handler(event,context):
 
     if (this.enableScheduler) {
       const prowlerSchedulerLambda = new lambda.Function(this, 'ScheduleLambda', {
-        runtime: lambda.Runtime.PYTHON_3_6,
+        runtime: lambda.Runtime.PYTHON_3_9,
         timeout: Duration.seconds(120),
         handler: 'index.lambda_handler',
         environment: {
