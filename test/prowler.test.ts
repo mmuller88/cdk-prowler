@@ -35,7 +35,7 @@ describe('Prowler Construct', () => {
     const { assert } = createTestStack(({ stack }: { stack: Stack }) => {
       return { reportBucketSecret: Secret.fromSecretPartialArn(stack, 'TestSecret', 'arn:aws:secretsmanager:us-east-1:012345678912:secret:ProwlerAccessPointAlias') };
     });
-    assert.resourceCountIs('AWS::S3::Bucket', 1);
+    assert.resourceCountIs('AWS::S3::Bucket', 0);
     expect(assert.toJSON()).toMatchSnapshot();
   });
 

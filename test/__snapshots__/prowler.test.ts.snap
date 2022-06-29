@@ -10,64 +10,6 @@ Object {
     },
   },
   "Resources": Object {
-    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": Object {
-      "DependsOn": Array [
-        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-      ],
-      "Properties": Object {
-        "Code": Object {
-          "S3Bucket": Object {
-            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
-          },
-          "S3Key": "483ae06ed27ef8ca76e011264d772420593a6cfe8544759c306ef3b98c9e25be.zip",
-        },
-        "Description": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "Lambda function for auto-deleting objects in ",
-              Object {
-                "Ref": "TestAuditReportBucket865A4698",
-              },
-              " S3 bucket.",
-            ],
-          ],
-        },
-        "Handler": "__entrypoint__.handler",
-        "MemorySize": 128,
-        "Role": Object {
-          "Fn::GetAtt": Array [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-            "Arn",
-          ],
-        },
-        "Runtime": "nodejs12.x",
-        "Timeout": 900,
-      },
-      "Type": "AWS::Lambda::Function",
-    },
-    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "lambda.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Sub": "arn:\${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Role",
-    },
     "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": Object {
       "DependsOn": Array [
         "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
@@ -262,89 +204,6 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
-    },
-    "TestAuditReportBucket865A4698": Object {
-      "DeletionPolicy": "Delete",
-      "Properties": Object {
-        "Tags": Array [
-          Object {
-            "Key": "aws-cdk:auto-delete-objects",
-            "Value": "true",
-          },
-        ],
-      },
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Delete",
-    },
-    "TestAuditReportBucketAutoDeleteObjectsCustomResource780C7D5D": Object {
-      "DeletionPolicy": "Delete",
-      "DependsOn": Array [
-        "TestAuditReportBucketPolicyAB16F52E",
-      ],
-      "Properties": Object {
-        "BucketName": Object {
-          "Ref": "TestAuditReportBucket865A4698",
-        },
-        "ServiceToken": Object {
-          "Fn::GetAtt": Array [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "Custom::S3AutoDeleteObjects",
-      "UpdateReplacePolicy": "Delete",
-    },
-    "TestAuditReportBucketPolicyAB16F52E": Object {
-      "Properties": Object {
-        "Bucket": Object {
-          "Ref": "TestAuditReportBucket865A4698",
-        },
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::GetAtt": Array [
-                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-                    "Arn",
-                  ],
-                },
-              },
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
-                    "TestAuditReportBucket865A4698",
-                    "Arn",
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Fn::GetAtt": Array [
-                          "TestAuditReportBucket865A4698",
-                          "Arn",
-                        ],
-                      },
-                      "/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::S3::BucketPolicy",
     },
     "TestAuditResource16AE8A3C5": Object {
       "DeletionPolicy": "Delete",
@@ -670,31 +529,6 @@ Object {
               "Action": "support:Describe*",
               "Effect": "Allow",
               "Resource": "*",
-            },
-            Object {
-              "Action": Array [
-                "s3:PutObject",
-                "s3:PutObjectLegalHold",
-                "s3:PutObjectRetention",
-                "s3:PutObjectTagging",
-                "s3:PutObjectVersionTagging",
-                "s3:Abort*",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::GetAtt": Array [
-                        "TestAuditReportBucket865A4698",
-                        "Arn",
-                      ],
-                    },
-                    "/*",
-                  ],
-                ],
-              },
             },
           ],
           "Version": "2012-10-17",
