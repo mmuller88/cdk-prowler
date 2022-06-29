@@ -111,7 +111,7 @@ export class ProwlerAudit extends Construct {
     this.prowlerOptions = props?.prowlerOptions ? props.prowlerOptions : '-M text,junit-xml,html,csv,json';
     this.prowlerVersion = props?.prowlerVersion ? props.prowlerVersion : '2.7.0';
 
-    const reportBucket = props?.reportBucket ?? new s3.Bucket(this, 'ReportBucket', {
+    const reportBucket = (props?.reportBucket || props?.reportBucketSecret) ? null : new s3.Bucket(this, 'ReportBucket', {
       //bucketName: `${'123456'}-prowler-reports`,
       autoDeleteObjects: true,
       removalPolicy: RemovalPolicy.DESTROY,
@@ -132,9 +132,14 @@ export class ProwlerAudit extends Construct {
       this.prowlerOptions = this.prowlerOptions + ` -w ${prowlerFilename}`;
     }
 
-    let bucketReportEnvVariable: BuildEnvironmentVariable = { value: reportBucket.bucketName || '' };
+    let bucketReportEnvVariable: BuildEnvironmentVariable;
     if (props?.reportBucketSecret) {
-      bucketReportEnvVariable = { value: props.reportBucketSecret.secretArn, type: BuildEnvironmentVariableType.SECRETS_MANAGER };
+      bucketReportEnvVariable = {
+        value: props.reportBucketSecret.secretArn,
+        type: BuildEnvironmentVariableType.SECRETS_MANAGER,
+      };
+    } else {
+      bucketReportEnvVariable = { value: reportBucket?.bucketName || '' };
     }
     const prowlerBuild = this.codebuildProject = new codebuild.Project(this, 'prowlerBuild', {
       description: 'Run Prowler assessment',
@@ -209,7 +214,7 @@ export class ProwlerAudit extends Construct {
     prowlerBuild.addToRolePolicy(new statement.Apigateway().allow().toGET());
     prowlerBuild.addToRolePolicy(new iam.PolicyStatement({ actions: ['support:Describe*'], resources: ['*'] }));
 
-    reportBucket.grantPut(prowlerBuild);
+    reportBucket?.grantPut(prowlerBuild);
 
     const myRole = new iam.Role(this, 'MyRole', { assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com') });
 
