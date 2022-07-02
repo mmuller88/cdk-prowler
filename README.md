@@ -7,6 +7,8 @@ Author = <https://martinmueller.dev>
 
 # cdk-prowler
 
+The current Prowler version is [2.10.0](https://github.com/prowler-cloud/prowler/releases/tag/2.10.0)
+
 An AWS CDK custom construct for deploying Prowler to your AWS Account. The following description about Prowler is taken from <https://github.com/prowler-cloud/prowler>
 
 Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here <https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf> and more than 100 additional checks that help on GDPR, HIPAA …
@@ -18,8 +20,6 @@ It generates security html results which are stored in an s3 bucket:
 And in your Codebuild Report group:
 
 ![Report group](https://raw.githubusercontent.com/mmuller88/cdk-prowler/main/misc/report-group-out.png)
-
-The current Prowler version is [2.10.0](https://github.com/prowler-cloud/prowler/releases/tag/2.10.0)
 
 # AWS AMI
 
