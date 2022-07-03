@@ -98,19 +98,34 @@ export class ProwlerAudit extends Construct {
 
     // defaults
     this.serviceName = props?.serviceName ? props.serviceName : 'prowler';
-    this.logsRetentionInDays = props?.logsRetentionInDays ? props.logsRetentionInDays : logs.RetentionDays.THREE_DAYS;
-    this.enableScheduler = props?.enableScheduler ? props.enableScheduler : false;
-    this.prowlerScheduler = props?.prowlerScheduler ? props.prowlerScheduler : 'cron(0 22 * * ? *)';
-    this.prowlerOptions = props?.prowlerOptions ? props.prowlerOptions : '-M text,junit-xml,html,csv,json';
-    this.prowlerVersion = props?.prowlerVersion ? props.prowlerVersion : '2.10.0';
+    this.logsRetentionInDays = props?.logsRetentionInDays
+      ? props.logsRetentionInDays
+      : logs.RetentionDays.THREE_DAYS;
+    this.enableScheduler = props?.enableScheduler
+      ? props.enableScheduler
+      : false;
+    this.prowlerScheduler = props?.prowlerScheduler
+      ? props.prowlerScheduler
+      : 'cron(0 22 * * ? *)';
+    this.prowlerOptions = props?.prowlerOptions
+      ? props.prowlerOptions
+      : '-M text,junit-xml,html,csv,json';
+    this.prowlerVersion = props?.prowlerVersion
+      ? props.prowlerVersion
+      : '2.10.0';
 
-    const reportBucket = props?.reportBucket ?? new s3.Bucket(this, 'ReportBucket', {
-      //bucketName: `${'123456'}-prowler-reports`,
-      autoDeleteObjects: true,
-      removalPolicy: RemovalPolicy.DESTROY,
+    const reportBucket =
+      props?.reportBucket ??
+      new s3.Bucket(this, 'ReportBucket', {
+        //bucketName: `${'123456'}-prowler-reports`,
+        autoDeleteObjects: true,
+        removalPolicy: RemovalPolicy.DESTROY,
+      });
+
+    const reportGroup = new codebuild.ReportGroup(this, 'reportGroup', {
+      /**reportGroupName: 'testReportGroup', */ removalPolicy:
+        RemovalPolicy.DESTROY,
     });
-
-    const reportGroup = new codebuild.ReportGroup(this, 'reportGroup', { /**reportGroupName: 'testReportGroup', */removalPolicy: RemovalPolicy.DESTROY });
 
     const preBuildCommands: string[] = [];
     if (!!props?.allowlist) {
@@ -118,95 +133,133 @@ export class ProwlerAudit extends Construct {
 
       if (props.allowlist.isZipArchive) {
         preBuildCommands.push(`aws s3 cp ${props.allowlist.s3ObjectUrl} .`);
-        preBuildCommands.push(`unzip ${props.allowlist.s3ObjectKey} -d prowler`);
+        preBuildCommands.push(
+          `unzip ${props.allowlist.s3ObjectKey} -d prowler`,
+        );
       } else {
-        preBuildCommands.push(`aws s3 cp ${props.allowlist.s3ObjectUrl} prowler/${prowlerFilename}`);
+        preBuildCommands.push(
+          `aws s3 cp ${props.allowlist.s3ObjectUrl} prowler/${prowlerFilename}`,
+        );
       }
       this.prowlerOptions = this.prowlerOptions + ` -w ${prowlerFilename}`;
     }
 
-    const prowlerBuild = this.codebuildProject = new codebuild.Project(this, 'prowlerBuild', {
-      description: 'Run Prowler assessment',
-      timeout: Duration.hours(5),
-      environment: {
-        environmentVariables: {
-          BUCKET_REPORT: { value: reportBucket.bucketName || '' },
-          BUCKET_PREFIX: { value: props?.reportBucketPrefix ?? '' },
-          ADDITIONAL_S3_ARGS: { value: props?.additionalS3CopyArgs ?? '' },
-          PROWLER_OPTIONS: { value: this.prowlerOptions || '' },
+    const prowlerBuild = (this.codebuildProject = new codebuild.Project(
+      this,
+      'prowlerBuild',
+      {
+        description: 'Run Prowler assessment',
+        timeout: Duration.hours(5),
+        environment: {
+          environmentVariables: {
+            BUCKET_REPORT: { value: reportBucket.bucketName || '' },
+            BUCKET_PREFIX: { value: props?.reportBucketPrefix ?? '' },
+            ADDITIONAL_S3_ARGS: { value: props?.additionalS3CopyArgs ?? '' },
+            PROWLER_OPTIONS: { value: this.prowlerOptions || '' },
+          },
+          buildImage: codebuild.LinuxBuildImage.fromCodeBuildImageId(
+            'aws/codebuild/amazonlinux2-x86_64-standard:3.0',
+          ),
         },
-        buildImage: codebuild.LinuxBuildImage.fromCodeBuildImageId('aws/codebuild/amazonlinux2-x86_64-standard:3.0'),
-      },
-      buildSpec: codebuild.BuildSpec.fromObject({
-        version: '0.2',
-        phases: {
-          install: {
-            'runtime-versions': {
-              python: 3.9,
+        buildSpec: codebuild.BuildSpec.fromObject({
+          version: '0.2',
+          phases: {
+            install: {
+              'runtime-versions': {
+                python: 3.9,
+              },
+              commands: [
+                'echo "Installing Prowler and dependencies..."',
+                'pip3 install detect-secrets',
+                'yum -y install jq',
+                'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"',
+                'unzip awscliv2.zip',
+                './aws/install',
+                `git clone -b ${this.prowlerVersion} https://github.com/prowler-cloud/prowler`,
+              ],
             },
-            'commands': [
-              'echo "Installing Prowler and dependencies..."',
-              'pip3 install detect-secrets',
-              'yum -y install jq',
-              'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"',
-              'unzip awscliv2.zip',
-              './aws/install',
-              `git clone -b ${this.prowlerVersion} https://github.com/prowler-cloud/prowler`,
-            ],
+            pre_build: {
+              commands: preBuildCommands,
+            },
+            build: {
+              commands: [
+                `echo "Running Prowler as ./prowler ${this.prowlerOptions} && echo OK || echo FAILED"`,
+                'cd prowler',
+                `./prowler ${this.prowlerOptions} && echo OK || echo FAILED`,
+              ],
+            },
+            post_build: {
+              commands: [
+                'echo "Uploading reports to S3..." ',
+                'aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive $ADDITIONAL_S3_ARGS',
+                'echo "Done!"',
+              ],
+            },
           },
-          pre_build: {
-            commands: preBuildCommands,
+          reports: {
+            [reportGroup.reportGroupName]: {
+              files: ['**/*'],
+              'base-directory': 'prowler/junit-reports',
+              'file-format': 'JunitXml',
+            },
           },
-          build: {
-            commands: [
-              `echo "Running Prowler as ./prowler ${this.prowlerOptions} && echo OK || echo FAILED"`,
-              'cd prowler',
-              `./prowler ${this.prowlerOptions} && echo OK || echo FAILED`,
-            ],
-          },
-          post_build: {
-            commands: [
-              'echo "Uploading reports to S3..." ',
-              'aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive $ADDITIONAL_S3_ARGS',
-              'echo "Done!"',
-            ],
-          },
-        },
-        reports: {
-          [reportGroup.reportGroupName]: {
-            'files': ['**/*'],
-            'base-directory': 'prowler/junit-reports',
-            'file-format': 'JunitXml',
-          },
-        },
-      }),
-    });
+        }),
+      },
+    ));
 
     if (!!props?.allowlist) {
       props.allowlist.bucket.grantRead(prowlerBuild);
     }
 
-    prowlerBuild.role?.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('SecurityAudit'));
-    prowlerBuild.role?.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('job-function/ViewOnlyAccess'));
+    prowlerBuild.role?.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName('SecurityAudit'),
+    );
+    prowlerBuild.role?.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName('job-function/ViewOnlyAccess'),
+    );
     // prowlerBuild.addToRolePolicy(new statement.Dax().allow().to());
-    prowlerBuild.addToRolePolicy(new statement.Ds().allow().toListAuthorizedApplications());
-    prowlerBuild.addToRolePolicy(new statement.Ec2().allow().toGetEbsEncryptionByDefault());
-    prowlerBuild.addToRolePolicy(new statement.Ecr().allow().toDescribeImageScanFindings().toDescribeImages().toDescribeRegistry());
+    prowlerBuild.addToRolePolicy(
+      new statement.Ds().allow().toListAuthorizedApplications(),
+    );
+    prowlerBuild.addToRolePolicy(
+      new statement.Ec2().allow().toGetEbsEncryptionByDefault(),
+    );
+    prowlerBuild.addToRolePolicy(
+      new statement.Ecr()
+        .allow()
+        .toDescribeImageScanFindings()
+        .toDescribeImages()
+        .toDescribeRegistry(),
+    );
     prowlerBuild.addToRolePolicy(new statement.Tag().allow().toGetTagKeys());
-    prowlerBuild.addToRolePolicy(new statement.Lambda().allow().toGetFunction());
-    prowlerBuild.addToRolePolicy(new statement.Glue().allow().toSearchTables().toGetConnections());
+    prowlerBuild.addToRolePolicy(
+      new statement.Lambda().allow().toGetFunction(),
+    );
+    prowlerBuild.addToRolePolicy(
+      new statement.Glue().allow().toSearchTables().toGetConnections(),
+    );
     prowlerBuild.addToRolePolicy(new statement.Apigateway().allow().toGET());
-    prowlerBuild.addToRolePolicy(new iam.PolicyStatement({ actions: ['support:Describe*'], resources: ['*'] }));
+    prowlerBuild.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['support:Describe*'],
+        resources: ['*'],
+      }),
+    );
 
     reportBucket.grantPut(prowlerBuild);
 
-    const myRole = new iam.Role(this, 'MyRole', { assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com') });
+    const myRole = new iam.Role(this, 'MyRole', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+    });
 
-    const prowlerStartBuildLambda = new lambda.Function(this, 'prowlerStartBuildLambda', {
-      runtime: lambda.Runtime.PYTHON_3_9,
-      timeout: Duration.seconds(120),
-      handler: 'index.lambda_handler',
-      code: lambda.Code.fromInline(`import boto3
+    const prowlerStartBuildLambda = new lambda.Function(
+      this,
+      'prowlerStartBuildLambda',
+      {
+        runtime: lambda.Runtime.PYTHON_3_9,
+        timeout: Duration.seconds(120),
+        handler: 'index.lambda_handler',
+        code: lambda.Code.fromInline(`import boto3
 import cfnresponse
 from botocore.exceptions import ClientError
 def lambda_handler(event,context):
@@ -222,9 +275,12 @@ def lambda_handler(event,context):
         print(ex.response['Error']['Message'])
         cfnresponse.send(event, context, cfnresponse.FAILED, ex.response)
       `),
-    });
+      },
+    );
 
-    prowlerStartBuildLambda.addToRolePolicy(new statement.Codebuild().allow().toStartBuild()); // onResource project ...
+    prowlerStartBuildLambda.addToRolePolicy(
+      new statement.Codebuild().allow().toStartBuild(),
+    ); // onResource project ...
 
     const myProvider = new cr.Provider(this, 'MyProvider', {
       onEventHandler: prowlerStartBuildLambda,
@@ -236,19 +292,24 @@ def lambda_handler(event,context):
       serviceToken: myProvider.serviceToken,
       properties: {
         Build: prowlerBuild.projectName,
-        RERUN_PROWLER: Boolean(this.node.tryGetContext('reRunProwler')) ? Date.now().toString() : '',
+        RERUN_PROWLER: Boolean(this.node.tryGetContext('reRunProwler'))
+          ? Date.now().toString()
+          : '',
       },
     });
 
     if (this.enableScheduler) {
-      const prowlerSchedulerLambda = new lambda.Function(this, 'ScheduleLambda', {
-        runtime: lambda.Runtime.PYTHON_3_9,
-        timeout: Duration.seconds(120),
-        handler: 'index.lambda_handler',
-        environment: {
-          buildName: prowlerBuild.projectName,
-        },
-        code: lambda.Code.fromInline(`import boto3
+      const prowlerSchedulerLambda = new lambda.Function(
+        this,
+        'ScheduleLambda',
+        {
+          runtime: lambda.Runtime.PYTHON_3_9,
+          timeout: Duration.seconds(120),
+          handler: 'index.lambda_handler',
+          environment: {
+            buildName: prowlerBuild.projectName,
+          },
+          code: lambda.Code.fromInline(`import boto3
         import os
         def lambda_handler(event,context):
           codebuild_client = boto3.client('codebuild')
@@ -258,10 +319,12 @@ def lambda_handler(event,context):
           print(response)
           print("Respond: SUCCESS")
         `),
-      });
+        },
+      );
 
       new events.Rule(this, 'Scheduler', {
-        description: 'A schedule for the Lambda function that triggers Prowler in CodeBuild.',
+        description:
+          'A schedule for the Lambda function that triggers Prowler in CodeBuild.',
         targets: [new targets.LambdaFunction(prowlerSchedulerLambda)],
         schedule: events.Schedule.expression(this.prowlerScheduler || ''),
       });

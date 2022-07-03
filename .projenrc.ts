@@ -1,9 +1,8 @@
+import { awscdk } from 'projen';
+import { TrailingComma } from 'projen/lib/javascript';
 const fs = require('fs');
-const { awscdk } = require('projen');
 
-const exampleFile = fs
-  .readFileSync('src/integ.default.ts', 'utf8')
-  .split('\n');
+const exampleFile = fs.readFileSync('src/integ.default.ts', 'utf8').split('\n');
 const example = exampleFile.slice(8, exampleFile.length - 7);
 
 const propertiesFile = fs.readFileSync('API.md', 'utf8');
@@ -13,23 +12,39 @@ const cdkVersion = '2.30.0';
 const deps = ['cdk-iam-floyd'];
 const devDeps = [`aws-cdk@${cdkVersion}`, 'cdk-dia'];
 
-const shortDescription = 'An AWS CDK custom construct for deploying Prowler to your AWS Account. Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …';
+const shortDescription =
+  'An AWS CDK custom construct for deploying Prowler to your AWS Account. Prowler is a security tool to perform AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains all CIS controls listed here https://d0.awsstatic.com/whitepapers/compliance/AWS_CIS_Foundations_Benchmark.pdf and more than 100 additional checks that help on GDPR, HIPAA …';
 
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Martin Mueller',
   authorAddress: 'damadden88@googlemail.com',
-  jsiiFqn: 'projen.AwsCdkConstructLibrary',
+  projenrcTs: true,
   cdkVersion,
   cdkVersionPinning: false,
   description: shortDescription,
   defaultReleaseBranch: 'main',
   name: 'cdk-prowler',
   repositoryUrl: 'https://github.com/mmuller88/cdk-prowler',
-  projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
+
+  autoApproveUpgrades: true,
   autoApproveOptions: {
     allowedUsernames: ['aws-cdk-automation', 'github-bot'],
-    secret: 'GITHUB_TOKEN',
+    secret: 'PROJEN_GITHUB_TOKEN',
   },
+
+  eslint: true,
+  prettier: true,
+  prettierOptions: {
+    settings: {
+      trailingComma: TrailingComma.ALL,
+      singleQuote: true,
+    },
+  },
+
+  minNodeVersion: '16.15.1',
+
+  gitignore: ['cdk.out', 'diagram.dot', 'diagram.png'],
+
   peerDeps: deps,
   devDeps: [...deps, ...devDeps],
   catalog: {
@@ -127,7 +142,10 @@ yarn deploy --require-approval never -c reRunProwler=true
 
 project.setScript('deploy', './node_modules/.bin/cdk deploy');
 project.setScript('destroy', './node_modules/.bin/cdk destroy');
-project.setScript('synth', 'yarn cdk synth && yarn cdk-dia && mv diagram.png diagrams/prowler.png');
+project.setScript(
+  'synth',
+  'yarn cdk synth && yarn cdk-dia && mv diagram.png diagrams/prowler.png',
+);
 
 project.setScript(
   'integ:allowlist',
@@ -137,10 +155,5 @@ project.setScript(
   'integ:allowlist-zip',
   "cdk synth --app 'ts-node -P tsconfig.jest.json src/integ.allowlist-zip.ts'",
 );
-
-const common_exclude = ['cdk.out'];
-project.npmignore.exclude(...common_exclude);
-project.gitignore.exclude(...common_exclude);
-project.gitignore.addPatterns('diagram.dot', 'diagram.png');
 
 project.synth();

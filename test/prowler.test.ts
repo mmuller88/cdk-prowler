@@ -1,8 +1,8 @@
 import * as path from 'path';
+import { App, Stack } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
-import { App, Stack } from 'aws-cdk-lib';
 import { ProwlerAudit, ProwlerAuditProps } from '../src';
 
 const prowlerVersion = '2.10.0';
@@ -24,10 +24,16 @@ describe('Prowler Construct', () => {
 
   test('Uses provided s3 bucket', () => {
     const { assert } = createTestStack(({ stack }: { stack: Stack }) => {
-      return { reportBucket: new Bucket(stack, 'TestBucket', { bucketName: 'mytestbucket' }) };
+      return {
+        reportBucket: new Bucket(stack, 'TestBucket', {
+          bucketName: 'mytestbucket',
+        }),
+      };
     });
     assert.resourceCountIs('AWS::S3::Bucket', 1);
-    assert.hasResourceProperties('AWS::S3::Bucket', { BucketName: 'mytestbucket' });
+    assert.hasResourceProperties('AWS::S3::Bucket', {
+      BucketName: 'mytestbucket',
+    });
   });
 
   test('Uses provided report prefix', () => {
@@ -149,7 +155,6 @@ describe('Prowler Construct', () => {
   });
 
   test('is allowlist setup correctly', () => {
-
     const app = new App();
     const stack = new Stack(app, 'TestStack');
     new ProwlerAudit(stack, 'TestAudit', {
@@ -192,19 +197,19 @@ describe('Prowler Construct', () => {
         Type: 'LINUX_CONTAINER',
       },
       ServiceRole: {
-        'Fn::GetAtt': [
-          'TestAuditprowlerBuildRole641FE8C6',
-          'Arn',
-        ],
+        'Fn::GetAtt': ['TestAuditprowlerBuildRole641FE8C6', 'Arn'],
       },
       Source: {
         BuildSpec: {
           'Fn::Join': [
             '',
             [
-              '{\n  "version": "0.2",\n  "phases": {\n    "install": {\n      "runtime-versions": {\n        "python": 3.9\n      },\n      "commands": [\n        "echo \\"Installing Prowler and dependencies...\\"",\n        "pip3 install detect-secrets",\n        "yum -y install jq",\n        "curl \\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\" -o \\"awscliv2.zip\\"",\n        "unzip awscliv2.zip",\n        "./aws/install",\n        "git clone -b ' + prowlerVersion + ' https://github.com/prowler-cloud/prowler"\n      ]\n    },\n    "pre_build": {\n      "commands": [\n        "aws s3 cp ',
+              '{\n  "version": "0.2",\n  "phases": {\n    "install": {\n      "runtime-versions": {\n        "python": 3.9\n      },\n      "commands": [\n        "echo \\"Installing Prowler and dependencies...\\"",\n        "pip3 install detect-secrets",\n        "yum -y install jq",\n        "curl \\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\" -o \\"awscliv2.zip\\"",\n        "unzip awscliv2.zip",\n        "./aws/install",\n        "git clone -b ' +
+                prowlerVersion +
+                ' https://github.com/prowler-cloud/prowler"\n      ]\n    },\n    "pre_build": {\n      "commands": [\n        "aws s3 cp ',
               {
-                'Fn::Sub': 's3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9aea54d9a7efe166d507f4871a7a1a483e26e0735cb063ce42afd545ce703601.txt',
+                'Fn::Sub':
+                  's3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9aea54d9a7efe166d507f4871a7a1a483e26e0735cb063ce42afd545ce703601.txt',
               },
               ' prowler/allowlist.txt"\n      ]\n    },\n    "build": {\n      "commands": [\n        "echo \\"Running Prowler as ./prowler -M text,junit-xml,html,csv,json -w allowlist.txt && echo OK || echo FAILED\\"",\n        "cd prowler",\n        "./prowler -M text,junit-xml,html,csv,json -w allowlist.txt && echo OK || echo FAILED"\n      ]\n    },\n    "post_build": {\n      "commands": [\n        "echo \\"Uploading reports to S3...\\" ",\n        "aws s3 cp --sse AES256 output/ s3://$BUCKET_REPORT/$BUCKET_PREFIX --recursive $ADDITIONAL_S3_ARGS",\n        "echo \\"Done!\\""\n      ]\n    }\n  },\n  "reports": {\n    "',
               {
@@ -228,5 +233,4 @@ describe('Prowler Construct', () => {
       },
     });
   });
-
 });

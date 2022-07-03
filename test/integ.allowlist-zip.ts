@@ -14,7 +14,11 @@ new ProwlerAudit(stack, 'ProwlerAudit', {
     path: path.join(__dirname),
     bundling: {
       image: DockerImage.fromRegistry('alpine'),
-      command: ['/bin/sh', '-c', 'cat allowlist.txt > /asset-output/allowlist.txt'],
+      command: [
+        '/bin/sh',
+        '-c',
+        'cat allowlist.txt > /asset-output/allowlist.txt',
+      ],
     },
   }),
 });
