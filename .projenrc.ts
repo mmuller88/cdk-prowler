@@ -41,8 +41,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
     },
   },
 
-  minNodeVersion: '16.15.1',
-
   gitignore: ['cdk.out', 'diagram.dot', 'diagram.png'],
 
   peerDeps: deps,
