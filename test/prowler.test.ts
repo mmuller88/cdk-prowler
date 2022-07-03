@@ -2,7 +2,7 @@ import * as path from 'path';
 import { Template } from 'aws-cdk-lib/assertions';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
-import { App, Stack } from 'aws-cdk-lib/core';
+import { App, Stack } from 'aws-cdk-lib';
 import { ProwlerAudit, ProwlerAuditProps } from '../src';
 
 const prowlerVersion = '2.10.0';
